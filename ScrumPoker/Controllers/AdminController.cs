@@ -1,6 +1,9 @@
-﻿namespace ScrumPoker.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
 
-public class AdminController
+namespace ScrumPoker.Controllers;
+[ApiController]
+[Route("[controller]")]
+public class AdminController : ControllerBase
 {
     
 }
