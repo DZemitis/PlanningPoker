@@ -4,7 +4,7 @@ namespace ScrumPoker.Core.Services;
 
 public interface IGameRoomService
 {
-    void CreateGameRoom(GameRoom name);
+    void CreateGameRoom(string name);
     IEnumerable<GameRoom> GetGameRoomByName(string name);
     List<GameRoom> GetAllGameRooms();
     void DeleteAllGameRooms();

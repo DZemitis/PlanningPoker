@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ScrumPoker.Core\ScrumPoker.Core.csproj" />
-      <ProjectReference Include="..\ScrumPoker.DataBase.Interfaces\ScrumPoker.DataBase.Interfaces.csproj" />
     </ItemGroup>
 
 </Project>

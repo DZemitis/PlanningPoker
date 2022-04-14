@@ -17,11 +17,11 @@ public class GameRoomController : ControllerBase
 
     [HttpPost]
     [Route("Create")]
-    public IActionResult CreateGameRoom(GameRoom name)
+    public IActionResult CreateGameRoom(string name)
     {
         _gameRoomService.CreateGameRoom(name);
         
-        return Created("", name);
+        return Created("", _gameRoomService.GetGameRoomByName(name));
     }
 
     [HttpGet]
