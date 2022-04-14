@@ -5,18 +5,18 @@ using ScrumPoker.Core.Services;
 namespace ScrumPoker.Controllers;
 [ApiController]
 [Route("[controller]")]
-public class AdminController : ControllerBase
+public class GameRoomController : ControllerBase
 {
     private readonly IGameRoomService _gameRoomService;
 
-    public AdminController(IGameRoomService gameRoomService)
+    public GameRoomController(IGameRoomService gameRoomService)
     {
         _gameRoomService = gameRoomService;
     }
 
 
-    [HttpPut]
-    [Route("CreateGameRoom")]
+    [HttpPost]
+    [Route("Create")]
     public IActionResult CreateGameRoom(GameRoom name)
     {
         _gameRoomService.CreateGameRoom(name);
@@ -25,14 +25,14 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet]
-    [Route("GameRoom/list")]
+    [Route("List")]
     public IActionResult GetFullGameRoomList()
     {
         return Ok(_gameRoomService.GetAllGameRooms());
     }
 
     [HttpGet]
-    [Route("GameRoom/{name}")]
+    [Route("{name}")]
     public IActionResult GetRoomByName(string name)
     {
         var gameRoom = _gameRoomService.GetGameRoomByName(name);
@@ -41,8 +41,8 @@ public class AdminController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("GameRoom/ClearAll")]
-    public IActionResult ClearAllGameRooms()
+    [Route("DeleteAll")]
+    public IActionResult DeleteAllGameRooms()
     {
         _gameRoomService.DeleteAllGameRooms();
         
@@ -50,8 +50,8 @@ public class AdminController : ControllerBase
     }  
     
     [HttpDelete]
-    [Route("GameRoom/{name}")]
-    public IActionResult RemoveGameRoomByName(string name)
+    [Route("Delete/{name}")]
+    public IActionResult DeleteGameRoomByName(string name)
     {
         _gameRoomService.DeleteGameRoomByName(name);
         
