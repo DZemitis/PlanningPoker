@@ -30,6 +30,7 @@ public class GameRoomRepository : IGameRoomRepository
     public GameRoom Update(GameRoom gameRoomRequest)
     {
         var gameRoom = _gameRooms.FirstOrDefault(x => x.Id == gameRoomRequest.Id);
+        gameRoom.Name = gameRoomRequest.Name;
 
         return gameRoom;
     }

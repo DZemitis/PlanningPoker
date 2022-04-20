@@ -28,7 +28,7 @@ public class GameRoomController : ControllerBase
     }
 
     /// <summary>
-    /// Update game room
+    /// Update game room, change name for now.
     /// </summary>
     /// <param name="gameRoomRequest">Game room with ID</param>
     /// <returns>Updated game room</returns>
