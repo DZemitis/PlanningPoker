@@ -15,19 +15,20 @@ public interface IGameRoomService
     /// Search game room by ID
     /// </summary>
     /// <param name="id">ID of the game room</param>
-    /// <returns></returns>
+    /// <returns>Game room found by ID</returns>
     GameRoom GetById(int id);
     
     /// <summary>
     /// Get a list of all game rooms
     /// </summary>
-    /// <returns></returns>
+    /// <returns>List of all game rooms</returns>
     List<GameRoom> GetAll();
 
     /// <summary>
     /// Update an game room
     /// </summary>
     /// <param name="gameRoomRequest">Game room with ID</param>
+    /// <returns>Updated game room</returns>
     GameRoom Update(GameRoom gameRoomRequest);
     
     /// <summary>

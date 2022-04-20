@@ -39,6 +39,6 @@ public interface IGameRoomRepository
     /// Return game room by ID
     /// </summary>
     /// <param name="id">ID of the game room</param>
-    /// <returns>Game room</returns>
+    /// <returns>Game room found by ID</returns>
     GameRoom GetById(int id);
 }
