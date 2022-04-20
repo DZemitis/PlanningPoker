@@ -6,35 +6,48 @@ namespace ScrumPoker.Services;
 
 public class GameRoomService : IGameRoomService
 {
-    private readonly IGameRoomData _gameRoomData;
+    private readonly IGameRoomRepository _gameRoomRepository;
 
-    public GameRoomService(IGameRoomData gameRoomData)
+    public GameRoomService(IGameRoomRepository gameRoomRepository)
     {
-        _gameRoomData = gameRoomData;
+        _gameRoomRepository = gameRoomRepository;
     }
 
-    public void CreateGameRoom(string name)
+    /// <inheritdoc />
+    public GameRoom Create(string name)
     {
-        _gameRoomData.Create(name);
+        var gameRoom =_gameRoomRepository.Create(name);
+
+        return gameRoom;
     }
     
-    public IEnumerable<GameRoom> GetGameRoomByName(string name)
+    /// <inheritdoc />
+    public IEnumerable<GameRoom> GetById(string id)
     {
-        return _gameRoomData.GetGameRoomByName(name);
+        return _gameRoomRepository.GetById(id);
     }
 
-    public List<GameRoom> GetAllGameRooms()
+    /// <inheritdoc />
+    public List<GameRoom> GetAll()
     {
-        return _gameRoomData.GetAllGameRooms();
+        return _gameRoomRepository.GetAll();
     }
 
-    public void DeleteAllGameRooms()
+    /// <inheritdoc />
+    public void Update(string id)
     {
-        _gameRoomData.DeleteAllRooms();
+        _gameRoomRepository.Update(id);
     }
 
-    public void DeleteGameRoomByName(string name)
+    /// <inheritdoc />
+    public void DeleteAll()
     {
-        _gameRoomData.DeleteRoomByName(name);
+        _gameRoomRepository.DeleteAll();
+    }
+
+    /// <inheritdoc />
+    public void DeleteById(string id)
+    {
+        _gameRoomRepository.DeleteById(id);
     }
 }

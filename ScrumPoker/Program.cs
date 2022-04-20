@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IGameRoomService, GameRoomService>();
 builder.Services.AddTransient<IPlayerService, PlayerService>();
 builder.Services.AddTransient<IVotingResultService, VotingResultService>();
-builder.Services.AddTransient<IGameRoomData, GameRoomDataBase>();
+builder.Services.AddTransient<IGameRoomRepository, GameRoomRepository>();
 
 var app = builder.Build();
 
