@@ -30,21 +30,19 @@ public class GameRoomController : ControllerBase
     /// <summary>
     /// Update game room
     /// </summary>
-    /// <param name="id">ID of the game room</param>
+    /// <param name="gameRoomRequest">Game room with ID</param>
     /// <returns>Updated game room</returns>
     [HttpPut]
     [Route("Update")]
-    public IActionResult UpdateGameRoom(int id)
+    public IActionResult UpdateGameRoom(GameRoom gameRoomRequest)
     {
-        _gameRoomService.Update(id);
-
-        return Ok(_gameRoomService.GetById(id));
+        return Ok(_gameRoomService.Update(gameRoomRequest));
     }
 
     /// <summary>
     /// Returns full list of game rooms
     /// </summary>
-    /// <returns></returns>
+    /// <returns>List of game rooms</returns>
     [HttpGet]
     [Route("List")]
     public IActionResult GetFullGameRoomList()
@@ -56,7 +54,7 @@ public class GameRoomController : ControllerBase
     /// Returns game room by ID
     /// </summary>
     /// <param name="id">ID of the game room</param>
-    /// <returns></returns>
+    /// <returns>Game room by ID</returns>
     [HttpGet]
     [Route("{id}")]
     public IActionResult GetRoomById(int id)
@@ -69,7 +67,7 @@ public class GameRoomController : ControllerBase
     /// <summary>
     /// Delete all available game rooms
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Empty list</returns>
     [HttpDelete]
     [Route("DeleteAll")]
     public IActionResult DeleteAllGameRooms()
@@ -83,7 +81,7 @@ public class GameRoomController : ControllerBase
     /// Delete specified game room by ID
     /// </summary>
     /// <param name="id">ID of the game room</param>
-    /// <returns></returns>
+    /// <returns>Confirmation of deletion</returns>
     [HttpDelete]
     [Route("Delete/{id}")]
     public IActionResult DeleteGameRoomById(int id)

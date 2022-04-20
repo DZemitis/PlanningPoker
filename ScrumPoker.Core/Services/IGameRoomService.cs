@@ -23,12 +23,12 @@ public interface IGameRoomService
     /// </summary>
     /// <returns></returns>
     List<GameRoom> GetAll();
-    
+
     /// <summary>
     /// Update an game room
     /// </summary>
-    /// <param name="id">ID of the game room</param>
-    void Update(int id);
+    /// <param name="gameRoomRequest">Game room with ID</param>
+    GameRoom Update(GameRoom gameRoomRequest);
     
     /// <summary>
     /// Deletes all available game rooms

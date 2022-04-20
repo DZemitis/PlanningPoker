@@ -3,12 +3,12 @@ using ScrumPoker.DataBase.Interfaces;
 
 namespace ScrumPoker.Data.Data;
 
+/// <inheritdoc />
 public class GameRoomRepository : IGameRoomRepository
 {
     private static readonly List<GameRoom> _gameRooms = new List<GameRoom>();
     private static int Id { get; set; }
     
-    /// <inheritdoc />
     public GameRoom Create(GameRoom gameRoomRequest)
     {
         var gameRoom = new GameRoom
@@ -22,25 +22,23 @@ public class GameRoomRepository : IGameRoomRepository
         return gameRoom;
     }
     
-    /// <inheritdoc />
     public List<GameRoom> GetAll()
     {
         return _gameRooms;
     }
 
-    /// <inheritdoc />
-    public void Update(int id)
+    public GameRoom Update(GameRoom gameRoomRequest)
     {
-        throw new NotImplementedException();
+        var gameRoom = _gameRooms.FirstOrDefault(x => x.Id == gameRoomRequest.Id);
+
+        return gameRoom;
     }
 
-    /// <inheritdoc />
     public void DeleteAll()
     {
         _gameRooms.Clear();
     }
 
-    /// <inheritdoc />
     public void DeleteById(int id)
     {
         for (int i = 0; i < _gameRooms.Count; i++)
@@ -50,7 +48,6 @@ public class GameRoomRepository : IGameRoomRepository
         }
     }
 
-    /// <inheritdoc />
     public IEnumerable<GameRoom> GetById(int id)
     {
         var gameRoom = _gameRooms.Where(x => x.Id == id);

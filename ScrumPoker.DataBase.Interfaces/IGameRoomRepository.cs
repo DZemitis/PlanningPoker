@@ -16,13 +16,13 @@ public interface IGameRoomRepository
     /// </summary>
     /// <returns></returns>
     List<GameRoom> GetAll();
-    
+
     /// <summary>
     /// Update an game room
     /// </summary>
-    /// <param name="id">ID of the game room</param>
+    /// <param name="gameRoomRequest">Game room with ID</param>
     /// <exception cref="Exception">Not yet implemented</exception>
-    void Update(int id);
+    GameRoom Update(GameRoom gameRoomRequest);
     
     /// <summary>
     /// Delete all available game rooms
