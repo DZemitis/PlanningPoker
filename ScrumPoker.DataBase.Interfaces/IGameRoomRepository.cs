@@ -7,9 +7,9 @@ public interface IGameRoomRepository
     /// <summary>
     /// Adds game room to data base
     /// </summary>
-    /// <param name="name">Name of the game room</param>
-    /// <returns>Created game room</returns>
-    GameRoom Create(string name);
+    /// <param name="gameRoomRequest">Game room with name</param>
+    /// <returns>Game room with desired name and generated ID</returns>
+    GameRoom Create(GameRoom gameRoomRequest);
     
     /// <summary>
     /// Returns full list of game rooms
@@ -22,7 +22,7 @@ public interface IGameRoomRepository
     /// </summary>
     /// <param name="id">ID of the game room</param>
     /// <exception cref="Exception">Not yet implemented</exception>
-    void Update(string id);
+    void Update(int id);
     
     /// <summary>
     /// Delete all available game rooms
@@ -33,12 +33,12 @@ public interface IGameRoomRepository
     /// Delete specified game room
     /// </summary>
     /// <param name="id">ID of the game room</param>
-    void DeleteById(string id);
+    void DeleteById(int id);
     
     /// <summary>
     /// Return game room by ID
     /// </summary>
     /// <param name="id">ID of the game room</param>
     /// <returns></returns>
-    IEnumerable<GameRoom> GetById(string id);
+    IEnumerable<GameRoom> GetById(int id);
 }

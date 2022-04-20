@@ -5,15 +5,16 @@ namespace ScrumPoker.Data.Data;
 
 public class GameRoomRepository : IGameRoomRepository
 {
-    private static List<GameRoom> _gameRooms = new List<GameRoom>();
+    private static readonly List<GameRoom> _gameRooms = new List<GameRoom>();
+    private static int Id { get; set; }
     
     /// <inheritdoc />
-    public GameRoom Create(string name)
+    public GameRoom Create(GameRoom gameRoomRequest)
     {
         var gameRoom = new GameRoom
         {
-            Name = name,
-            Id = Guid.NewGuid().ToString("N").Substring(0,6)
+            Name = gameRoomRequest.Name,
+            Id = ++Id
         };
         
         _gameRooms.Add(gameRoom);
@@ -28,7 +29,7 @@ public class GameRoomRepository : IGameRoomRepository
     }
 
     /// <inheritdoc />
-    public void Update(string id)
+    public void Update(int id)
     {
         throw new NotImplementedException();
     }
@@ -40,7 +41,7 @@ public class GameRoomRepository : IGameRoomRepository
     }
 
     /// <inheritdoc />
-    public void DeleteById(string id)
+    public void DeleteById(int id)
     {
         for (int i = 0; i < _gameRooms.Count; i++)
         {
@@ -50,7 +51,7 @@ public class GameRoomRepository : IGameRoomRepository
     }
 
     /// <inheritdoc />
-    public IEnumerable<GameRoom> GetById(string id)
+    public IEnumerable<GameRoom> GetById(int id)
     {
         var gameRoom = _gameRooms.Where(x => x.Id == id);
         

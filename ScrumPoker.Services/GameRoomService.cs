@@ -14,15 +14,15 @@ public class GameRoomService : IGameRoomService
     }
 
     /// <inheritdoc />
-    public GameRoom Create(string name)
+    public GameRoom Create(GameRoom gameRoomRequest)
     {
-        var gameRoom =_gameRoomRepository.Create(name);
+        var gameRoom =_gameRoomRepository.Create(gameRoomRequest);
 
         return gameRoom;
     }
     
     /// <inheritdoc />
-    public IEnumerable<GameRoom> GetById(string id)
+    public IEnumerable<GameRoom> GetById(int id)
     {
         return _gameRoomRepository.GetById(id);
     }
@@ -34,7 +34,7 @@ public class GameRoomService : IGameRoomService
     }
 
     /// <inheritdoc />
-    public void Update(string id)
+    public void Update(int id)
     {
         _gameRoomRepository.Update(id);
     }
@@ -46,7 +46,7 @@ public class GameRoomService : IGameRoomService
     }
 
     /// <inheritdoc />
-    public void DeleteById(string id)
+    public void DeleteById(int id)
     {
         _gameRoomRepository.DeleteById(id);
     }

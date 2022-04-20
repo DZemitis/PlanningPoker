@@ -18,13 +18,13 @@ public class GameRoomController : ControllerBase
     /// <summary>
     /// Ask user for desired name of the game room
     /// </summary>
-    /// <param name="name">Name for the game room</param>
+    /// <param name="gameRoomRequest">Game room with name</param>
     /// <returns>Game room with name and ID</returns>
     [HttpPost]
     [Route("Create")]
-    public IActionResult CreateGameRoom(string name)
+    public IActionResult CreateGameRoom(GameRoom gameRoomRequest)
     {
-        return Created("", _gameRoomService.Create(name));
+        return Created("", _gameRoomService.Create(gameRoomRequest));
     }
 
     /// <summary>
@@ -34,7 +34,7 @@ public class GameRoomController : ControllerBase
     /// <returns>Updated game room</returns>
     [HttpPut]
     [Route("Update")]
-    public IActionResult UpdateGameRoom(string id)
+    public IActionResult UpdateGameRoom(int id)
     {
         _gameRoomService.Update(id);
 
@@ -59,7 +59,7 @@ public class GameRoomController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [Route("{id}")]
-    public IActionResult GetRoomById(string id)
+    public IActionResult GetRoomById(int id)
     {
         var gameRoom = _gameRoomService.GetById(id);
 
@@ -86,7 +86,7 @@ public class GameRoomController : ControllerBase
     /// <returns></returns>
     [HttpDelete]
     [Route("Delete/{id}")]
-    public IActionResult DeleteGameRoomById(string id)
+    public IActionResult DeleteGameRoomById(int id)
     {
         _gameRoomService.DeleteById(id);
 

@@ -7,16 +7,16 @@ public interface IGameRoomService
     /// <summary>
     /// Create a game room
     /// </summary>
-    /// <param name="name">name of the game room</param>
+    /// <param name="gameRoomRequest">Game room with name</param>
     /// <returns>Created game room</returns>
-    GameRoom Create(string name);
+    GameRoom Create(GameRoom gameRoomRequest);
 
     /// <summary>
     /// Search game room by ID
     /// </summary>
     /// <param name="id">ID of the game room</param>
     /// <returns></returns>
-    IEnumerable<GameRoom> GetById(string id);
+    IEnumerable<GameRoom> GetById(int id);
     
     /// <summary>
     /// Get a list of all game rooms
@@ -28,7 +28,7 @@ public interface IGameRoomService
     /// Update an game room
     /// </summary>
     /// <param name="id">ID of the game room</param>
-    void Update(string id);
+    void Update(int id);
     
     /// <summary>
     /// Deletes all available game rooms
@@ -39,5 +39,5 @@ public interface IGameRoomService
     /// Delete specified game room by ID
     /// </summary>
     /// <param name="id">ID of the game room</param>
-    void DeleteById(string id);
+    void DeleteById(int id);
 }
