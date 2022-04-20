@@ -21,7 +21,7 @@ public class GameRoomService : IGameRoomService
         return gameRoom;
     }
     
-    public IEnumerable<GameRoom> GetById(int id)
+    public GameRoom GetById(int id)
     {
         return _gameRoomRepository.GetById(id);
     }

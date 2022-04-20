@@ -16,7 +16,7 @@ public interface IGameRoomService
     /// </summary>
     /// <param name="id">ID of the game room</param>
     /// <returns></returns>
-    IEnumerable<GameRoom> GetById(int id);
+    GameRoom GetById(int id);
     
     /// <summary>
     /// Get a list of all game rooms

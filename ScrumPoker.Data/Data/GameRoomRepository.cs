@@ -48,9 +48,9 @@ public class GameRoomRepository : IGameRoomRepository
         }
     }
 
-    public IEnumerable<GameRoom> GetById(int id)
+    public GameRoom GetById(int id)
     {
-        var gameRoom = _gameRooms.Where(x => x.Id == id);
+        var gameRoom = _gameRooms.FirstOrDefault(x => x.Id == id);
         
         return gameRoom;
     }

@@ -14,14 +14,14 @@ public interface IGameRoomRepository
     /// <summary>
     /// Returns full list of game rooms
     /// </summary>
-    /// <returns></returns>
+    /// <returns>List of all game rooms</returns>
     List<GameRoom> GetAll();
 
     /// <summary>
     /// Update an game room
     /// </summary>
     /// <param name="gameRoomRequest">Game room with ID</param>
-    /// <exception cref="Exception">Not yet implemented</exception>
+    /// <returns>Updated game room</returns>
     GameRoom Update(GameRoom gameRoomRequest);
     
     /// <summary>
@@ -34,11 +34,11 @@ public interface IGameRoomRepository
     /// </summary>
     /// <param name="id">ID of the game room</param>
     void DeleteById(int id);
-    
+
     /// <summary>
     /// Return game room by ID
     /// </summary>
     /// <param name="id">ID of the game room</param>
-    /// <returns></returns>
-    IEnumerable<GameRoom> GetById(int id);
+    /// <returns>Game room</returns>
+    GameRoom GetById(int id);
 }
