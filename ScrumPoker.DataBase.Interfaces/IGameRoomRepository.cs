@@ -1,25 +1,18 @@
 using ScrumPoker.Core.Models;
 
-namespace ScrumPoker.Core.Services;
+namespace ScrumPoker.DataBase.Interfaces;
 
-public interface IGameRoomService
+public interface IGameRoomRepository
 {
     /// <summary>
-    /// Create a game room
+    /// Adds game room to data base
     /// </summary>
     /// <param name="gameRoomRequest">Game room with name</param>
-    /// <returns>Created game room</returns>
+    /// <returns>Game room with desired name and generated ID</returns>
     GameRoom Create(GameRoom gameRoomRequest);
-
-    /// <summary>
-    /// Search game room by ID
-    /// </summary>
-    /// <param name="id">ID of the game room</param>
-    /// <returns>Game room found by ID</returns>
-    GameRoom GetById(int id);
     
     /// <summary>
-    /// Get a list of all game rooms
+    /// Returns full list of game rooms
     /// </summary>
     /// <returns>List of all game rooms</returns>
     List<GameRoom> GetAll();
@@ -32,13 +25,20 @@ public interface IGameRoomService
     GameRoom Update(GameRoom gameRoomRequest);
     
     /// <summary>
-    /// Deletes all available game rooms
+    /// Delete all available game rooms
     /// </summary>
     void DeleteAll();
     
     /// <summary>
-    /// Delete specified game room by ID
+    /// Delete specified game room
     /// </summary>
     /// <param name="id">ID of the game room</param>
     void DeleteById(int id);
+
+    /// <summary>
+    /// Return game room by ID
+    /// </summary>
+    /// <param name="id">ID of the game room</param>
+    /// <returns>Game room found by ID</returns>
+    GameRoom GetById(int id);
 }
