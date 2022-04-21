@@ -14,7 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ScrumPoker.Core\ScrumPoker.Core.csproj" />
-      <ProjectReference Include="..\ScrumPoker.Services\ScrumPoker.Services.csproj" />
+      <ProjectReference Include="..\ScrumPoker.Business\ScrumPoker.Business.csproj" />
     </ItemGroup>
 
 </Project>

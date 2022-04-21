@@ -1,4 +1,4 @@
-namespace ScrumPoker.Core.Models;
+namespace ScrumPoker.Business.Models.Models;
 
 public class GameRoom
 {
