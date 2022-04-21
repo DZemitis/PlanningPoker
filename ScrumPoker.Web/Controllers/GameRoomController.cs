@@ -2,7 +2,7 @@
 using ScrumPoker.Core.Models;
 using ScrumPoker.Core.Services;
 
-namespace ScrumPoker.Controllers;
+namespace ScrumPoker.Web.Controllers;
 
 [ApiController]
 [Route("[controller]")]

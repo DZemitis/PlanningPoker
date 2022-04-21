@@ -1,14 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrumPoker", "ScrumPoker\ScrumPoker.csproj", "{B956A0B4-C13C-4C51-862B-69D77D4F1698}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrumPoker.Web", "ScrumPoker.Web\ScrumPoker.Web.csproj", "{B956A0B4-C13C-4C51-862B-69D77D4F1698}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrumPoker.Data", "ScrumPoker.Data\ScrumPoker.Data.csproj", "{F443F280-990A-4180-A3F6-47E37FC69176}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrumPoker.DataAcces", "ScrumPoker.DataAcces\ScrumPoker.DataAcces.csproj", "{F443F280-990A-4180-A3F6-47E37FC69176}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrumPoker.Services", "ScrumPoker.Services\ScrumPoker.Services.csproj", "{7FDD05FE-447A-4204-AA99-6F0DB69CD6ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrumPoker.Core", "ScrumPoker.Core\ScrumPoker.Core.csproj", "{7BC1A27D-CB23-49DA-938A-20C398D377A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrumPoker.DataBase.Interfaces", "ScrumPoker.DataBase.Interfaces\ScrumPoker.DataBase.Interfaces.csproj", "{DE9852E3-ABCD-4ADF-82D2-00D15CC83245}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrumPoker.DataAcces.Interfaces", "ScrumPoker.DataAcces.Interfaces\ScrumPoker.DataAcces.Interfaces.csproj", "{DE9852E3-ABCD-4ADF-82D2-00D15CC83245}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

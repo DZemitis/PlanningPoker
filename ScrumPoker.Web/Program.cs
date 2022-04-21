@@ -1,4 +1,3 @@
-using ScrumPoker.Core.Models;
 using ScrumPoker.Core.Services;
 using ScrumPoker.Data.Data;
 using ScrumPoker.DataBase.Interfaces;
