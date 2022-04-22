@@ -1,8 +1,5 @@
-using ScrumPoker.Core.Services;
-using ScrumPoker.Data.Data;
-using ScrumPoker.DataBase.Interfaces;
+using ScrumPoker.Infrastructure;
 using ScrumPoker.Infrastructure.AutoMapper;
-using ScrumPoker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +9,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddTransient<IGameRoomService, GameRoomService>();
-builder.Services.AddTransient<IGameRoomRepository, GameRoomRepository>();
-
+builder.Services.Register();
 
 var mapper = AutoMapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);

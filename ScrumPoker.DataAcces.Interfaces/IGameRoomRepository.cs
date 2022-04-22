@@ -1,4 +1,4 @@
-using ScrumPoker.Core.Models;
+using ScrumPoker.Business.Models.Models;
 
 namespace ScrumPoker.DataBase.Interfaces;
 

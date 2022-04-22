@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using ScrumPoker.Core.Models;
-using ScrumPoker.Core.Services;
+using ScrumPoker.Business.Interfaces.Interfaces;
+using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Web.Models.Models.WebRequest;
 using ScrumPoker.Web.Models.Models.WebResponse;
 
@@ -27,13 +27,11 @@ public class GameRoomController : ControllerBase
     /// <returns>Game room with name and ID</returns>
     [HttpPost]
     [Route("Create")]
-    public async Task<IActionResult> CreateGameRoom(CreateGameRoomRequest gameRoomRequest)
+    public IActionResult CreateGameRoom(GameRoom gameRoomRequest)
     {
-        var createGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
-        var createGameRoom = _gameRoomService.Create(createGameRoomRequest);
-        var gameRoomResponse = _mapper.Map<GameRoomResponse>(createGameRoom);
+        var createGameRoom = _gameRoomService.Create(gameRoomRequest);
         
-        return Created("", gameRoomResponse);
+        return Created("", createGameRoom);
     }
 
     /// <summary>S

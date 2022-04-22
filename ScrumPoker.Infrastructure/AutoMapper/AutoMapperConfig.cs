@@ -12,15 +12,15 @@ public class AutoMapperConfig
     {
         var configuration = new MapperConfiguration(cfg =>
         {
-            cfg.CreateMap<GameRoom, CreateGameRoomRequest>();
-            cfg.CreateMap<CreateGameRoomRequest, GameRoom>()
+            cfg.CreateMap<GameRoom, CreateGameRoomApiRequest>();
+            cfg.CreateMap<CreateGameRoomApiRequest, GameRoom>()
                 .ForMember(dest=>dest.Id,
                     opt =>
                         opt.Ignore());
             
-            cfg.CreateMap<UpdateGameRoomRequest, GameRoom>();
+            cfg.CreateMap<UpdateGameRoomApiRequest, GameRoom>();
             cfg.CreateMap<GameRoom, GameRoomDto>();
-            cfg.CreateMap<GameRoom, GameRoomResponse>();
+            cfg.CreateMap<GameRoom, GameRoomApiResponse>();
             cfg.CreateMap<GameRoomDto, GameRoom>();
         });
 

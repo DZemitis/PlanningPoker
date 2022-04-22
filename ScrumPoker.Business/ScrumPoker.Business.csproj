@@ -8,8 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ScrumPoker.Core\ScrumPoker.Core.csproj" />
-      <ProjectReference Include="..\ScrumPoker.DataAcces\ScrumPoker.DataAcces.csproj" />
+      <ProjectReference Include="..\ScrumPoker.Business.Interfaces\ScrumPoker.Business.Interfaces.csproj" />
+      <ProjectReference Include="..\ScrumPoker.DataAcces.Interfaces\ScrumPoker.DataAcces.Interfaces.csproj" />
     </ItemGroup>
 
     <ItemGroup>

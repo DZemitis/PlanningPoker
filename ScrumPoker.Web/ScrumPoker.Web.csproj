@@ -14,8 +14,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ScrumPoker.Business.Interfaces\ScrumPoker.Business.Interfaces.csproj" />
-      <ProjectReference Include="..\ScrumPoker.Core\ScrumPoker.Core.csproj" />
-      <ProjectReference Include="..\ScrumPoker.Business\ScrumPoker.Business.csproj" />
       <ProjectReference Include="..\ScrumPoker.Infrastructure\ScrumPoker.Infrastructure.csproj" />
       <ProjectReference Include="..\ScrumPoker.Web.Models\ScrumPoker.Web.Models.csproj" />
     </ItemGroup>
