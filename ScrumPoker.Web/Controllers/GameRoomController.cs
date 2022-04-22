@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Core.Models;
 using ScrumPoker.Core.Services;
+using ScrumPoker.Web.Models.Models.WebRequest;
+using ScrumPoker.Web.Models.Models.WebResponse;
 
 namespace ScrumPoker.Web.Controllers;
 
@@ -9,10 +12,12 @@ namespace ScrumPoker.Web.Controllers;
 public class GameRoomController : ControllerBase
 {
     private readonly IGameRoomService _gameRoomService;
+    private readonly IMapper _mapper;
 
-    public GameRoomController(IGameRoomService gameRoomService)
+    public GameRoomController(IGameRoomService gameRoomService, IMapper mapper)
     {
         _gameRoomService = gameRoomService;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -22,12 +27,16 @@ public class GameRoomController : ControllerBase
     /// <returns>Game room with name and ID</returns>
     [HttpPost]
     [Route("Create")]
-    public IActionResult CreateGameRoom(GameRoom gameRoomRequest)
+    public async Task<IActionResult> CreateGameRoom(CreateGameRoomRequest gameRoomRequest)
     {
-        return Created("", _gameRoomService.Create(gameRoomRequest));
+        var createGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
+        var createGameRoom = _gameRoomService.Create(createGameRoomRequest);
+        var gameRoomResponse = _mapper.Map<GameRoomResponse>(createGameRoom);
+        
+        return Created("", gameRoomResponse);
     }
 
-    /// <summary>
+    /// <summary>S
     /// Update game room, change name for now.
     /// </summary>
     /// <param name="gameRoomRequest">Game room with ID</param>
