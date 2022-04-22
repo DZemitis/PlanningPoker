@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ScrumPoker.DataAcces.Interfaces\ScrumPoker.DataAcces.Interfaces.csproj" />
+      <ProjectReference Include="..\ScrumPoker.DataAcces.Models\ScrumPoker.DataAcces.Models.csproj" />
     </ItemGroup>
 
     <ItemGroup>

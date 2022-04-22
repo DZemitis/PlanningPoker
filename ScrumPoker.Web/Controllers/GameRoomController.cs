@@ -27,11 +27,13 @@ public class GameRoomController : ControllerBase
     /// <returns>Game room with name and ID</returns>
     [HttpPost]
     [Route("Create")]
-    public IActionResult CreateGameRoom(GameRoom gameRoomRequest)
+    public IActionResult CreateGameRoom(CreateGameRoomApiRequest gameRoomRequest)
     {
-        var createGameRoom = _gameRoomService.Create(gameRoomRequest);
-        
-        return Created("", createGameRoom);
+        var createGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
+        var createGameRoom = _gameRoomService.Create(createGameRoomRequest);
+        var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(createGameRoom);
+
+        return Created("", gameRoomResponse);
     }
 
     /// <summary>S
@@ -41,9 +43,13 @@ public class GameRoomController : ControllerBase
     /// <returns>Updated game room</returns>
     [HttpPut]
     [Route("Update")]
-    public IActionResult UpdateGameRoom(GameRoom gameRoomRequest)
+    public IActionResult UpdateGameRoom(UpdateGameRoomApiRequest gameRoomRequest)
     {
-        return Ok(_gameRoomService.Update(gameRoomRequest));
+        var updateGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
+        var updateGameRoom = _gameRoomService.Update(updateGameRoomRequest);
+        var updateGameRoomResponse = _mapper.Map<GameRoomApiResponse>(updateGameRoom);
+        
+        return Ok(updateGameRoomResponse);
     }
 
     /// <summary>
@@ -74,14 +80,14 @@ public class GameRoomController : ControllerBase
     /// <summary>
     /// Delete all available game rooms
     /// </summary>
-    /// <returns>Empty list</returns>
+    /// <returns>Confirmation of deleting all game rooms</returns>
     [HttpDelete]
     [Route("DeleteAll")]
     public IActionResult DeleteAllGameRooms()
     {
         _gameRoomService.DeleteAll();
 
-        return Ok();
+        return Ok("All game rooms has been deleted");
     }
 
     /// <summary>
@@ -95,6 +101,6 @@ public class GameRoomController : ControllerBase
     {
         _gameRoomService.DeleteById(id);
 
-        return Ok();
+        return Ok($"Game room with ID : {id} has been deleted");
     }
 }

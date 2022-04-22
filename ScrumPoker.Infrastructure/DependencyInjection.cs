@@ -8,9 +8,9 @@ namespace ScrumPoker.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static void Register(this IServiceCollection a)
+    public static void Register(this IServiceCollection services)
     {
-        a.AddTransient<IGameRoomService, GameRoomService>();
-        a.AddTransient<IGameRoomRepository, GameRoomRepository>();
+        services.AddTransient<IGameRoomService, GameRoomService>();
+        services.AddTransient<IGameRoomRepository, GameRoomRepository>();
     }
 }
