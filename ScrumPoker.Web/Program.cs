@@ -1,4 +1,3 @@
-using System.Reflection;
 using AutoMapper;
 using ScrumPoker.Infrastructure;
 using ScrumPoker.Infrastructure.AutoMapper;
@@ -13,13 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Register();
 
-var mapperConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile(new MappingProfile());
-});
-
-IMapper mapper = mapperConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddMvc();
 
