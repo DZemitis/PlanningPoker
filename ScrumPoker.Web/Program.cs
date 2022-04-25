@@ -23,9 +23,6 @@ builder.Services.AddSingleton(mapper);
 
 builder.Services.AddMvc();
 
-/*var mapper = AutoMapperConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);*/
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

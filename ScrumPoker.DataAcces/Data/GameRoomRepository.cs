@@ -19,7 +19,6 @@ public class GameRoomRepository : IGameRoomRepository
     
     public GameRoom Create(GameRoom gameRoomRequest)
     {
-        
         var addGameRoom = new GameRoomDto
         {
             Name = gameRoomRequest.Name,
@@ -47,7 +46,6 @@ public class GameRoomRepository : IGameRoomRepository
 
     public GameRoom Update(GameRoom gameRoomRequest)
     {
-        
         var gameRoomDto = _gameRooms.FirstOrDefault(x => x.Id == gameRoomRequest.Id);
         gameRoomDto.Name = gameRoomRequest.Name;
 
