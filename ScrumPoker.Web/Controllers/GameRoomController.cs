@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ScrumPoker.Core.Models;
-using ScrumPoker.Core.Services;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using ScrumPoker.Business.Interfaces.Interfaces;
+using ScrumPoker.Business.Models.Models;
+using ScrumPoker.Web.Models.Models.WebRequest;
+using ScrumPoker.Web.Models.Models.WebResponse;
 
 namespace ScrumPoker.Web.Controllers;
 
@@ -9,10 +12,12 @@ namespace ScrumPoker.Web.Controllers;
 public class GameRoomController : ControllerBase
 {
     private readonly IGameRoomService _gameRoomService;
+    private readonly IMapper _mapper;
 
-    public GameRoomController(IGameRoomService gameRoomService)
+    public GameRoomController(IGameRoomService gameRoomService, IMapper mapper)
     {
         _gameRoomService = gameRoomService;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -22,21 +27,29 @@ public class GameRoomController : ControllerBase
     /// <returns>Game room with name and ID</returns>
     [HttpPost]
     [Route("Create")]
-    public IActionResult CreateGameRoom(GameRoom gameRoomRequest)
+    public IActionResult CreateGameRoom(CreateGameRoomApiRequest gameRoomRequest)
     {
-        return Created("", _gameRoomService.Create(gameRoomRequest));
+        var createGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
+        var createGameRoom = _gameRoomService.Create(createGameRoomRequest);
+        var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(createGameRoom);
+
+        return Created("", gameRoomResponse);
     }
 
-    /// <summary>
+    /// <summary>S
     /// Update game room, change name for now.
     /// </summary>
     /// <param name="gameRoomRequest">Game room with ID</param>
     /// <returns>Updated game room</returns>
     [HttpPut]
     [Route("Update")]
-    public IActionResult UpdateGameRoom(GameRoom gameRoomRequest)
+    public IActionResult UpdateGameRoom(UpdateGameRoomApiRequest gameRoomRequest)
     {
-        return Ok(_gameRoomService.Update(gameRoomRequest));
+        var updateGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
+        var updateGameRoom = _gameRoomService.Update(updateGameRoomRequest);
+        var updateGameRoomResponse = _mapper.Map<GameRoomApiResponse>(updateGameRoom);
+        
+        return Ok(updateGameRoomResponse);
     }
 
     /// <summary>
@@ -67,14 +80,14 @@ public class GameRoomController : ControllerBase
     /// <summary>
     /// Delete all available game rooms
     /// </summary>
-    /// <returns>Empty list</returns>
+    /// <returns>Confirmation of deleting all game rooms</returns>
     [HttpDelete]
     [Route("DeleteAll")]
     public IActionResult DeleteAllGameRooms()
     {
         _gameRoomService.DeleteAll();
 
-        return Ok();
+        return Ok("All game rooms has been deleted");
     }
 
     /// <summary>
@@ -88,6 +101,6 @@ public class GameRoomController : ControllerBase
     {
         _gameRoomService.DeleteById(id);
 
-        return Ok();
+        return Ok($"Game room with ID : {id} has been deleted");
     }
 }

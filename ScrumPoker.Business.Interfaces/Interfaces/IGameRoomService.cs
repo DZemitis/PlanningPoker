@@ -1,6 +1,7 @@
-using ScrumPoker.Core.Models;
 
-namespace ScrumPoker.Core.Services;
+using ScrumPoker.Business.Models.Models;
+
+namespace ScrumPoker.Business.Interfaces.Interfaces;
 
 public interface IGameRoomService
 {

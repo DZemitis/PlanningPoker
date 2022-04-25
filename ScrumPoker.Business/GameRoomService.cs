@@ -1,5 +1,5 @@
-using ScrumPoker.Core.Models;
-using ScrumPoker.Core.Services;
+using ScrumPoker.Business.Interfaces.Interfaces;
+using ScrumPoker.Business.Models.Models;
 using ScrumPoker.DataBase.Interfaces;
 
 namespace ScrumPoker.Services;

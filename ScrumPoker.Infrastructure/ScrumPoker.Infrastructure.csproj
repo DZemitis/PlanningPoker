@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="11.0.1" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ScrumPoker.Business.Interfaces\ScrumPoker.Business.Interfaces.csproj" />
+      <ProjectReference Include="..\ScrumPoker.Business.Models\ScrumPoker.Business.Models.csproj" />
+      <ProjectReference Include="..\ScrumPoker.Business\ScrumPoker.Business.csproj" />
+      <ProjectReference Include="..\ScrumPoker.DataAcces.Interfaces\ScrumPoker.DataAcces.Interfaces.csproj" />
+      <ProjectReference Include="..\ScrumPoker.DataAcces.Models\ScrumPoker.DataAcces.Models.csproj" />
+      <ProjectReference Include="..\ScrumPoker.DataAcces\ScrumPoker.DataAcces.csproj" />
+      <ProjectReference Include="..\ScrumPoker.Web.Models\ScrumPoker.Web.Models.csproj" />
+    </ItemGroup>
+
+</Project>
