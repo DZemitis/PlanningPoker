@@ -18,5 +18,10 @@ public class MappingProfile : Profile
         CreateMap<GameRoom, GameRoomDto>();
         CreateMap<GameRoom, GameRoomApiResponse>();
         CreateMap<GameRoomDto, GameRoom>();
+        CreateMap<CreatePlayerApiRequest, Player>();
+        CreateMap<UpdatePlayerApiRequest, Player>();
+        CreateMap<Player, PlayerDto>();
+        CreateMap<Player, PlayerApiResponse>();
+        CreateMap<PlayerDto, Player>();
     }
 }

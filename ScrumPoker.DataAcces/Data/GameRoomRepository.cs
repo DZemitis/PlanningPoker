@@ -9,7 +9,7 @@ namespace ScrumPoker.Data.Data;
 public class GameRoomRepository : IGameRoomRepository
 {
     private static readonly List<GameRoomDto> _gameRooms = new List<GameRoomDto>();
-    private static int Id { get; set; }
+    private static int _id { get; set; }
     private readonly IMapper _mapper;
     
     public GameRoomRepository(IMapper mapper)
@@ -22,7 +22,7 @@ public class GameRoomRepository : IGameRoomRepository
         var addGameRoom = new GameRoomDto
         {
             Name = gameRoomRequest.Name,
-            Id = ++Id
+            Id = ++_id
         };
         
         var gameRoomDto = _mapper.Map<GameRoomDto>(addGameRoom);
