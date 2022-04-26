@@ -53,7 +53,7 @@ public class PlayerController : ControllerBase
         
         return Ok(updatePlayerResponse);
     }
-
+    
     /// <summary>
     /// Returns full list of players
     /// </summary>
@@ -62,7 +62,13 @@ public class PlayerController : ControllerBase
     [Route("List")]
     public IActionResult GetAllPlayers()
     {
-        return Ok(_playerService.GetAll());
+        var playerDisplayList = new List<PlayerApiResponse>();
+        var playerList = _playerService.GetAll();
+        foreach (var player in playerList)
+        {
+            playerDisplayList.Add(_mapper.Map<PlayerApiResponse>(player));
+        }
+        return Ok(playerDisplayList);
     }
 
     /// <summary>
@@ -75,8 +81,9 @@ public class PlayerController : ControllerBase
     public IActionResult GetPlayerById(int id)
     {
         var player = _playerService.GetById(id);
+        var playerDisplay = _mapper.Map<PlayerApiResponse>(player);
 
-        return Ok(player);
+        return Ok(playerDisplay);
     }
 
     /// <summary>

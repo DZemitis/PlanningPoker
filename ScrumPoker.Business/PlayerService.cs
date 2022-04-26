@@ -7,10 +7,12 @@ namespace ScrumPoker.Services;
 public class PlayerService : IPlayerService
 {
     private readonly IPlayerRepository _playerRepository;
+    private readonly IGameRoomRepository _gameRoomRepository;
 
-    public PlayerService(IPlayerRepository playerRepository)
+    public PlayerService(IPlayerRepository playerRepository, IGameRoomRepository gameRoomRepository)
     {
         _playerRepository = playerRepository;
+        _gameRoomRepository = gameRoomRepository;
     }
 
     public Player Create(Player createPlayerRequest)
@@ -36,5 +38,14 @@ public class PlayerService : IPlayerService
     public void DeleteById(int id)
     {
         _playerRepository.DeleteById(id);
+    }
+
+    public void AddGameRoom(int gameRoomId, int playerId)
+    {
+        var gameRoomToAdd = _gameRoomRepository.GetById(gameRoomId);
+        var playerToAdd = _playerRepository.GetById(playerId);
+        playerToAdd.GameRooms.Add(gameRoomToAdd);
+        
+        _playerRepository.AddGameRoom(playerToAdd);
     }
 }

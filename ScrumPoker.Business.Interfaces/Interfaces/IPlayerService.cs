@@ -36,4 +36,11 @@ public interface IPlayerService
     /// </summary>
     /// <param name="id">ID of the player</param>
     void DeleteById(int id);
+
+    /// <summary>
+    /// Add game room to the player model
+    /// </summary>
+    /// <param name="idOfGameRoom">ID of the game room</param>
+    /// <param name="idOfPlayer">ID of the player</param>
+    void AddGameRoom(int idOfGameRoom, int idOfPlayer);
 }

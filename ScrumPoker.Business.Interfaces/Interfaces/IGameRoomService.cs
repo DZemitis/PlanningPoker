@@ -1,4 +1,3 @@
-
 using ScrumPoker.Business.Models.Models;
 
 namespace ScrumPoker.Business.Interfaces.Interfaces;
@@ -18,7 +17,7 @@ public interface IGameRoomService
     /// <param name="id">ID of the game room</param>
     /// <returns>Game room found by ID</returns>
     GameRoom GetById(int id);
-    
+
     /// <summary>
     /// Get a list of all game rooms
     /// </summary>
@@ -31,15 +30,22 @@ public interface IGameRoomService
     /// <param name="gameRoomRequest">Game room with ID</param>
     /// <returns>Updated game room</returns>
     GameRoom Update(GameRoom gameRoomRequest);
-    
+
     /// <summary>
     /// Deletes all available game rooms
     /// </summary>
     void DeleteAll();
-    
+
     /// <summary>
     /// Delete specified game room by ID
     /// </summary>
     /// <param name="id">ID of the game room</param>
     void DeleteById(int id);
+
+    /// <summary>
+    /// Add player to the game room
+    /// </summary>
+    /// <param name="gameRoom">Game rooms ID</param>
+    /// <param name="player">Players ID</param>
+    void AddPlayer(int gameRoom, int player);
 }

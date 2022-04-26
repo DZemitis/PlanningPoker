@@ -36,4 +36,10 @@ public interface IPlayerRepository
     /// </summary>
     /// <param name="id">ID of the player</param>
     void DeleteById(int id);
+
+    /// <summary>
+    /// Add game room to the player model
+    /// </summary>
+    /// <param name="playerToUpdate">Player to update</param>
+    void AddGameRoom(Player playerToUpdate);
 }

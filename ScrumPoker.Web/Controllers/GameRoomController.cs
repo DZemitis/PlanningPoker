@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
+using ScrumPoker.DataBase.Interfaces;
 using ScrumPoker.Web.Models.Models.WebRequest;
 using ScrumPoker.Web.Models.Models.WebResponse;
 
@@ -12,12 +13,14 @@ namespace ScrumPoker.Web.Controllers;
 public class GameRoomController : ControllerBase
 {
     private readonly IGameRoomService _gameRoomService;
+    private readonly IPlayerService _playerService;
     private readonly IMapper _mapper;
 
-    public GameRoomController(IGameRoomService gameRoomService, IMapper mapper)
+    public GameRoomController(IGameRoomService gameRoomService, IMapper mapper, IPlayerService playerService)
     {
         _gameRoomService = gameRoomService;
         _mapper = mapper;
+        _playerService = playerService;
     }
 
     /// <summary>
@@ -60,7 +63,13 @@ public class GameRoomController : ControllerBase
     [Route("List")]
     public IActionResult GetFullGameRoomList()
     {
-        return Ok(_gameRoomService.GetAll());
+        var gameRoomDisplayList = new List<GameRoomApiResponse>();
+        var gameRoomList = _gameRoomService.GetAll();
+        foreach (var gameRoom in gameRoomList)
+        {
+            gameRoomDisplayList.Add(_mapper.Map<GameRoomApiResponse>(gameRoom)); 
+        }
+        return Ok(gameRoomDisplayList);
     }
 
     /// <summary>
@@ -73,8 +82,9 @@ public class GameRoomController : ControllerBase
     public IActionResult GetRoomById(int id)
     {
         var gameRoom = _gameRoomService.GetById(id);
+        var gameRoomDisplay = _mapper.Map<GameRoomApiResponse>(gameRoom);
 
-        return Ok(gameRoom);
+        return Ok(gameRoomDisplay);
     }
 
     /// <summary>
@@ -102,5 +112,22 @@ public class GameRoomController : ControllerBase
         _gameRoomService.DeleteById(id);
 
         return Ok($"Game room with ID : {id} has been deleted");
+    }
+
+    /// <summary>
+    /// Add player to game room
+    /// </summary>
+    /// <param name="idOfGameRoomToAdd">ID of the game room</param>
+    /// <param name="idOfPlayerToAdd">ID of the player</param>
+    /// <returns>Updated Game Room</returns>
+    [HttpPut]
+    [Route("AddPlayer")]
+    public IActionResult AddPlayerToRoom(int idOfGameRoomToAdd, int idOfPlayerToAdd)
+    {
+        _playerService.AddGameRoom(idOfGameRoomToAdd, idOfPlayerToAdd);
+        _gameRoomService.AddPlayer(idOfGameRoomToAdd, idOfPlayerToAdd);
+        var updatedGameRoom = _mapper.Map<GameRoomApiResponse>(_gameRoomService.GetById(idOfGameRoomToAdd));
+        
+        return Ok(updatedGameRoom);
     }
 }
