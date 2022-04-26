@@ -46,6 +46,6 @@ public class PlayerService : IPlayerService
         var playerToAdd = _playerRepository.GetById(playerId);
         playerToAdd.GameRooms.Add(gameRoomToAdd);
         
-        _playerRepository.AddGameRoom(playerToAdd);
+        _playerRepository.UpdateGameRoomList(playerToAdd);
     }
 }

@@ -71,10 +71,11 @@ public class PlayerRepository : IPlayerRepository
         }
     }
 
-    public void AddGameRoom(Player playerToUpdateRequest)
+    public void UpdateGameRoomList(Player playerToUpdateRequest)
     {
         var playerToUpdateDto = _mapper.Map<PlayerDto>(playerToUpdateRequest);
         var playerDto = _playerList.FirstOrDefault(x => x.Id == playerToUpdateRequest.Id);
+        
         playerDto.GameRooms = playerToUpdateDto.GameRooms;
     }
 }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
-using ScrumPoker.DataBase.Interfaces;
 using ScrumPoker.Web.Models.Models.WebRequest;
 using ScrumPoker.Web.Models.Models.WebResponse;
 
@@ -129,5 +128,14 @@ public class GameRoomController : ControllerBase
         var updatedGameRoom = _mapper.Map<GameRoomApiResponse>(_gameRoomService.GetById(idOfGameRoomToAdd));
         
         return Ok(updatedGameRoom);
+    }
+
+    [HttpDelete]
+    [Route("RemovePlayer")]
+    public IActionResult RemovePlayerFromRoom(int gameRoomId, int playerId)
+    {
+        _gameRoomService.RemovePlayer(gameRoomId, playerId);
+
+        return Ok();
     }
 }

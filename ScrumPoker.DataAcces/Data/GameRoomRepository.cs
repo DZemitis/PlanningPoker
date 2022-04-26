@@ -76,10 +76,11 @@ public class GameRoomRepository : IGameRoomRepository
         return gameRoomDtoResponse;
     }
 
-    public void AddPlayer(GameRoom gameRoomRequest)
+    public void UpdatePlayerList(GameRoom gameRoomRequest)
     {
         var gameRoomToUpdate = _mapper.Map<GameRoomDto>(gameRoomRequest);
         var gameRoomDto = _gameRooms.FirstOrDefault(x => x.Id == gameRoomRequest.Id);
+        
         gameRoomDto.Players = gameRoomToUpdate.Players;
     }
 }

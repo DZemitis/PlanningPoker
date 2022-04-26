@@ -48,4 +48,6 @@ public interface IGameRoomService
     /// <param name="gameRoom">Game rooms ID</param>
     /// <param name="player">Players ID</param>
     void AddPlayer(int gameRoom, int player);
+
+    void RemovePlayer(int gameRoomId, int playerId);
 }

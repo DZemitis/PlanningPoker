@@ -46,5 +46,5 @@ public interface IGameRoomRepository
     /// Add player to the game room
     /// </summary>
     /// <param name="gameRoomUpdateRequest">Game room to update</param>
-    void AddPlayer(GameRoom gameRoomUpdateRequest);
+    void UpdatePlayerList(GameRoom gameRoomUpdateRequest);
 }

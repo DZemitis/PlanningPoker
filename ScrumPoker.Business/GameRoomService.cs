@@ -54,6 +54,27 @@ public class GameRoomService : IGameRoomService
         var playerToAdd = _playerRepository.GetById(playerId);
         gameRoomToAdd.Players.Add(playerToAdd);
         
-        _gameRoomRepository.AddPlayer(gameRoomToAdd);
+        _gameRoomRepository.UpdatePlayerList(gameRoomToAdd);
+    }
+
+    public void RemovePlayer(int gameRoomId, int playerId)
+    {
+        var gameRoomToDeleteFrom = _gameRoomRepository.GetById(gameRoomId);
+        var playerToRemove = _playerRepository.GetById(playerId);
+
+        for (int i = 0; i < playerToRemove.GameRooms.Count; i++)
+        {
+            if(playerToRemove.GameRooms[i].Id.Equals(gameRoomToDeleteFrom.Id))
+                playerToRemove.GameRooms.RemoveAt(i);
+        }
+
+        for (int i = 0; i < gameRoomToDeleteFrom.Players.Count; i++)
+        {
+            if(gameRoomToDeleteFrom.Players[i].Id.Equals(playerToRemove.Id))
+                gameRoomToDeleteFrom.Players.RemoveAt(i);
+        }
+
+        _playerRepository.UpdateGameRoomList(playerToRemove);
+        _gameRoomRepository.UpdatePlayerList(gameRoomToDeleteFrom);
     }
 }

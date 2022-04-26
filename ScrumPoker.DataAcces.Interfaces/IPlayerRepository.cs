@@ -41,5 +41,5 @@ public interface IPlayerRepository
     /// Add game room to the player model
     /// </summary>
     /// <param name="playerToUpdate">Player to update</param>
-    void AddGameRoom(Player playerToUpdate);
+    void UpdateGameRoomList(Player playerToUpdate);
 }
