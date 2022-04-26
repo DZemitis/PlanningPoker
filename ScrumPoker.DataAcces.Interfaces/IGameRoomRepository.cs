@@ -43,7 +43,7 @@ public interface IGameRoomRepository
     GameRoom GetById(int id);
 
     /// <summary>
-    /// Add player to the game room
+    /// Update players list in game room
     /// </summary>
     /// <param name="gameRoomUpdateRequest">Game room to update</param>
     void UpdatePlayerList(GameRoom gameRoomUpdateRequest);

@@ -38,7 +38,7 @@ public interface IPlayerRepository
     void DeleteById(int id);
 
     /// <summary>
-    /// Add game room to the player model
+    /// Updates game rooms player have joined or left
     /// </summary>
     /// <param name="playerToUpdate">Player to update</param>
     void UpdateGameRoomList(Player playerToUpdate);

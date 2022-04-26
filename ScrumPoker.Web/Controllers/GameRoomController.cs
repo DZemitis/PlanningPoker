@@ -130,12 +130,19 @@ public class GameRoomController : ControllerBase
         return Ok(updatedGameRoom);
     }
 
+    
+    /// <summary>
+    /// Remove player from the game room
+    /// </summary>
+    /// <param name="gameRoomId">ID of the game room</param>
+    /// <param name="playerId"> ID of the player</param>
+    /// <returns>Confirmation of removal</returns>
     [HttpDelete]
     [Route("RemovePlayer")]
     public IActionResult RemovePlayerFromRoom(int gameRoomId, int playerId)
     {
         _gameRoomService.RemovePlayer(gameRoomId, playerId);
 
-        return Ok();
+        return Ok($"Player has been removed from room");
     }
 }
