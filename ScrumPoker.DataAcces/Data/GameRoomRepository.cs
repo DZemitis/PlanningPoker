@@ -8,15 +8,29 @@ namespace ScrumPoker.Data.Data;
 /// <inheritdoc />
 public class GameRoomRepository : IGameRoomRepository
 {
-    private static readonly List<GameRoomDto> _gameRooms = new List<GameRoomDto>();
     private static int _id { get; set; }
     private readonly IMapper _mapper;
-    
+
     public GameRoomRepository(IMapper mapper)
     {
         _mapper = mapper;
     }
-    
+
+    public List<GameRoom> GetAll()
+    {
+        var gameRoomListResponse = _mapper.Map<List<GameRoom>>(GameRepository._gameRooms);
+        
+        return gameRoomListResponse;
+    }
+
+    public GameRoom GetById(int id)
+    {
+        var gameRoomDto = GameRepository._gameRooms.FirstOrDefault(x => x.Id == id);
+        var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
+        
+        return gameRoomDtoResponse;
+    }
+
     public GameRoom Create(GameRoom gameRoomRequest)
     {
         var addGameRoom = new GameRoomDto
@@ -26,61 +40,47 @@ public class GameRoomRepository : IGameRoomRepository
         };
         
         var gameRoomDto = _mapper.Map<GameRoomDto>(addGameRoom);
-        _gameRooms.Add(gameRoomDto);
+        GameRepository._gameRooms.Add(gameRoomDto);
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
         
         return gameRoomDtoResponse;
     }
-    
-    public List<GameRoom> GetAll()
-    {
-        var gameRoomList = new List<GameRoom>();
-        foreach (var gameRoomDto in _gameRooms)
-        {
-            var gameRoom = _mapper.Map<GameRoom>(gameRoomDto);
-            gameRoomList.Add(gameRoom);
-        }
-        
-        return gameRoomList;
-    }
 
     public GameRoom Update(GameRoom gameRoomRequest)
     {
-        var gameRoomDto = _gameRooms.FirstOrDefault(x => x.Id == gameRoomRequest.Id);
+        var gameRoomDto = GameRepository._gameRooms.FirstOrDefault(x => x.Id == gameRoomRequest.Id);
         gameRoomDto.Name = gameRoomRequest.Name;
 
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
 
         return gameRoomDtoResponse;
     }
+    
+    public void UpdatePlayerList(GameRoom gameRoomRequest)
+    {
+        var gameRoomToUpdate = _mapper.Map<GameRoomDto>(gameRoomRequest);
+        var gameRoomDto = GameRepository._gameRooms.FirstOrDefault(x => x.Id == gameRoomRequest.Id);
+        
+        gameRoomDto.Players = gameRoomToUpdate.Players;
+    }
 
     public void DeleteAll()
     {
-        _gameRooms.Clear();
+        GameRepository._gameRooms.Clear();
     }
 
     public void DeleteById(int id)
     {
-        for (int i = 0; i < _gameRooms.Count; i++)
-        {
-            if (_gameRooms[i].Id.Equals(id))
-                _gameRooms.RemoveAt(i);
-        }
+        GameRepository._gameRooms.RemoveAll(x => x.Id == id);
     }
 
-    public GameRoom GetById(int id)
+    public void RemoveGameRoomPlayerById(int gameRoomId, int playerId)
     {
-        var gameRoomDto = _gameRooms.FirstOrDefault(x => x.Id == id);
-        var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
-        
-        return gameRoomDtoResponse;
-    }
+        var gameRoomDto = GameRepository._gameRooms.FirstOrDefault(x => x.Id == gameRoomId);
+        gameRoomDto.Players.RemoveAll(x => x.Id == playerId);
 
-    public void UpdatePlayerList(GameRoom gameRoomRequest)
-    {
-        var gameRoomToUpdate = _mapper.Map<GameRoomDto>(gameRoomRequest);
-        var gameRoomDto = _gameRooms.FirstOrDefault(x => x.Id == gameRoomRequest.Id);
-        
-        gameRoomDto.Players = gameRoomToUpdate.Players;
+        var playerDto = GameRepository._playerList.FirstOrDefault(x => x.Id == playerId);
+        playerDto.GameRooms.RemoveAll(x => x.Id == gameRoomId);
+
     }
 }

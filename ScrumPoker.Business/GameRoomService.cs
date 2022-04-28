@@ -16,21 +16,21 @@ public class GameRoomService : IGameRoomService
         _playerRepository = playerRepository;
     }
 
-    public GameRoom Create(GameRoom gameRoomRequest)
+    public List<GameRoom> GetAll()
     {
-        var gameRoom =_gameRoomRepository.Create(gameRoomRequest);
-
-        return gameRoom;
+        return _gameRoomRepository.GetAll();
     }
-    
+
     public GameRoom GetById(int id)
     {
         return _gameRoomRepository.GetById(id);
     }
 
-    public List<GameRoom> GetAll()
+    public GameRoom Create(GameRoom gameRoomRequest)
     {
-        return _gameRoomRepository.GetAll();
+        var gameRoom =_gameRoomRepository.Create(gameRoomRequest);
+
+        return gameRoom;
     }
 
     public GameRoom Update(GameRoom gameRoomRequest)
@@ -43,38 +43,36 @@ public class GameRoomService : IGameRoomService
         _gameRoomRepository.DeleteAll();
     }
 
-    public void DeleteById(int id)
-    {
-        _gameRoomRepository.DeleteById(id);
-    }
-
     public void AddPlayer(int gameRoomId, int playerId)
     {
         var gameRoomToAdd = _gameRoomRepository.GetById(gameRoomId);
         var playerToAdd = _playerRepository.GetById(playerId);
+        
         gameRoomToAdd.Players.Add(playerToAdd);
         
+        playerToAdd.GameRooms.Add(gameRoomToAdd);
+        
+        _playerRepository.UpdateGameRoomList(playerToAdd);
         _gameRoomRepository.UpdatePlayerList(gameRoomToAdd);
     }
 
     public void RemovePlayer(int gameRoomId, int playerId)
     {
-        var gameRoomToDeleteFrom = _gameRoomRepository.GetById(gameRoomId);
-        var playerToRemove = _playerRepository.GetById(playerId);
+        // var gameRoomToDeleteFrom = _gameRoomRepository.GetById(gameRoomId);
+        // var playerToRemove = _playerRepository.GetById(playerId);
+        //
+        // playerToRemove.GameRooms.RemoveAll(x => x.Id == gameRoomId);
+        //
+        // gameRoomToDeleteFrom.Players.RemoveAll(x => x.Id == playerId);
 
-        for (int i = 0; i < playerToRemove.GameRooms.Count; i++)
-        {
-            if(playerToRemove.GameRooms[i].Id.Equals(gameRoomToDeleteFrom.Id))
-                playerToRemove.GameRooms.RemoveAt(i);
-        }
+        _gameRoomRepository.RemoveGameRoomPlayerById(gameRoomId, playerId);
+        // _playerRepository.UpdateGameRoomList(playerToRemove);
+        // _gameRoomRepository.UpdatePlayerList(gameRoomToDeleteFrom);
 
-        for (int i = 0; i < gameRoomToDeleteFrom.Players.Count; i++)
-        {
-            if(gameRoomToDeleteFrom.Players[i].Id.Equals(playerToRemove.Id))
-                gameRoomToDeleteFrom.Players.RemoveAt(i);
-        }
+    }
 
-        _playerRepository.UpdateGameRoomList(playerToRemove);
-        _gameRoomRepository.UpdatePlayerList(gameRoomToDeleteFrom);
+    public void DeleteById(int id)
+    {
+        _gameRoomRepository.DeleteById(id);
     }
 }

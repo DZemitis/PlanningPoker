@@ -5,11 +5,10 @@ namespace ScrumPoker.Business.Interfaces.Interfaces;
 public interface IGameRoomService
 {
     /// <summary>
-    /// Create a game room
+    /// Get a list of all game rooms
     /// </summary>
-    /// <param name="gameRoomRequest">Game room with name</param>
-    /// <returns>Created game room</returns>
-    GameRoom Create(GameRoom gameRoomRequest);
+    /// <returns>List of all game rooms</returns>
+    List<GameRoom> GetAll();
 
     /// <summary>
     /// Search game room by ID
@@ -19,10 +18,11 @@ public interface IGameRoomService
     GameRoom GetById(int id);
 
     /// <summary>
-    /// Get a list of all game rooms
+    /// Create a game room
     /// </summary>
-    /// <returns>List of all game rooms</returns>
-    List<GameRoom> GetAll();
+    /// <param name="gameRoomRequest">Game room with name</param>
+    /// <returns>Created game room</returns>
+    GameRoom Create(GameRoom gameRoomRequest);
 
     /// <summary>
     /// Update an game room
@@ -30,6 +30,13 @@ public interface IGameRoomService
     /// <param name="gameRoomRequest">Game room with ID</param>
     /// <returns>Updated game room</returns>
     GameRoom Update(GameRoom gameRoomRequest);
+
+    /// <summary>
+    /// Add player to the game room
+    /// </summary>
+    /// <param name="gameRoom">Game rooms ID</param>
+    /// <param name="player">Players ID</param>
+    void AddPlayer(int gameRoom, int player);
 
     /// <summary>
     /// Deletes all available game rooms
@@ -41,13 +48,6 @@ public interface IGameRoomService
     /// </summary>
     /// <param name="id">ID of the game room</param>
     void DeleteById(int id);
-
-    /// <summary>
-    /// Add player to the game room
-    /// </summary>
-    /// <param name="gameRoom">Game rooms ID</param>
-    /// <param name="player">Players ID</param>
-    void AddPlayer(int gameRoom, int player);
 
     /// <summary>
     /// Remove player from the game room

@@ -20,40 +20,8 @@ public class PlayerController : ControllerBase
         _playerService = playerService;
         _mapper = mapper;
     }
-    
-    
-    /// <summary>
-    /// Ask user for name and email of the player
-    /// </summary>
-    /// <param name="playerRequest">Player's name and email</param>
-    /// <returns>Player name, email and ID</returns>
-    [HttpPost]
-    [Route("Create")]
-    public IActionResult CreateGameRoom(CreatePlayerApiRequest playerRequest)
-    {
-        var createPlayerRequest = _mapper.Map<Player>(playerRequest);
-        var createPlayer = _playerService.Create(createPlayerRequest);
-        var playerResponse = _mapper.Map<PlayerApiResponse>(createPlayer);
 
-        return Created("", playerResponse);
-    }
 
-    /// <summary>S
-    /// Update player - name and email.
-    /// </summary>
-    /// <param name="playerRequest">Player with ID</param>
-    /// <returns>Updated player</returns>
-    [HttpPut]
-    [Route("Update")]
-    public IActionResult UpdatePlayer(UpdatePlayerApiRequest playerRequest)
-    {
-        var updatePlayerRequest = _mapper.Map<Player>(playerRequest);
-        var updatePlayer = _playerService.Update(updatePlayerRequest);
-        var updatePlayerResponse = _mapper.Map<PlayerApiResponse>(updatePlayer);
-        
-        return Ok(updatePlayerResponse);
-    }
-    
     /// <summary>
     /// Returns full list of players
     /// </summary>
@@ -84,6 +52,38 @@ public class PlayerController : ControllerBase
         var playerDisplay = _mapper.Map<PlayerApiResponse>(player);
 
         return Ok(playerDisplay);
+    }
+
+    /// <summary>
+    /// Ask user for name and email of the player
+    /// </summary>
+    /// <param name="playerRequest">Player's name and email</param>
+    /// <returns>Player name, email and ID</returns>
+    [HttpPost]
+    [Route("Create")]
+    public IActionResult CreatePlayer(CreatePlayerApiRequest playerRequest)
+    {
+        var createPlayerRequest = _mapper.Map<Player>(playerRequest);
+        var createPlayer = _playerService.Create(createPlayerRequest);
+        var playerResponse = _mapper.Map<PlayerApiResponse>(createPlayer);
+
+        return Created("", playerResponse);
+    }
+
+    /// <summary>S
+    /// Update player - name and email.
+    /// </summary>
+    /// <param name="playerRequest">Player with ID</param>
+    /// <returns>Updated player</returns>
+    [HttpPut]
+    [Route("Update")]
+    public IActionResult UpdatePlayer(UpdatePlayerApiRequest playerRequest)
+    {
+        var updatePlayerRequest = _mapper.Map<Player>(playerRequest);
+        var updatePlayer = _playerService.Update(updatePlayerRequest);
+        var updatePlayerResponse = _mapper.Map<PlayerApiResponse>(updatePlayer);
+        
+        return Ok(updatePlayerResponse);
     }
 
     /// <summary>

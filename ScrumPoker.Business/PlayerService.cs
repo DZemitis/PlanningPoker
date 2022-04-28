@@ -4,6 +4,7 @@ using ScrumPoker.DataBase.Interfaces;
 
 namespace ScrumPoker.Services;
 
+/// <inheritdoc />
 public class PlayerService : IPlayerService
 {
     private readonly IPlayerRepository _playerRepository;
@@ -15,9 +16,9 @@ public class PlayerService : IPlayerService
         _gameRoomRepository = gameRoomRepository;
     }
 
-    public Player Create(Player createPlayerRequest)
+    public List<Player> GetAll()
     {
-       return _playerRepository.Create(createPlayerRequest);
+        return _playerRepository.GetAll();
     }
 
     public Player GetById(int id)
@@ -25,27 +26,18 @@ public class PlayerService : IPlayerService
         return _playerRepository.GetById(id);
     }
 
+    public Player Create(Player createPlayerRequest)
+    {
+        return _playerRepository.Create(createPlayerRequest);
+    }
+
     public Player Update(Player updatePlayerRequest)
     {
         return _playerRepository.Update(updatePlayerRequest);
     }
 
-    public List<Player> GetAll()
-    {
-        return _playerRepository.GetAll();
-    }
-
     public void DeleteById(int id)
     {
         _playerRepository.DeleteById(id);
-    }
-
-    public void AddGameRoom(int gameRoomId, int playerId)
-    {
-        var gameRoomToAdd = _gameRoomRepository.GetById(gameRoomId);
-        var playerToAdd = _playerRepository.GetById(playerId);
-        playerToAdd.GameRooms.Add(gameRoomToAdd);
-        
-        _playerRepository.UpdateGameRoomList(playerToAdd);
     }
 }

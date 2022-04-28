@@ -5,11 +5,10 @@ namespace ScrumPoker.DataBase.Interfaces;
 public interface IPlayerRepository
 {
     /// <summary>
-    /// Create a Player
+    /// Get a list of all playersInGameRoom
     /// </summary>
-    /// <param name="createPlayerRequest">Player with name and Email</param>
-    /// <returns>Created Player</returns>
-    Player Create(Player createPlayerRequest);
+    /// <returns>List of all players in game room</returns>
+    List<Player> GetAll();
 
     /// <summary>
     /// Search player by ID
@@ -19,6 +18,13 @@ public interface IPlayerRepository
     Player GetById(int id);
 
     /// <summary>
+    /// Create a Player
+    /// </summary>
+    /// <param name="createPlayerRequest">Player with name and Email</param>
+    /// <returns>Created Player</returns>
+    Player Create(Player createPlayerRequest);
+
+    /// <summary>
     /// Update an Player
     /// </summary>
     /// <param name="updatePlayerRequest">Player with ID</param>
@@ -26,20 +32,14 @@ public interface IPlayerRepository
     Player Update(Player updatePlayerRequest);
 
     /// <summary>
-    /// Get a list of all playersInGameRoom
+    /// Updates game rooms player have joined or left
     /// </summary>
-    /// <returns>List of all players in game room</returns>
-    List<Player> GetAll();
+    /// <param name="playerToUpdate">Player to update</param>
+    void UpdateGameRoomList(Player playerToUpdate);
 
     /// <summary>
     /// Delete specified player by ID
     /// </summary>
     /// <param name="id">ID of the player</param>
     void DeleteById(int id);
-
-    /// <summary>
-    /// Updates game rooms player have joined or left
-    /// </summary>
-    /// <param name="playerToUpdate">Player to update</param>
-    void UpdateGameRoomList(Player playerToUpdate);
 }
