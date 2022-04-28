@@ -1,5 +1,6 @@
 using AutoMapper;
 using ScrumPoker.Business.Models.Models;
+using ScrumPoker.Data.PersistenceMock;
 using ScrumPoker.DataAcces.Models.Models;
 using ScrumPoker.DataBase.Interfaces;
 
@@ -18,14 +19,14 @@ public class PlayerRepository : IPlayerRepository
 
     public List<Player> GetAll()
     {
-        var playerListResponse = _mapper.Map<List<Player>>(GameRepository._playerList);
+        var playerListResponse = _mapper.Map<List<Player>>(TempDb._playerList);
         
         return playerListResponse;
     }
 
     public Player GetById(int id)
     {
-        var playerDto = GameRepository._playerList.FirstOrDefault(x => x.Id == id);
+        var playerDto = TempDb._playerList.Single(x => x.Id == id);
         var playerDtoResponse = _mapper.Map<Player>(playerDto);
         
         return playerDtoResponse;
@@ -40,7 +41,7 @@ public class PlayerRepository : IPlayerRepository
             Id = ++_id
         };
         
-        GameRepository._playerList.Add(addPlayer);
+        TempDb._playerList.Add(addPlayer);
         var playerDtoResponse = _mapper.Map<Player>(addPlayer);
 
         return playerDtoResponse;
@@ -48,7 +49,7 @@ public class PlayerRepository : IPlayerRepository
 
     public Player Update(Player updatePlayerRequest)
     {
-        var playerDto = GameRepository._playerList.FirstOrDefault(x => x.Id == updatePlayerRequest.Id);
+        var playerDto = TempDb._playerList.Single(x => x.Id == updatePlayerRequest.Id);
         playerDto.Name = updatePlayerRequest.Name;
 
         var playerDtoResponse = _mapper.Map<Player>(playerDto);
@@ -56,16 +57,16 @@ public class PlayerRepository : IPlayerRepository
         return playerDtoResponse;
     }
 
+    public void DeleteById(int id)
+    {
+        TempDb._playerList.RemoveAll(x => x.Id == id);
+    }
+
     public void UpdateGameRoomList(Player playerToUpdateRequest)
     {
         var playerToUpdateDto = _mapper.Map<PlayerDto>(playerToUpdateRequest);
-        var playerDto = GameRepository._playerList.FirstOrDefault(x => x.Id == playerToUpdateRequest.Id);
+        var playerDto = TempDb._playerList.Single(x => x.Id == playerToUpdateRequest.Id);
         
         playerDto.GameRooms = playerToUpdateDto.GameRooms;
-    }
-
-    public void DeleteById(int id)
-    {
-        GameRepository._playerList.RemoveAll(x => x.Id == id);
     }
 }

@@ -32,13 +32,6 @@ public interface IGameRoomService
     GameRoom Update(GameRoom gameRoomRequest);
 
     /// <summary>
-    /// Add player to the game room
-    /// </summary>
-    /// <param name="gameRoom">Game rooms ID</param>
-    /// <param name="player">Players ID</param>
-    void AddPlayer(int gameRoom, int player);
-
-    /// <summary>
     /// Deletes all available game rooms
     /// </summary>
     void DeleteAll();
@@ -48,6 +41,13 @@ public interface IGameRoomService
     /// </summary>
     /// <param name="id">ID of the game room</param>
     void DeleteById(int id);
+
+    /// <summary>
+    /// Add player to the game room
+    /// </summary>
+    /// <param name="gameRoom">Game rooms ID</param>
+    /// <param name="player">Players ID</param>
+    void AddPlayer(int gameRoom, int player);
 
     /// <summary>
     /// Remove player from the game room

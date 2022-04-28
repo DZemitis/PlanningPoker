@@ -43,26 +43,18 @@ public class GameRoomService : IGameRoomService
         _gameRoomRepository.DeleteAll();
     }
 
+    public void DeleteById(int id)
+    {
+        _gameRoomRepository.DeleteById(id);
+    }
+
     public void AddPlayer(int gameRoomId, int playerId)
     {
-        var gameRoomToAdd = _gameRoomRepository.GetById(gameRoomId);
-        var playerToAdd = _playerRepository.GetById(playerId);
-        
-        gameRoomToAdd.Players.Add(playerToAdd);
-        
-        playerToAdd.GameRooms.Add(gameRoomToAdd);
-        
-        _playerRepository.UpdateGameRoomList(playerToAdd);
-        _gameRoomRepository.UpdatePlayerList(gameRoomToAdd);
+        _gameRoomRepository.AddPlayerToRoom(gameRoomId, playerId);
     }
 
     public void RemovePlayer(int gameRoomId, int playerId)
     {
         _gameRoomRepository.RemoveGameRoomPlayerById(gameRoomId, playerId);
-    }
-
-    public void DeleteById(int id)
-    {
-        _gameRoomRepository.DeleteById(id);
     }
 }

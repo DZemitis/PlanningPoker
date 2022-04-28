@@ -4,6 +4,6 @@ namespace ScrumPoker.Data.PersistenceMock;
 
 public static class TempDb
 {
-    public static List<GameRoomDto> _gameRooms = new List<GameRoomDto>();
-    public static List<PlayerDto> _playerList = new List<PlayerDto>();
+    public static readonly List<GameRoomDto> _gameRooms = new List<GameRoomDto>();
+    public static readonly List<PlayerDto> _playerList = new List<PlayerDto>();
 }

@@ -55,4 +55,6 @@ public interface IGameRoomRepository
     /// <param name="gameRoomId">ID of the game room</param>
     /// <param name="playerId">ID of the player</param>
     void RemoveGameRoomPlayerById(int gameRoomId, int playerId);
+
+    void AddPlayerToRoom(int gameRoomId, int playerId);
 }
