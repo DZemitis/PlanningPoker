@@ -9,11 +9,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ScrumPoker.Business.Models\ScrumPoker.Business.Models.csproj" />
+      <ProjectReference Include="..\ScrumPoker.DataAcces.Models\ScrumPoker.DataAcces.Models.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="11.0.1" />
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+      <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
     </ItemGroup>
 
 </Project>

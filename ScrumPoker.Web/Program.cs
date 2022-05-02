@@ -1,6 +1,7 @@
-using AutoMapper;
+using FluentValidation.AspNetCore;
 using ScrumPoker.Infrastructure;
 using ScrumPoker.Infrastructure.AutoMapper;
+using ScrumPoker.Web.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,13 @@ builder.Services.Register();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-builder.Services.AddMvc();
+builder.Services
+    .AddMvc()
+    .AddFluentValidation(fv =>
+    {
+        fv.RegisterValidatorsFromAssemblyContaining<CreateGameRoomApiRequestValidator>();
+        fv.RegisterValidatorsFromAssemblyContaining<UpdateGameRoomApiRequestValidator>();
+    });
 
 var app = builder.Build();
 
