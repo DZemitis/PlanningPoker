@@ -61,11 +61,7 @@ public class GameRoomController : ControllerBase
     public IActionResult CreateGameRoom(CreateGameRoomApiRequest gameRoomRequest)
     {
         var createGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
-        if (_gameRoomService.CheckIfGameRoomExists(createGameRoomRequest))
-        {
-            return Conflict("Game room with this name already exists");
-        }
-
+       
         var createGameRoom = _gameRoomService.Create(createGameRoomRequest);
         var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(createGameRoom);
 
@@ -82,10 +78,6 @@ public class GameRoomController : ControllerBase
     public IActionResult UpdateGameRoom(UpdateGameRoomApiRequest gameRoomRequest)
     {
         var updateGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
-        if (_gameRoomService.CheckIfGameRoomExists(updateGameRoomRequest))
-        {
-            return Conflict("Game room with this name already exists");
-        }
         
         var updateGameRoom = _gameRoomService.Update(updateGameRoomRequest);
         var updateGameRoomResponse = _mapper.Map<GameRoomApiResponse>(updateGameRoom);
