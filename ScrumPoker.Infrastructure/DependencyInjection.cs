@@ -12,5 +12,7 @@ public static class DependencyInjection
     {
         services.AddTransient<IGameRoomService, GameRoomService>();
         services.AddTransient<IGameRoomRepository, GameRoomRepository>();
+        services.AddTransient<IPlayerRepository, PlayerRepository>();
+        services.AddTransient<IPlayerService, PlayerService>();
     }
 }
