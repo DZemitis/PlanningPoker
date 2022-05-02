@@ -47,7 +47,6 @@ public class GameRoomService : IGameRoomService
     {
         _gameRoomRepository.DeleteById(id);
     }
-
     public void AddPlayer(int gameRoomId, int playerId)
     {
         _gameRoomRepository.AddPlayerToRoom(gameRoomId, playerId);
@@ -56,5 +55,4 @@ public class GameRoomService : IGameRoomService
     public void RemovePlayer(int gameRoomId, int playerId)
     {
         _gameRoomRepository.RemoveGameRoomPlayerById(gameRoomId, playerId);
-    }
 }

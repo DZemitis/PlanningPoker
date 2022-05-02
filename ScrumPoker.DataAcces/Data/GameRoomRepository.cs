@@ -77,7 +77,7 @@ public class GameRoomRepository : IGameRoomRepository
 
         gameRoomDto.Players = gameRoomToUpdate.Players;
     }
-
+    
     public void RemoveGameRoomPlayerById(int gameRoomId, int playerId)
     {
         var gameRoomDto = TempDb._gameRooms.Single(x => x.Id == gameRoomId);
