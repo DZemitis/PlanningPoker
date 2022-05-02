@@ -10,8 +10,6 @@ public class UpdateGameRoomApiRequestValidator : AbstractValidator<UpdateGameRoo
         RuleFor(g=>g.Name)
             .NotEmpty()
             .WithMessage("Name of the game room cannot be empty")
-            .NotNull()
-            .WithMessage("Name of the game room cannot be empty")
             .Matches("^[a-zA-Z0-9 ]*$")
             .WithMessage("Name of game room can only contain numbers and letters")
             .Length(3,20)
