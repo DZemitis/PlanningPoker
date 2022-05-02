@@ -35,7 +35,7 @@ public class GameRoomService : IGameRoomService
 
     public GameRoom Update(GameRoom gameRoomRequest)
     {
-       return _gameRoomRepository.Update(gameRoomRequest);
+        return _gameRoomRepository.Update(gameRoomRequest);
     }
 
     public void DeleteAll()

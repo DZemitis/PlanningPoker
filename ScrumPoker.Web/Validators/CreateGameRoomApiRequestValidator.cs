@@ -16,3 +16,5 @@ public class CreateGameRoomApiRequestValidator : AbstractValidator<CreateGameRoo
             .WithMessage("Name of the game room must contain at least 3 characters and no more than 20 characters");
     }
 }
+    }
+}

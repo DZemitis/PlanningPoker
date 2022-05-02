@@ -10,4 +10,8 @@
       <ProjectReference Include="..\ScrumPoker.Business.Models\ScrumPoker.Business.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
+    </ItemGroup>
+
 </Project>
