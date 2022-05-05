@@ -8,12 +8,10 @@ namespace ScrumPoker.Services;
 public class PlayerService : IPlayerService
 {
     private readonly IPlayerRepository _playerRepository;
-    private readonly IGameRoomRepository _gameRoomRepository;
 
-    public PlayerService(IPlayerRepository playerRepository, IGameRoomRepository gameRoomRepository)
+    public PlayerService(IPlayerRepository playerRepository)
     {
         _playerRepository = playerRepository;
-        _gameRoomRepository = gameRoomRepository;
     }
 
     public List<Player> GetAll()

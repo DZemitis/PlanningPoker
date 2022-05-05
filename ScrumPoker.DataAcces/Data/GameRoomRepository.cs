@@ -42,6 +42,7 @@ public class GameRoomRepository : IGameRoomRepository
 
         var gameRoomDto = _mapper.Map<GameRoomDto>(addGameRoom);
         TempDb._gameRooms.Add(gameRoomDto);
+
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
 
         return gameRoomDtoResponse;
@@ -74,7 +75,7 @@ public class GameRoomRepository : IGameRoomRepository
 
         gameRoomDto.Players = gameRoomToUpdate.Players;
     }
-
+    
     public void RemoveGameRoomPlayerById(int gameRoomId, int playerId)
     {
         var gameRoomDto = TempDb._gameRooms.Single(x => x.Id == gameRoomId);

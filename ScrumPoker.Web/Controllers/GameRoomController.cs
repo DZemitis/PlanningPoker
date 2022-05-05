@@ -12,14 +12,12 @@ namespace ScrumPoker.Web.Controllers;
 public class GameRoomController : ControllerBase
 {
     private readonly IGameRoomService _gameRoomService;
-    private readonly IPlayerService _playerService;
     private readonly IMapper _mapper;
 
-    public GameRoomController(IGameRoomService gameRoomService, IMapper mapper, IPlayerService playerService)
+    public GameRoomController(IGameRoomService gameRoomService, IMapper mapper)
     {
         _gameRoomService = gameRoomService;
         _mapper = mapper;
-        _playerService = playerService;
     }
 
     /// <summary>
@@ -61,6 +59,7 @@ public class GameRoomController : ControllerBase
     public IActionResult CreateGameRoom(CreateGameRoomApiRequest gameRoomRequest)
     {
         var createGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
+
         var createGameRoom = _gameRoomService.Create(createGameRoomRequest);
         var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(createGameRoom);
 
@@ -77,6 +76,7 @@ public class GameRoomController : ControllerBase
     public IActionResult UpdateGameRoom(UpdateGameRoomApiRequest gameRoomRequest)
     {
         var updateGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
+
         var updateGameRoom = _gameRoomService.Update(updateGameRoomRequest);
         var updateGameRoomResponse = _mapper.Map<GameRoomApiResponse>(updateGameRoom);
         
@@ -126,7 +126,6 @@ public class GameRoomController : ControllerBase
         
         return Ok(gameRoomResponse);
     }
-
 
     /// <summary>
     /// Remove player from the game room
