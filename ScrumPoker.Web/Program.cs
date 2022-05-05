@@ -20,7 +20,6 @@ builder.Services
     .AddFluentValidation(fv =>
     {
         fv.RegisterValidatorsFromAssemblyContaining<CreateGameRoomApiRequestValidator>();
-        fv.RegisterValidatorsFromAssemblyContaining<UpdateGameRoomApiRequestValidator>();
     });
 
 var app = builder.Build();

@@ -12,14 +12,12 @@ namespace ScrumPoker.Web.Controllers;
 public class GameRoomController : ControllerBase
 {
     private readonly IGameRoomService _gameRoomService;
-    private readonly IPlayerService _playerService;
     private readonly IMapper _mapper;
 
-    public GameRoomController(IGameRoomService gameRoomService, IMapper mapper, IPlayerService playerService)
+    public GameRoomController(IGameRoomService gameRoomService, IMapper mapper)
     {
         _gameRoomService = gameRoomService;
         _mapper = mapper;
-        _playerService = playerService;
     }
 
     /// <summary>
@@ -128,7 +126,6 @@ public class GameRoomController : ControllerBase
         
         return Ok(gameRoomResponse);
     }
-
 
     /// <summary>
     /// Remove player from the game room

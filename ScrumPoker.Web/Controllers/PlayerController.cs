@@ -20,8 +20,7 @@ public class PlayerController : ControllerBase
         _playerService = playerService;
         _mapper = mapper;
     }
-
-
+    
     /// <summary>
     /// Returns full list of players
     /// </summary>
