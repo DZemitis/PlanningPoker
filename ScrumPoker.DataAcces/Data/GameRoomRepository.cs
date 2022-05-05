@@ -42,9 +42,7 @@ public class GameRoomRepository : IGameRoomRepository
 
         var gameRoomDto = _mapper.Map<GameRoomDto>(addGameRoom);
         TempDb._gameRooms.Add(gameRoomDto);
-        if(_gameRooms.All(x => x.Name != gameRoomRequest.Name))
-            _gameRooms.Add(gameRoomDto);
-        
+
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
 
         return gameRoomDtoResponse;
