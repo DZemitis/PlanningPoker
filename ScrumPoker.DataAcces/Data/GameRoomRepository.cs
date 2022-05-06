@@ -27,16 +27,15 @@ public class GameRoomRepository : IGameRoomRepository
 
     public GameRoom GetById(int id)
     {
-        try
+        var gameRoomDto = TempDb._gameRooms.SingleOrDefault(x => x.Id == id);
+        
+        if (gameRoomDto == null)
         {
-            var gameRoomDto = TempDb._gameRooms.Single(x => x.Id == id);
-            var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
-            return gameRoomDtoResponse;
+            throw new IdNotFoundException();
         }
-        catch (Exception e)
-        {
-            throw new GameRoomIdNotFoundException();
-        }
+        
+        var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
+        return gameRoomDtoResponse;
     }
 
     public GameRoom Create(GameRoom gameRoomRequest)
