@@ -1,5 +1,6 @@
 using AutoMapper;
 using ScrumPoker.Business.Models.Models;
+using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.Data.PersistenceMock;
 using ScrumPoker.DataAcces.Models.Models;
 using ScrumPoker.DataBase.Interfaces;
@@ -26,10 +27,16 @@ public class GameRoomRepository : IGameRoomRepository
 
     public GameRoom GetById(int id)
     {
-        var gameRoomDto = TempDb._gameRooms.Single(x => x.Id == id);
-        var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
-
-        return gameRoomDtoResponse;
+        try
+        {
+            var gameRoomDto = TempDb._gameRooms.Single(x => x.Id == id);
+            var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
+            return gameRoomDtoResponse;
+        }
+        catch (Exception e)
+        {
+            throw new GameRoomIdNotFoundException();
+        }
     }
 
     public GameRoom Create(GameRoom gameRoomRequest)
@@ -75,7 +82,7 @@ public class GameRoomRepository : IGameRoomRepository
 
         gameRoomDto.Players = gameRoomToUpdate.Players;
     }
-    
+
     public void RemoveGameRoomPlayerById(int gameRoomId, int playerId)
     {
         var gameRoomDto = TempDb._gameRooms.Single(x => x.Id == gameRoomId);
@@ -94,7 +101,7 @@ public class GameRoomRepository : IGameRoomRepository
 
         var playerDto = TempDb._playerList.Single(x => x.Id == playerId);
         var gameRoomList = playerDto.GameRooms;
-        
+
         playerList.Add(playerDto);
         gameRoomList.Add(gameRoomDto);
     }
