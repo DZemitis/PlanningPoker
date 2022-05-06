@@ -6,7 +6,7 @@ using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.Models;
 using ScrumPoker.DataAccess.PersistenceMock;
 
-namespace ScrumPoker.DataAccess.Data;
+namespace ScrumPoker.Data.Data;
 
 /// <inheritdoc />
 public class PlayerRepository : IPlayerRepository
@@ -19,9 +19,9 @@ public class PlayerRepository : IPlayerRepository
         _mapper = mapper;
     }
 
-    public IEnumerable<Player> GetAll()
+    public List<Player> GetAll()
     {
-        var playerListResponse = _mapper.Map<List<Player>>(TempDb.PlayerList);
+        var playerListResponse = _mapper.Map<List<Player>>(TempDb._playerList);
         
         return playerListResponse;
     }
