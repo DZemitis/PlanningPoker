@@ -30,10 +30,7 @@ public class GameRoomRepository : IGameRoomRepository
     {
         var gameRoomDto = TempDb._gameRooms.SingleOrDefault(x => x.Id == id);
         
-        if (gameRoomDto == null)
-        {
-            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {id} not found");
-        }
+        ValidateException(id, gameRoomDto);
         
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
         return gameRoomDtoResponse;
@@ -41,10 +38,7 @@ public class GameRoomRepository : IGameRoomRepository
 
     public GameRoom Create(GameRoom gameRoomRequest)
     {
-        if (TempDb._gameRooms.Any(x => x.Id == gameRoomRequest.Id))
-        {
-            throw new IdAlreadyExistException($"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
-        }
+        ValidateAlreadyExistException(gameRoomRequest);
         
         var addGameRoom = new GameRoomDto
         {
@@ -64,10 +58,7 @@ public class GameRoomRepository : IGameRoomRepository
     {
         var gameRoomDto = TempDb._gameRooms.SingleOrDefault(x => x.Id == gameRoomRequest.Id);
         
-        if (gameRoomDto == null)
-        {
-            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomRequest.Id} not found");
-        }
+        ValidateException(gameRoomRequest.Id, gameRoomDto);
         
         gameRoomDto.Name = gameRoomRequest.Name;
 
@@ -84,10 +75,7 @@ public class GameRoomRepository : IGameRoomRepository
     public void DeleteById(int id)
     {
         var gameRoomToDelete = TempDb._gameRooms.SingleOrDefault(x => x.Id == id);
-        if (gameRoomToDelete == null)
-        {
-            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {id} not found");
-        }
+        ValidateException(id, gameRoomToDelete);
         
         TempDb._gameRooms.RemoveAll(x => x.Id == id);
     }
@@ -97,10 +85,7 @@ public class GameRoomRepository : IGameRoomRepository
         var gameRoomToUpdate = _mapper.Map<GameRoomDto>(gameRoomRequest);
         var gameRoomDto = TempDb._gameRooms.SingleOrDefault(x => x.Id == gameRoomRequest.Id);
         
-        if (gameRoomDto == null)
-        {
-            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomRequest.Id} not found");
-        }
+        ValidateException(gameRoomRequest.Id, gameRoomDto);
 
         gameRoomDto.Players = gameRoomToUpdate.Players;
     }
@@ -108,16 +93,10 @@ public class GameRoomRepository : IGameRoomRepository
     public void RemoveGameRoomPlayerById(int gameRoomId, int playerId)
     {
         var gameRoomDto = TempDb._gameRooms.SingleOrDefault(x => x.Id == gameRoomId);
-        if (gameRoomDto == null)
-        {
-            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
-        }
+        ValidateException(gameRoomId, gameRoomDto);
 
         var playerToRemove = gameRoomDto.Players.SingleOrDefault(x => x.Id == playerId);
-        if (playerToRemove == null)
-        {
-            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
-        }
+        ValidateException(playerId, playerToRemove);
 
         gameRoomDto.Players.Remove(playerToRemove);
 
@@ -130,22 +109,40 @@ public class GameRoomRepository : IGameRoomRepository
     public void AddPlayerToRoom(int gameRoomId, int playerId)
     {
         var gameRoomDto = TempDb._gameRooms.SingleOrDefault(x => x.Id == gameRoomId);
-        if (gameRoomDto == null)
-        {
-            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
-        }
+        ValidateException(gameRoomId, gameRoomDto);
         
         var playerList = gameRoomDto.Players;
 
         var playerDto = TempDb._playerList.SingleOrDefault(x => x.Id == playerId);
-        if (playerDto == null)
-        {
-            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
-        }
+        ValidateException(playerId, playerDto);
         
         var gameRoomList = playerDto.GameRooms;
 
         playerList.Add(playerDto);
         gameRoomList.Add(gameRoomDto);
+    }
+
+    private static void ValidateException(int playerId, PlayerDto? playerDto)
+    {
+        if (playerDto == null)
+        {
+            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
+        }
+    }
+
+    private static void ValidateException(int id, GameRoomDto? gameRoomDto)
+    {
+        if (gameRoomDto == null)
+        {
+            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {id} not found");
+        }
+    }
+
+    private static void ValidateAlreadyExistException(GameRoom gameRoomRequest)
+    {
+        if (TempDb._gameRooms.Any(x => x.Id == gameRoomRequest.Id))
+        {
+            throw new IdAlreadyExistException($"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
+        }
     }
 }

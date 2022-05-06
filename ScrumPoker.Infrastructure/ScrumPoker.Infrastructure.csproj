@@ -23,4 +23,8 @@
       <ProjectReference Include="..\ScrumPoker.Web.Models\ScrumPoker.Web.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Middlewares" />
+    </ItemGroup>
+
 </Project>
