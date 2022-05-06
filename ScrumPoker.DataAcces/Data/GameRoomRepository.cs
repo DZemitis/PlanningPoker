@@ -1,5 +1,6 @@
 using AutoMapper;
 using ScrumPoker.Business.Models.Models;
+using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.Data.PersistenceMock;
 using ScrumPoker.DataAcces.Models.Models;
@@ -31,7 +32,7 @@ public class GameRoomRepository : IGameRoomRepository
         
         if (gameRoomDto == null)
         {
-            throw new IdNotFoundException();
+            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {id} not found");
         }
         
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
@@ -40,6 +41,11 @@ public class GameRoomRepository : IGameRoomRepository
 
     public GameRoom Create(GameRoom gameRoomRequest)
     {
+        if (TempDb._gameRooms.Any(x => x.Id == gameRoomRequest.Id))
+        {
+            throw new IdAlreadyExistException($"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
+        }
+        
         var addGameRoom = new GameRoomDto
         {
             Name = gameRoomRequest.Name,
@@ -56,7 +62,13 @@ public class GameRoomRepository : IGameRoomRepository
 
     public GameRoom Update(GameRoom gameRoomRequest)
     {
-        var gameRoomDto = TempDb._gameRooms.Single(x => x.Id == gameRoomRequest.Id);
+        var gameRoomDto = TempDb._gameRooms.SingleOrDefault(x => x.Id == gameRoomRequest.Id);
+        
+        if (gameRoomDto == null)
+        {
+            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomRequest.Id} not found");
+        }
+        
         gameRoomDto.Name = gameRoomRequest.Name;
 
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
@@ -71,34 +83,66 @@ public class GameRoomRepository : IGameRoomRepository
 
     public void DeleteById(int id)
     {
+        var gameRoomToDelete = TempDb._gameRooms.SingleOrDefault(x => x.Id == id);
+        if (gameRoomToDelete == null)
+        {
+            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {id} not found");
+        }
+        
         TempDb._gameRooms.RemoveAll(x => x.Id == id);
     }
 
     public void UpdatePlayerList(GameRoom gameRoomRequest)
     {
         var gameRoomToUpdate = _mapper.Map<GameRoomDto>(gameRoomRequest);
-        var gameRoomDto = TempDb._gameRooms.Single(x => x.Id == gameRoomRequest.Id);
+        var gameRoomDto = TempDb._gameRooms.SingleOrDefault(x => x.Id == gameRoomRequest.Id);
+        
+        if (gameRoomDto == null)
+        {
+            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomRequest.Id} not found");
+        }
 
         gameRoomDto.Players = gameRoomToUpdate.Players;
     }
 
     public void RemoveGameRoomPlayerById(int gameRoomId, int playerId)
     {
-        var gameRoomDto = TempDb._gameRooms.Single(x => x.Id == gameRoomId);
-        var playerToRemove = gameRoomDto.Players.Single(x => x.Id == playerId);
+        var gameRoomDto = TempDb._gameRooms.SingleOrDefault(x => x.Id == gameRoomId);
+        if (gameRoomDto == null)
+        {
+            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
+        }
+
+        var playerToRemove = gameRoomDto.Players.SingleOrDefault(x => x.Id == playerId);
+        if (playerToRemove == null)
+        {
+            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
+        }
+
         gameRoomDto.Players.Remove(playerToRemove);
 
         var playerDto = TempDb._playerList.Single(x => x.Id == playerId);
         var gameRoomToRemove = playerDto.GameRooms.Single(x => x.Id == gameRoomId);
+        
         playerDto.GameRooms.Remove(gameRoomToRemove);
     }
 
     public void AddPlayerToRoom(int gameRoomId, int playerId)
     {
-        var gameRoomDto = TempDb._gameRooms.Single(x => x.Id == gameRoomId);
+        var gameRoomDto = TempDb._gameRooms.SingleOrDefault(x => x.Id == gameRoomId);
+        if (gameRoomDto == null)
+        {
+            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
+        }
+        
         var playerList = gameRoomDto.Players;
 
-        var playerDto = TempDb._playerList.Single(x => x.Id == playerId);
+        var playerDto = TempDb._playerList.SingleOrDefault(x => x.Id == playerId);
+        if (playerDto == null)
+        {
+            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
+        }
+        
         var gameRoomList = playerDto.GameRooms;
 
         playerList.Add(playerDto);

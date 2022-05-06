@@ -2,7 +2,12 @@ namespace ScrumPoker.Common;
 
 public class ConflictException : ScrumPokerException
 {
-    public ConflictException(string message) : base(message)
+    protected ConflictException()
+    {
+        
+    }
+
+    protected ConflictException(string message) : base(message)
     {
         
     }

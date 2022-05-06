@@ -1,8 +1,13 @@
 namespace ScrumPoker.Common;
 
 public class NotFoundException : ScrumPokerException
-{ 
-    public NotFoundException(string message) : base(message)
+{
+    protected NotFoundException()
+    {
+        
+    }
+
+    protected NotFoundException(string message) : base(message)
     {
         
     }

@@ -1,5 +1,7 @@
 using AutoMapper;
 using ScrumPoker.Business.Models.Models;
+using ScrumPoker.Common.ConflictExceptions;
+using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.Data.PersistenceMock;
 using ScrumPoker.DataAcces.Models.Models;
 using ScrumPoker.DataBase.Interfaces;
@@ -26,7 +28,13 @@ public class PlayerRepository : IPlayerRepository
 
     public Player GetById(int id)
     {
-        var playerDto = TempDb._playerList.Single(x => x.Id == id);
+        var playerDto = TempDb._playerList.SingleOrDefault(x => x.Id == id);
+        
+        if (playerDto == null)
+        {
+            throw new IdNotFoundException($"{typeof(Player)} with ID {id} not found");
+        }
+        
         var playerDtoResponse = _mapper.Map<Player>(playerDto);
         
         return playerDtoResponse;
@@ -34,6 +42,11 @@ public class PlayerRepository : IPlayerRepository
 
     public Player Create(Player createPlayerRequest)
     {
+        if (TempDb._gameRooms.Any(x => x.Id == createPlayerRequest.Id))
+        {
+            throw new IdAlreadyExistException($"{typeof(Player)} with {createPlayerRequest.Id} already exist");
+        }
+        
         var addPlayer = new PlayerDto
         {
             Name = createPlayerRequest.Name,
@@ -49,7 +62,13 @@ public class PlayerRepository : IPlayerRepository
 
     public Player Update(Player updatePlayerRequest)
     {
-        var playerDto = TempDb._playerList.Single(x => x.Id == updatePlayerRequest.Id);
+        var playerDto = TempDb._playerList.SingleOrDefault(x => x.Id == updatePlayerRequest.Id);
+
+        if (playerDto == null)
+        {
+            throw new IdNotFoundException($"{typeof(Player)} with ID {updatePlayerRequest.Id} not found");
+        }
+
         playerDto.Name = updatePlayerRequest.Name;
 
         var playerDtoResponse = _mapper.Map<Player>(playerDto);
@@ -59,13 +78,25 @@ public class PlayerRepository : IPlayerRepository
 
     public void DeleteById(int id)
     {
+        var playerToDelete = TempDb._playerList.SingleOrDefault(x => x.Id == id);
+
+        if (playerToDelete == null)
+        {
+            throw new IdNotFoundException($"{typeof(Player)} with ID {id} not found");
+        }
+        
         TempDb._playerList.RemoveAll(x => x.Id == id);
     }
 
     public void UpdateGameRoomList(Player playerToUpdateRequest)
     {
         var playerToUpdateDto = _mapper.Map<PlayerDto>(playerToUpdateRequest);
-        var playerDto = TempDb._playerList.Single(x => x.Id == playerToUpdateRequest.Id);
+        var playerDto = TempDb._playerList.SingleOrDefault(x => x.Id == playerToUpdateRequest.Id);
+        
+        if (playerDto == null)
+        {
+            throw new IdNotFoundException($"{typeof(Player)} with ID {playerToUpdateRequest.Id} not found");
+        }
         
         playerDto.GameRooms = playerToUpdateDto.GameRooms;
     }
