@@ -28,13 +28,8 @@ public class PlayerRepository : IPlayerRepository
 
     public Player GetById(int id)
     {
-        var playerDto = TempDb._playerList.SingleOrDefault(x => x.Id == id);
-        
-        if (playerDto == null)
-        {
-            throw new IdNotFoundException($"{typeof(Player)} with ID {id} not found");
-        }
-        
+        var playerDto = PlayerIdValidation(id);
+
         var playerDtoResponse = _mapper.Map<Player>(playerDto);
         
         return playerDtoResponse;
@@ -42,10 +37,7 @@ public class PlayerRepository : IPlayerRepository
 
     public Player Create(Player createPlayerRequest)
     {
-        if (TempDb._gameRooms.Any(x => x.Id == createPlayerRequest.Id))
-        {
-            throw new IdAlreadyExistException($"{typeof(Player)} with {createPlayerRequest.Id} already exist");
-        }
+        ValidateAlreadyExist(createPlayerRequest);
         
         var addPlayer = new PlayerDto
         {
@@ -62,12 +54,8 @@ public class PlayerRepository : IPlayerRepository
 
     public Player Update(Player updatePlayerRequest)
     {
-        var playerDto = TempDb._playerList.SingleOrDefault(x => x.Id == updatePlayerRequest.Id);
-
-        if (playerDto == null)
-        {
-            throw new IdNotFoundException($"{typeof(Player)} with ID {updatePlayerRequest.Id} not found");
-        }
+        
+        var playerDto = PlayerIdValidation(updatePlayerRequest.Id);
 
         playerDto.Name = updatePlayerRequest.Name;
 
@@ -79,11 +67,8 @@ public class PlayerRepository : IPlayerRepository
     public void DeleteById(int id)
     {
         var playerToDelete = TempDb._playerList.SingleOrDefault(x => x.Id == id);
-
-        if (playerToDelete == null)
-        {
-            throw new IdNotFoundException($"{typeof(Player)} with ID {id} not found");
-        }
+        
+        PlayerIdValidation(id);
         
         TempDb._playerList.RemoveAll(x => x.Id == id);
     }
@@ -91,13 +76,28 @@ public class PlayerRepository : IPlayerRepository
     public void UpdateGameRoomList(Player playerToUpdateRequest)
     {
         var playerToUpdateDto = _mapper.Map<PlayerDto>(playerToUpdateRequest);
-        var playerDto = TempDb._playerList.SingleOrDefault(x => x.Id == playerToUpdateRequest.Id);
-        
-        if (playerDto == null)
-        {
-            throw new IdNotFoundException($"{typeof(Player)} with ID {playerToUpdateRequest.Id} not found");
-        }
+        var playerDto = PlayerIdValidation(playerToUpdateRequest.Id);
         
         playerDto.GameRooms = playerToUpdateDto.GameRooms;
+    }
+
+    private static void ValidateAlreadyExist(Player player)
+    {
+        if (TempDb._gameRooms.Any(x => x.Id == player.Id))
+        {
+            throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
+        }
+    }
+    
+    private static PlayerDto PlayerIdValidation(int playerId)
+    {
+        var playerDto = TempDb._playerList.SingleOrDefault(x => x.Id == playerId);
+
+        if (playerDto == null)
+        {
+            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
+        }
+
+        return playerDto;
     }
 }
