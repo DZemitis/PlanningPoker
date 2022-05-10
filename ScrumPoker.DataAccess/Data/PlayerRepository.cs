@@ -2,9 +2,9 @@ using AutoMapper;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.NotFoundExceptions;
-using ScrumPoker.DataAccess.Interfaces;
-using ScrumPoker.DataAccess.Models.Models;
-using ScrumPoker.DataAccess.PersistenceMock;
+using ScrumPoker.Data.PersistenceMock;
+using ScrumPoker.DataAcces.Models.Models;
+using ScrumPoker.DataBase.Interfaces;
 
 namespace ScrumPoker.Data.Data;
 
