@@ -1,6 +1,10 @@
+using System.Net.Mime;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
+using ScrumPoker.Common;
 using ScrumPoker.Infrastructure;
 using ScrumPoker.Infrastructure.AutoMapper;
+using ScrumPoker.Infrastructure.Middlewares;
 using ScrumPoker.Web.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +17,23 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Register();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddControllers(options =>
+    {
+        options.Filters.Add<HttpResponseExceptionFilter>();
+    })
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.InvalidModelStateResponseFactory = context =>
+            new BadRequestObjectResult(context.ModelState)
+            {
+                ContentTypes =
+                {
+                    MediaTypeNames.Application.Json,
+                    MediaTypeNames.Application.Xml
+                }
+            };
+    })
+    .AddXmlSerializerFormatters();
 
 builder.Services
     .AddMvc()

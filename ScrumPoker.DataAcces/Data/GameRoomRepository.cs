@@ -70,7 +70,7 @@ public class GameRoomRepository : IGameRoomRepository
 
     public void DeleteById(int id)
     {
-        var gameRoomToDelete = GameRoomIdValidation(id);
+        GameRoomIdValidation(id);
         
         TempDb._gameRooms.RemoveAll(x => x.Id == id);
     }
@@ -115,7 +115,7 @@ public class GameRoomRepository : IGameRoomRepository
     {
         if (TempDb._gameRooms.Any(x => x.Id == gameRoomRequest.Id))
         {
-            throw new IdAlreadyExistException($"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
+            throw new IdAlreadyExistException(409 ,$"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
         }
     }
 
@@ -124,7 +124,7 @@ public class GameRoomRepository : IGameRoomRepository
         var gameRoomDto = TempDb._gameRooms.SingleOrDefault(x => x.Id == gameRoomId);
         if (gameRoomDto == null)
         {
-            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
+            throw new IdNotFoundException(404,$"{typeof(GameRoom)} with ID {gameRoomId} not found");
         }
 
         return gameRoomDto;
@@ -135,7 +135,7 @@ public class GameRoomRepository : IGameRoomRepository
         var playerToRemove = gameRoomDto.Players.SingleOrDefault(x => x.Id == playerId);
         if (playerToRemove == null)
         {
-            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
+            throw new IdNotFoundException(404,$"{typeof(Player)} with ID {playerId} not found");
         }
 
         return playerToRemove;

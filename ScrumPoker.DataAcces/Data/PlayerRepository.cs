@@ -66,8 +66,6 @@ public class PlayerRepository : IPlayerRepository
 
     public void DeleteById(int id)
     {
-        var playerToDelete = TempDb._playerList.SingleOrDefault(x => x.Id == id);
-        
         PlayerIdValidation(id);
         
         TempDb._playerList.RemoveAll(x => x.Id == id);
@@ -85,7 +83,7 @@ public class PlayerRepository : IPlayerRepository
     {
         if (TempDb._gameRooms.Any(x => x.Id == player.Id))
         {
-            throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
+            throw new IdAlreadyExistException(409,$"{typeof(Player)} with {player.Id} already exist");
         }
     }
     
@@ -95,7 +93,7 @@ public class PlayerRepository : IPlayerRepository
 
         if (playerDto == null)
         {
-            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
+            throw new IdNotFoundException(404,$"{typeof(Player)} with ID {playerId} not found");
         }
 
         return playerDto;
