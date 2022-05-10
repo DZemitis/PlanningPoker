@@ -75,7 +75,7 @@ public class PlayerRepository : IPlayerRepository
     {
         if (TempDb.GameRooms.Any(x => x.Id == player.Id))
         {
-            throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
+            throw new IdAlreadyExistException(409,$"{typeof(Player)} with {player.Id} already exist");
         }
     }
     
@@ -85,7 +85,7 @@ public class PlayerRepository : IPlayerRepository
 
         if (playerDto == null)
         {
-            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
+            throw new IdNotFoundException(404,$"{typeof(Player)} with ID {playerId} not found");
         }
 
         return playerDto;
