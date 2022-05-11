@@ -11,7 +11,7 @@ public class ScrumPokerException : Exception
 
     public object? Value { get; set; }
     
-    public new string Message { get; set; }
+    public new string? Message { get; set; }
 
     protected ScrumPokerException()
     {

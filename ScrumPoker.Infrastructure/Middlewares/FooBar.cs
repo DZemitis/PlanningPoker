@@ -9,20 +9,27 @@ public class FooBar
     {
         var response = new ScrumPokerErrorResponse
         {
-            Messages = new List<string>()
+            Errors = new List<ScrumPokerError>()
         };
         var errorInModelState =(context.ModelState
             .Where(x=>x.Value.Errors.Count > 0)
             .ToDictionary(kvp=>kvp.Key, kvp =>kvp.Value.Errors
                 .Select(x=>x.ErrorMessage))).ToArray();
 
+        var errorResponse = new ScrumPokerError()
+        {
+            Messages = new List<string>()
+        };
+        
         foreach (var error in errorInModelState)
         {
+            errorResponse.Field = error.Key;
             foreach (var subError in error.Value)
             {
-                response.Messages.Add(subError);
+                errorResponse.Messages.Add(subError);
             }
         }
+        response.Errors.Add(errorResponse);
         
         return new BadRequestObjectResult(response);
     }

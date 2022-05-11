@@ -16,16 +16,35 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
     {
         if (context.Exception is ScrumPokerException httpResponseException)
         {
-            var response = new ScrumPokerErrorResponse
+            if (httpResponseException.Message != null)
             {
-                Messages = new List<string> {httpResponseException.Message}
-            };
+                var statusCode = context.Exception switch
+                {
+                    ConflictException => 409,
+                    NotFoundException => 404,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+                
+                var response = new ScrumPokerErrorResponse
+                {
+                    Errors = new List<ScrumPokerError>()
+                 
+                };
 
-            context.Result = new ObjectResult(httpResponseException.Value)
-            {
-                Value = response,
-                StatusCode = httpResponseException.StatusCode,
-            };
+                var errorResponse = new ScrumPokerError()
+                {
+                    Field = context.Exception.GetType().ToString(),
+                    Messages = new List<string> {httpResponseException.Message}
+                };
+
+
+                response.Errors.Add(errorResponse);
+                context.Result = new ObjectResult(httpResponseException.Value)
+                {
+                    Value = response,
+                    StatusCode = statusCode,
+                };
+            }
 
             context.ExceptionHandled = true;
         }
