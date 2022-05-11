@@ -24,24 +24,23 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
                     NotFoundException => 404,
                     _ => throw new ArgumentOutOfRangeException()
                 };
-                
-                var response = new ScrumPokerErrorResponse
-                {
-                    Errors = new List<ScrumPokerError>()
-                 
-                };
 
                 var errorResponse = new ScrumPokerError()
                 {
                     Field = context.Exception.GetType().ToString(),
                     Messages = new List<string> {httpResponseException.Message}
                 };
-
-
-                response.Errors.Add(errorResponse);
-                context.Result = new ObjectResult(httpResponseException.Value)
+                
+                var response = new ScrumPokerErrorResponse
                 {
-                    Value = response,
+                    Errors = new List<ScrumPokerError>
+                    {
+                        errorResponse
+                    }
+                };
+                
+                context.Result = new ObjectResult(response)
+                {
                     StatusCode = statusCode,
                 };
             }
