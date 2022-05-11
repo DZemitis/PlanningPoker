@@ -2,5 +2,5 @@ namespace ScrumPoker.Common;
 
 public class ScrumPokerErrorResponse
 {
-    public List<string>? Messages { get; set; }
+    public List<ScrumPokerError>? Errors { get; set; }
 }
