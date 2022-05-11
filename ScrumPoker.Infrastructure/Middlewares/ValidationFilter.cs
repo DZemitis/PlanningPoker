@@ -3,7 +3,7 @@ using ScrumPoker.Common;
 
 namespace ScrumPoker.Infrastructure.Middlewares;
 
-public class FooBar
+public class ValidationFilter
 {
     public static IActionResult Process(ActionContext context)
     {

@@ -23,7 +23,7 @@ builder.Services.AddControllers(options =>
     })
     .ConfigureApiBehaviorOptions(options =>
     {
-        options.InvalidModelStateResponseFactory = FooBar.Process;
+        options.InvalidModelStateResponseFactory = ValidationFilter.Process;
     })
     .AddXmlSerializerFormatters();
 
