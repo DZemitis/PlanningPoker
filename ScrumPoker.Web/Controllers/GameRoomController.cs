@@ -40,7 +40,7 @@ public class GameRoomController : ControllerBase
     /// <param name="id">ID of the game room</param>
     /// <returns>Game room by ID</returns>
     [HttpGet]
-    [Route("{id}")]
+    [Route("{id:int}")]
     public IActionResult GetRoomById(int id)
     {
         var gameRoom = _gameRoomService.GetById(id);
@@ -102,7 +102,7 @@ public class GameRoomController : ControllerBase
     /// <param name="id">ID of the game room</param>
     /// <returns>Confirmation of deletion</returns>
     [HttpDelete]
-    [Route("Delete/{id}")]
+    [Route("Delete/{id:int}")]
     public IActionResult DeleteGameRoomById(int id)
     {
         _gameRoomService.DeleteById(id);
@@ -139,6 +139,6 @@ public class GameRoomController : ControllerBase
     {
         _gameRoomService.RemovePlayer(gameRoomId, playerId);
 
-        return Ok($"Player has been removed from room");
+        return Ok("Player has been removed from room");
     }
 }

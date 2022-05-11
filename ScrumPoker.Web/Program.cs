@@ -1,7 +1,4 @@
-using System.Net.Mime;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Mvc;
-using ScrumPoker.Common;
 using ScrumPoker.Infrastructure;
 using ScrumPoker.Infrastructure.AutoMapper;
 using ScrumPoker.Infrastructure.Middlewares;

@@ -29,12 +29,8 @@ public class PlayerController : ControllerBase
     [Route("List")]
     public IActionResult GetAllPlayers()
     {
-        var playerDisplayList = new List<PlayerApiResponse>();
         var playerList = _playerService.GetAll();
-        foreach (var player in playerList)
-        {
-            playerDisplayList.Add(_mapper.Map<PlayerApiResponse>(player));
-        }
+        var playerDisplayList = playerList.Select(player => _mapper.Map<PlayerApiResponse>(player)).ToList();
         return Ok(playerDisplayList);
     }
 
@@ -44,7 +40,7 @@ public class PlayerController : ControllerBase
     /// <param name="id">ID of the player</param>
     /// <returns>Player by ID</returns>
     [HttpGet]
-    [Route("{id}")]
+    [Route("{id:int}")]
     public IActionResult GetPlayerById(int id)
     {
         var player = _playerService.GetById(id);
@@ -91,7 +87,7 @@ public class PlayerController : ControllerBase
     /// <param name="id">ID of the player</param>
     /// <returns>Confirmation of deletion</returns>
     [HttpDelete]
-    [Route("Delete/{id}")]
+    [Route("Delete/{id:int}")]
     public IActionResult DeletePlayerById(int id)
     {
         _playerService.DeleteById(id);

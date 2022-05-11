@@ -14,7 +14,7 @@ public class PlayerService : IPlayerService
         _playerRepository = playerRepository;
     }
 
-    public List<Player> GetAll()
+    public IEnumerable<Player> GetAll()
     {
         return _playerRepository.GetAll();
     }

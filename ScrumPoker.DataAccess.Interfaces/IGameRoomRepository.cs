@@ -30,13 +30,7 @@ public interface IGameRoomRepository
     /// <param name="gameRoomRequest">Game room with ID</param>
     /// <returns>Updated game room</returns>
     GameRoom Update(GameRoom gameRoomRequest);
-
-    /// <summary>
-    /// Update players list in game room
-    /// </summary>
-    /// <param name="gameRoomUpdateRequest">Game room to update</param>
-    void UpdatePlayerList(GameRoom gameRoomUpdateRequest);
-
+    
     /// <summary>
     /// Delete all available game rooms
     /// </summary>

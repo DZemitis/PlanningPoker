@@ -19,9 +19,9 @@ public class PlayerRepository : IPlayerRepository
         _mapper = mapper;
     }
 
-    public List<Player> GetAll()
+    public IEnumerable<Player> GetAll()
     {
-        var playerListResponse = _mapper.Map<List<Player>>(TempDb._playerList);
+        var playerListResponse = _mapper.Map<List<Player>>(TempDb.PlayerList);
         
         return playerListResponse;
     }
@@ -46,7 +46,7 @@ public class PlayerRepository : IPlayerRepository
             Id = ++_id
         };
         
-        TempDb._playerList.Add(addPlayer);
+        TempDb.PlayerList.Add(addPlayer);
         var playerDtoResponse = _mapper.Map<Player>(addPlayer);
 
         return playerDtoResponse;
@@ -68,20 +68,12 @@ public class PlayerRepository : IPlayerRepository
     {
         PlayerIdValidation(id);
         
-        TempDb._playerList.RemoveAll(x => x.Id == id);
-    }
-
-    public void UpdateGameRoomList(Player playerToUpdateRequest)
-    {
-        var playerToUpdateDto = _mapper.Map<PlayerDto>(playerToUpdateRequest);
-        var playerDto = PlayerIdValidation(playerToUpdateRequest.Id);
-        
-        playerDto.GameRooms = playerToUpdateDto.GameRooms;
+        TempDb.PlayerList.RemoveAll(x => x.Id == id);
     }
 
     private static void ValidateAlreadyExist(Player player)
     {
-        if (TempDb._gameRooms.Any(x => x.Id == player.Id))
+        if (TempDb.GameRooms.Any(x => x.Id == player.Id))
         {
             throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
         }
@@ -89,7 +81,7 @@ public class PlayerRepository : IPlayerRepository
     
     private static PlayerDto PlayerIdValidation(int playerId)
     {
-        var playerDto = TempDb._playerList.SingleOrDefault(x => x.Id == playerId);
+        var playerDto = TempDb.PlayerList.SingleOrDefault(x => x.Id == playerId);
 
         if (playerDto == null)
         {

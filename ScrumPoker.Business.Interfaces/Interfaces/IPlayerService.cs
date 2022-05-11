@@ -8,7 +8,7 @@ public interface IPlayerService
     /// Get a list of all playersInGameRoom
     /// </summary>
     /// <returns>List of all players in game room</returns>
-    List<Player> GetAll();
+    IEnumerable<Player> GetAll();
 
     /// <summary>
     /// Search player by ID

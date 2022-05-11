@@ -7,45 +7,42 @@ namespace ScrumPoker.Infrastructure.Middlewares;
 
 public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
 {
-    
     public int Order => int.MaxValue - 10;
 
     public void OnActionExecuting(ActionExecutingContext context) { }
 
     public void OnActionExecuted(ActionExecutedContext context)
     {
-        if (context.Exception is ScrumPokerException httpResponseException)
+        if (context.Exception is not ScrumPokerException httpResponseException) return;
+        if (httpResponseException.Message != null)
         {
-            if (httpResponseException.Message != null)
+            var statusCode = context.Exception switch
             {
-                var statusCode = context.Exception switch
-                {
-                    ConflictException => 409,
-                    NotFoundException => 404,
-                    _ => throw new ArgumentOutOfRangeException()
-                };
+                ConflictException => 409,
+                NotFoundException => 404,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-                var errorResponse = new ScrumPokerError()
-                {
-                    Field = context.Exception.GetType().ToString(),
-                    Messages = new List<string> {httpResponseException.Message}
-                };
+            var errorResponse = new ScrumPokerError
+            {
+                Field = context.Exception.GetType().ToString(),
+                Messages = new List<string> {httpResponseException.Message}
+            };
                 
-                var response = new ScrumPokerErrorResponse
+            var response = new ScrumPokerErrorResponse
+            {
+                Errors = new List<ScrumPokerError>
                 {
-                    Errors = new List<ScrumPokerError>
-                    {
-                        errorResponse
-                    }
-                };
+                    errorResponse
+                }
+            };
                 
-                context.Result = new ObjectResult(response)
-                {
-                    StatusCode = statusCode,
-                };
-            }
-
-            context.ExceptionHandled = true;
+            context.Result = new ObjectResult(response)
+            {
+                StatusCode = statusCode
+            };
         }
+
+        context.ExceptionHandled = true;
     }
 }
