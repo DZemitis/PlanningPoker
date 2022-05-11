@@ -93,7 +93,7 @@ public class PlayerRepository : IPlayerRepository
 
         if (playerDto == null)
         {
-            throw new IdNotFoundException("{typeof(Player)} with ID {playerId} not found");
+            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
         }
 
         return playerDto;
