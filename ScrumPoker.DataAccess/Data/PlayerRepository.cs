@@ -19,9 +19,9 @@ public class PlayerRepository : IPlayerRepository
         _mapper = mapper;
     }
 
-    public List<Player> GetAll()
+    public IEnumerable<Player> GetAll()
     {
-        var playerListResponse = _mapper.Map<List<Player>>(TempDb._playerList);
+        var playerListResponse = _mapper.Map<List<Player>>(TempDb.PlayerList);
         
         return playerListResponse;
     }
