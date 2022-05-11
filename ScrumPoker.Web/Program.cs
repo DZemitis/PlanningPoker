@@ -23,15 +23,7 @@ builder.Services.AddControllers(options =>
     })
     .ConfigureApiBehaviorOptions(options =>
     {
-        options.InvalidModelStateResponseFactory = context =>
-            new BadRequestObjectResult(context.ModelState)
-            {
-                ContentTypes =
-                {
-                    MediaTypeNames.Application.Json,
-                    MediaTypeNames.Application.Xml
-                }
-            };
+        options.InvalidModelStateResponseFactory = FooBar.Process;
     })
     .AddXmlSerializerFormatters();
 

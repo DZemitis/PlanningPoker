@@ -15,11 +15,16 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
     public void OnActionExecuted(ActionExecutedContext context)
     {
         if (context.Exception is ScrumPokerException httpResponseException)
-        { 
+        {
+            var response = new ScrumPokerErrorResponse
+            {
+                Messages = new List<string> {httpResponseException.Message}
+            };
+
             context.Result = new ObjectResult(httpResponseException.Value)
             {
+                Value = response,
                 StatusCode = httpResponseException.StatusCode,
-                Value = httpResponseException.Value
             };
 
             context.ExceptionHandled = true;

@@ -2,8 +2,8 @@ namespace ScrumPoker.Common;
 
 public class ConflictException : ScrumPokerException
 {
-    public ConflictException(int statusCode, object? value = null) =>
-        (StatusCode, Value) = (statusCode, value);
+    public ConflictException(int statusCode, string message) =>
+        (StatusCode, Message) = (statusCode, message);
     
     protected ConflictException()
     {
