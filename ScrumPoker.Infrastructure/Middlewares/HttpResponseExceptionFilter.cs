@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using ScrumPoker.Common;
-using ScrumPoker.Common.NotFoundExceptions;
+using ScrumPoker.Web.Models.Models.WebResponse;
 
 namespace ScrumPoker.Infrastructure.Middlewares;
 

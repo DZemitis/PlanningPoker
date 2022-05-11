@@ -1,4 +1,4 @@
-namespace ScrumPoker.Common;
+namespace ScrumPoker.Web.Models.Models.WebResponse;
 
 public class ScrumPokerErrorResponse
 {

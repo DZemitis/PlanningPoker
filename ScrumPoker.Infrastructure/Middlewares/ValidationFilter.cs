@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using ScrumPoker.Common;
+using ScrumPoker.Web.Models.Models.WebResponse;
 
 namespace ScrumPoker.Infrastructure.Middlewares;
 
-public class ValidationFilter
+public static class ValidationFilter
 {
     public static IActionResult Process(ActionContext context)
     {
