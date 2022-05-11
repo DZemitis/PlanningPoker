@@ -12,8 +12,4 @@
       <ProjectReference Include="..\ScrumPoker.DataAccess.Interfaces\ScrumPoker.DataAccess.Interfaces.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-    </ItemGroup>
-
 </Project>
