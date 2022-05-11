@@ -2,9 +2,8 @@ namespace ScrumPoker.Common;
 
 public class NotFoundException : ScrumPokerException
 {
-  
-    public NotFoundException(int statusCode, object? value = null) =>
-        (StatusCode, Value) = (statusCode, value);
+    public NotFoundException(int statusCode, string message) =>
+        (StatusCode, Message) = (statusCode, message);
     
     protected NotFoundException()
     {
