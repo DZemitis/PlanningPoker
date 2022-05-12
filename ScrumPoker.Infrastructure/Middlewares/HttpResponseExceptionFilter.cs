@@ -20,7 +20,12 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
             {
                 ConflictException => 409,
                 NotFoundException => 404,
-                _ => throw new ArgumentOutOfRangeException()
+                _ => throw new ArgumentOutOfRangeException
+                {
+                    HelpLink = null,
+                    HResult = 0,
+                    Source = null
+                }
             };
 
             var errorResponse = new ScrumPokerError

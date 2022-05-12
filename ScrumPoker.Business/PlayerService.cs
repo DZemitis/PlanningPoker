@@ -1,8 +1,8 @@
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
-using ScrumPoker.DataBase.Interfaces;
+using ScrumPoker.DataAccess.Interfaces;
 
-namespace ScrumPoker.Services;
+namespace ScrumPoker.Business;
 
 /// <inheritdoc />
 public class PlayerService : IPlayerService

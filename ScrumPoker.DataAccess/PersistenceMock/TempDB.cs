@@ -1,6 +1,6 @@
-using ScrumPoker.DataAcces.Models.Models;
+using ScrumPoker.DataAccess.Models.Models;
 
-namespace ScrumPoker.Data.PersistenceMock;
+namespace ScrumPoker.DataAccess.PersistenceMock;
 
 public static class TempDb
 {

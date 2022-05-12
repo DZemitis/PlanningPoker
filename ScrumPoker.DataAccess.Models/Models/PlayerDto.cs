@@ -1,5 +1,4 @@
-
-namespace ScrumPoker.DataAcces.Models.Models;
+namespace ScrumPoker.DataAccess.Models.Models;
 
 public class PlayerDto
 {

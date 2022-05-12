@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ScrumPoker.Business;
 using ScrumPoker.Business.Interfaces.Interfaces;
-using ScrumPoker.Data.Data;
-using ScrumPoker.DataBase.Interfaces;
-using ScrumPoker.Services;
+using ScrumPoker.DataAccess.Data;
+using ScrumPoker.DataAccess.Interfaces;
 
 namespace ScrumPoker.Infrastructure;
 

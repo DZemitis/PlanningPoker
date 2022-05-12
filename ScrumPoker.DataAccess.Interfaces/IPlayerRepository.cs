@@ -1,6 +1,6 @@
 using ScrumPoker.Business.Models.Models;
 
-namespace ScrumPoker.DataBase.Interfaces;
+namespace ScrumPoker.DataAccess.Interfaces;
 
 public interface IPlayerRepository
 {
