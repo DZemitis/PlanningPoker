@@ -2,11 +2,11 @@ using AutoMapper;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.NotFoundExceptions;
-using ScrumPoker.Data.PersistenceMock;
-using ScrumPoker.DataAcces.Models.Models;
-using ScrumPoker.DataBase.Interfaces;
+using ScrumPoker.DataAccess.Interfaces;
+using ScrumPoker.DataAccess.Models.Models;
+using ScrumPoker.DataAccess.PersistenceMock;
 
-namespace ScrumPoker.Data.Data;
+namespace ScrumPoker.DataAccess.Data;
 
 /// <inheritdoc />
 public class PlayerRepository : IPlayerRepository
