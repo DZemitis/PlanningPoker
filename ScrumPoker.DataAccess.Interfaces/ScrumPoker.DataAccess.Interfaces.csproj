@@ -4,16 +4,11 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>ScrumPoker.DataBase.Interfaces</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\ScrumPoker.Business.Models\ScrumPoker.Business.Models.csproj" />
-      <ProjectReference Include="..\ScrumPoker.DataAcces.Models\ScrumPoker.DataAcces.Models.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="11.0.1" />
+      <ProjectReference Include="..\ScrumPoker.DataAccess.Models\ScrumPoker.DataAccess.Models.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ScrumPoker.Business.Models.Models;
-using ScrumPoker.DataAcces.Models.Models;
+using ScrumPoker.DataAccess.Models.Models;
 using ScrumPoker.Web.Models.Models.WebRequest;
 using ScrumPoker.Web.Models.Models.WebResponse;
 

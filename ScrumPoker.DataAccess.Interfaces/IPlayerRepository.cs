@@ -1,6 +1,6 @@
 using ScrumPoker.Business.Models.Models;
 
-namespace ScrumPoker.DataBase.Interfaces;
+namespace ScrumPoker.DataAccess.Interfaces;
 
 public interface IPlayerRepository
 {
@@ -8,7 +8,7 @@ public interface IPlayerRepository
     /// Get a list of all playersInGameRoom
     /// </summary>
     /// <returns>List of all players in game room</returns>
-    List<Player> GetAll();
+    IEnumerable<Player> GetAll();
 
     /// <summary>
     /// Search player by ID
@@ -30,13 +30,7 @@ public interface IPlayerRepository
     /// <param name="updatePlayerRequest">Player with ID</param>
     /// <returns>Updated player</returns>
     Player Update(Player updatePlayerRequest);
-
-    /// <summary>
-    /// Updates game rooms player have joined or left
-    /// </summary>
-    /// <param name="playerToUpdate">Player to update</param>
-    void UpdateGameRoomList(Player playerToUpdate);
-
+    
     /// <summary>
     /// Delete specified player by ID
     /// </summary>

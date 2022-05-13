@@ -4,16 +4,11 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>ScrumPoker.Services</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\ScrumPoker.Business.Interfaces\ScrumPoker.Business.Interfaces.csproj" />
-      <ProjectReference Include="..\ScrumPoker.DataAcces.Interfaces\ScrumPoker.DataAcces.Interfaces.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+      <ProjectReference Include="..\ScrumPoker.DataAccess.Interfaces\ScrumPoker.DataAccess.Interfaces.csproj" />
     </ItemGroup>
 
 </Project>

@@ -13,7 +13,7 @@ public class CreatePlayerApiRequestValidator : AbstractValidator<CreatePlayerApi
             .Matches("^[a-zA-Z ]*$")
             .WithMessage("Name can only contain letters")
             .Length(3,20)
-            .WithMessage("Name least 3 characters and no more than 20 characters");
+            .WithMessage("Name must contain least 3 characters and no more than 20 characters");
 
         RuleFor(p => p.Email)
             .EmailAddress()
