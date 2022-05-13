@@ -13,10 +13,12 @@ public class PlayerRepository : IPlayerRepository
 {
     private static int _id { get; set; }
     private readonly IMapper _mapper;
+    private readonly IScrumPokerContext _context;
 
-    public PlayerRepository(IMapper mapper)
+    public PlayerRepository(IMapper mapper, IScrumPokerContext context)
     {
         _mapper = mapper;
+        _context = context;
     }
 
     public IEnumerable<Player> GetAll()

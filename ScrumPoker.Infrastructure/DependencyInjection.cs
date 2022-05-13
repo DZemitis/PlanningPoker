@@ -14,5 +14,6 @@ public static class DependencyInjection
         services.AddTransient<IGameRoomRepository, GameRoomRepository>();
         services.AddTransient<IPlayerRepository, PlayerRepository>();
         services.AddTransient<IPlayerService, PlayerService>();
+        services.AddTransient<IScrumPokerContext, ScrumPokerContext>();
     }
 }
