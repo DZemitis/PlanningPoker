@@ -65,7 +65,7 @@ public class GameRoomRepository : IGameRoomRepository
 
     public void DeleteAll()
     {
-        TempDb.GameRooms.Clear();
+        TempDb.GameRooms.Clear(); 
     }
 
     public void DeleteById(int id)
