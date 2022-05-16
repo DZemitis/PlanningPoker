@@ -4,7 +4,6 @@ using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.Models;
-using ScrumPoker.DataAccess.PersistenceMock;
 
 namespace ScrumPoker.DataAccess.Data;
 
