@@ -4,14 +4,20 @@ using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.Models;
+<<<<<<< HEAD
+=======
 using ScrumPoker.DataAccess.PersistenceMock;
+>>>>>>> c2313613832c58a38f2ff4dce4e352cfc4675d0b
 
 namespace ScrumPoker.DataAccess.Data;
 
 /// <inheritdoc />
 public class PlayerRepository : IPlayerRepository
 {
+<<<<<<< HEAD
+=======
     private static int _id { get; set; }
+>>>>>>> c2313613832c58a38f2ff4dce4e352cfc4675d0b
     private readonly IMapper _mapper;
     private readonly IScrumPokerContext _context;
 

@@ -1,12 +1,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using ScrumPoker.Common;
+<<<<<<< HEAD
+using ScrumPoker.Common.NotFoundExceptions;
+=======
+>>>>>>> c2313613832c58a38f2ff4dce4e352cfc4675d0b
 using ScrumPoker.Web.Models.Models.WebResponse;
 
 namespace ScrumPoker.Infrastructure.Middlewares;
 
 public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
 {
+<<<<<<< HEAD
+    
+=======
+>>>>>>> c2313613832c58a38f2ff4dce4e352cfc4675d0b
     public int Order => int.MaxValue - 10;
 
     public void OnActionExecuting(ActionExecutingContext context) { }
@@ -49,7 +57,5 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
         }
 
         context.ExceptionHandled = true;
-    }
-}
     }
 }
