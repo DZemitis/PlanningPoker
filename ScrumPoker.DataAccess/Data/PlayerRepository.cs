@@ -45,7 +45,7 @@ public class PlayerRepository : IPlayerRepository
         var addPlayer = new PlayerDto
         {
             Name = createPlayerRequest.Name,
-            Email = createPlayerRequest.Email,
+            Email = createPlayerRequest.Email
         };
         
         _context.Players.Add(addPlayer);
