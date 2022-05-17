@@ -7,7 +7,7 @@ using ScrumPoker.DataAccess.Data;
 
 #nullable disable
 
-namespace ScrumPoker.Data.Migrations
+namespace ScrumPoker.DataAccess.Migrations
 {
     [DbContext(typeof(ScrumPokerContext))]
     partial class ScrumPokerContextModelSnapshot : ModelSnapshot
@@ -20,21 +20,6 @@ namespace ScrumPoker.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("GameRoomDtoPlayerDto", b =>
-                {
-                    b.Property<int>("GameRoomsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GameRoomsId", "PlayersId");
-
-                    b.HasIndex("PlayersId");
-
-                    b.ToTable("GameRoomDtoPlayerDto");
-                });
 
             modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.GameRoomDto", b =>
                 {
@@ -50,7 +35,26 @@ namespace ScrumPoker.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GameRooms");
+                    b.HasIndex("Id");
+
+                    b.ToTable("GameRooms", (string)null);
+                });
+
+            modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.GameRoomPlayer", b =>
+                {
+                    b.Property<int>("GameRoomId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GameRoomId", "PlayerId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.HasIndex("GameRoomId", "PlayerId");
+
+                    b.ToTable("GameRoomsPlayers", (string)null);
                 });
 
             modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.PlayerDto", b =>
@@ -63,7 +67,7 @@ namespace ScrumPoker.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -71,22 +75,38 @@ namespace ScrumPoker.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Players");
+                    b.HasIndex("Id", "Email");
+
+                    b.ToTable("Players", (string)null);
                 });
 
-            modelBuilder.Entity("GameRoomDtoPlayerDto", b =>
+            modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.GameRoomPlayer", b =>
                 {
-                    b.HasOne("ScrumPoker.DataAccess.Models.Models.GameRoomDto", null)
-                        .WithMany()
-                        .HasForeignKey("GameRoomsId")
+                    b.HasOne("ScrumPoker.DataAccess.Models.Models.GameRoomDto", "GameRoom")
+                        .WithMany("Players")
+                        .HasForeignKey("GameRoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ScrumPoker.DataAccess.Models.Models.PlayerDto", null)
-                        .WithMany()
-                        .HasForeignKey("PlayersId")
+                    b.HasOne("ScrumPoker.DataAccess.Models.Models.PlayerDto", "Player")
+                        .WithMany("GameRooms")
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("GameRoom");
+
+                    b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.GameRoomDto", b =>
+                {
+                    b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.PlayerDto", b =>
+                {
+                    b.Navigation("GameRooms");
                 });
 #pragma warning restore 612, 618
         }

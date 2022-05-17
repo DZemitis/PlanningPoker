@@ -85,15 +85,16 @@ public class GameRoomRepository : IGameRoomRepository
     {
         var gameRoomDto = GameRoomIdValidation(gameRoomId);
 
-        var playerToRemove = PlayerIdValidationInGameRoom(playerId, gameRoomDto);
+        /*var playerToRemove = PlayerIdValidationInGameRoom(playerId, gameRoomDto);*/
 
+        /*
         gameRoomDto.Players.Remove(playerToRemove);
 
         var playerDto = PlayerIdValidation(playerId);
         var gameRoomToRemove = playerDto.GameRooms.Single(x => x.Id == gameRoomId);
         
         playerDto.GameRooms.Remove(gameRoomToRemove);
-        _context.SaveChanges();
+        _context.SaveChanges();*/
     }
 
     public void AddPlayerToRoom(int gameRoomId, int playerId)
@@ -106,9 +107,10 @@ public class GameRoomRepository : IGameRoomRepository
 
         var gameRoomList = playerDto.GameRooms;
 
+        /*
         playerList.Add(playerDto);
         gameRoomList.Add(gameRoomDto);
-        _context.SaveChanges();
+        _context.SaveChanges();*/
     }
 
     private void ValidateAlreadyExistException(GameRoom gameRoomRequest)
@@ -138,6 +140,7 @@ public class GameRoomRepository : IGameRoomRepository
         var playerDto = _context.Players
             .Include(p=>p.GameRooms)
             .SingleOrDefault(p => p.Id == playerId);
+        
         if (playerDto == null)
         {
             throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
@@ -146,7 +149,7 @@ public class GameRoomRepository : IGameRoomRepository
         return playerDto;
     }
 
-    private static PlayerDto PlayerIdValidationInGameRoom(int playerId, GameRoomDto gameRoomDto)
+    /*private static PlayerDto PlayerIdValidationInGameRoom(int playerId, GameRoomDto gameRoomDto)
     {
         var playerDto = gameRoomDto.Players.SingleOrDefault(x => x.Id == playerId);
         if (playerDto == null)
@@ -155,5 +158,5 @@ public class GameRoomRepository : IGameRoomRepository
         }
 
         return playerDto;
-    }
+    }*/
 }
