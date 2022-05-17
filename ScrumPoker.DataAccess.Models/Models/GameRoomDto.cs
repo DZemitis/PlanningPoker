@@ -4,5 +4,5 @@ public class GameRoomDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
-    public List<PlayerDto> Players { get; set; } = new();
+    public ICollection<PlayerDto> Players { get; set; } = null!;
 }

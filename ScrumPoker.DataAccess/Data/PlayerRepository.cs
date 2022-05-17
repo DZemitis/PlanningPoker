@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.NotFoundExceptions;
@@ -21,7 +22,9 @@ public class PlayerRepository : IPlayerRepository
 
     public IEnumerable<Player> GetAll()
     {
-        var playerListResponse = _mapper.Map<List<Player>>(_context.Players);
+        var Players = _context.Players
+            .Include(p => p.GameRooms);
+        var playerListResponse = _mapper.Map<List<Player>>(Players);
         
         return playerListResponse;
     }
@@ -82,7 +85,9 @@ public class PlayerRepository : IPlayerRepository
     
     private PlayerDto PlayerIdValidation(int playerId)
     {
-        var playerDto = _context.Players.SingleOrDefault(x => x.Id == playerId);
+        var playerDto = _context.Players
+            .Include(p=>p.GameRooms)
+            .SingleOrDefault(x => x.Id == playerId);
 
         if (playerDto == null)
         {

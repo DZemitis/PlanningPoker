@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.NotFoundExceptions;
@@ -21,8 +22,11 @@ public class GameRoomRepository : IGameRoomRepository
 
     public List<GameRoom> GetAll()
     {
-        var gameRoomListResponse = _mapper.Map<List<GameRoom>>(_context.GameRooms);
-
+        var gameRooms = _context.GameRooms
+            .Include(gr => gr.Players);
+        
+        var gameRoomListResponse = _mapper.Map<List<GameRoom>>(gameRooms);
+        
         return gameRoomListResponse;
     }
 
@@ -117,7 +121,10 @@ public class GameRoomRepository : IGameRoomRepository
 
     private GameRoomDto GameRoomIdValidation(int gameRoomId)
     {
-        var gameRoomDto = _context.GameRooms.SingleOrDefault(g => g.Id == gameRoomId);
+        var gameRoomDto = _context.GameRooms
+            .Include(gr=>gr.Players)
+            .SingleOrDefault(g => g.Id == gameRoomId);
+        
         if (gameRoomDto == null)
         {
             throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
@@ -128,7 +135,9 @@ public class GameRoomRepository : IGameRoomRepository
 
     private PlayerDto PlayerIdValidation(int playerId)
     {
-        var playerDto = _context.Players.SingleOrDefault(p => p.Id == playerId);
+        var playerDto = _context.Players
+            .Include(p=>p.GameRooms)
+            .SingleOrDefault(p => p.Id == playerId);
         if (playerDto == null)
         {
             throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
