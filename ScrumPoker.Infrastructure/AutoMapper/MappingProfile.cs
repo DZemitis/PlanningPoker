@@ -18,12 +18,12 @@ public class MappingProfile : Profile
         CreateMap<GameRoom, GameRoomDto>();
         CreateMap<GameRoom, GameRoomApiResponse>();
         CreateMap<GameRoom, GameRoomInPlayerListApiResponse>();
-        CreateMap<GameRoomDto, GameRoom>();
+        CreateMap<GameRoomDtoResponse, GameRoom>();
         CreateMap<CreatePlayerApiRequest, Player>();
         CreateMap<UpdatePlayerApiRequest, Player>();
         CreateMap<Player, PlayerDto>();
         CreateMap<Player, PlayerApiResponse>();
         CreateMap<Player, PlayerInGameRoomApiResponse>();
-        CreateMap<PlayerDto, Player>();
+        CreateMap<PlayerDtoResponse, Player>();
     }
 }

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ScrumPoker.Business.Models.Models;
@@ -24,8 +25,15 @@ public class GameRoomRepository : IGameRoomRepository
     {
         var gameRooms = _context.GameRooms
             .Include(gr => gr.Players);
-        
-        var gameRoomListResponse = _mapper.Map<List<GameRoom>>(gameRooms);
+        var x = gameRooms.Select(x => x.Players).ToList();
+        var playerList = new PlayerDtoResponse();
+        var q = (from z in x from t in 
+            z select new PlayerDtoResponse {Email = t.Player.Email, Name = t.Player.Name, Id = t.Player.Id}).ToList();
+
+        var gameRoomsResponse = gameRooms.Select(gameRoom =>
+            new GameRoomDtoResponse {Id = gameRoom.Id, Name = gameRoom.Name, Players = new List<PlayerDtoResponse> {playerList}}).ToList();
+
+        var gameRoomListResponse = _mapper.Map<List<GameRoom>>(gameRoomsResponse);
         
         return gameRoomListResponse;
     }
@@ -50,7 +58,7 @@ public class GameRoomRepository : IGameRoomRepository
         var gameRoomDto = _mapper.Map<GameRoomDto>(addGameRoom);
         _context.GameRooms.Add(gameRoomDto);
         _context.SaveChanges();
-
+        
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
 
         return gameRoomDtoResponse;
@@ -87,14 +95,14 @@ public class GameRoomRepository : IGameRoomRepository
 
         /*var playerToRemove = PlayerIdValidationInGameRoom(playerId, gameRoomDto);*/
 
-        /*
-        gameRoomDto.Players.Remove(playerToRemove);
+        
+        /*gameRoomDto.Players.Remove(playerToRemove);*/
 
         var playerDto = PlayerIdValidation(playerId);
-        var gameRoomToRemove = playerDto.GameRooms.Single(x => x.Id == gameRoomId);
+        var gameRoomToRemove = playerDto.GameRooms.Single(x => x.GameRoomId == gameRoomId);
         
         playerDto.GameRooms.Remove(gameRoomToRemove);
-        _context.SaveChanges();*/
+        _context.SaveChanges();
     }
 
     public void AddPlayerToRoom(int gameRoomId, int playerId)
@@ -106,11 +114,18 @@ public class GameRoomRepository : IGameRoomRepository
         var playerDto = PlayerIdValidation(playerId);
 
         var gameRoomList = playerDto.GameRooms;
-
-        /*
-        playerList.Add(playerDto);
-        gameRoomList.Add(gameRoomDto);
-        _context.SaveChanges();*/
+        
+        var gameRoomPlayers = new GameRoomPlayer
+        {
+            Player = playerDto,
+            PlayerId = playerDto.Id,
+            GameRoom = gameRoomDto,
+            GameRoomId = gameRoomDto.Id
+        };
+        
+        playerList.Add(gameRoomPlayers);
+        gameRoomList.Add(gameRoomPlayers);
+        _context.SaveChanges();
     }
 
     private void ValidateAlreadyExistException(GameRoom gameRoomRequest)
@@ -151,7 +166,7 @@ public class GameRoomRepository : IGameRoomRepository
 
     /*private static PlayerDto PlayerIdValidationInGameRoom(int playerId, GameRoomDto gameRoomDto)
     {
-        var playerDto = gameRoomDto.Players.SingleOrDefault(x => x.Id == playerId);
+        var playerDto = gameRoomDto.Players.SingleOrDefault(x => x.PlayerId == playerId);
         if (playerDto == null)
         {
             throw new IdNotFoundException($"{typeof(Player)} in game room {gameRoomDto.Id} with player ID {playerId} not found");
