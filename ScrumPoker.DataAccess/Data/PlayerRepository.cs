@@ -23,7 +23,7 @@ public class PlayerRepository : IPlayerRepository
     public IEnumerable<Player> GetAll()
     {
         var Players = _context.Players
-            .Include(p => p.GameRoomsPlayers).ThenInclude(grp=>grp.GameRoom);
+            .Include(p => p.PlayerGameRooms).ThenInclude(grp=>grp.GameRoom);
         var playerListResponse = _mapper.Map<List<Player>>(Players);
         
         return playerListResponse;
@@ -86,7 +86,7 @@ public class PlayerRepository : IPlayerRepository
     private PlayerDto PlayerIdValidation(int playerId)
     {
         var playerDto = _context.Players
-            .Include(p=>p.GameRoomsPlayers).ThenInclude(grp=>grp.GameRoom)
+            .Include(p=>p.PlayerGameRooms).ThenInclude(grp=>grp.GameRoom)
             .SingleOrDefault(x => x.Id == playerId);
 
         if (playerDto == null)

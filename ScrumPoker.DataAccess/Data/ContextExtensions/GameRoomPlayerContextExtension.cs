@@ -17,7 +17,7 @@ public class GameRoomPlayerContextExtension
 
         builder.Entity<GameRoomPlayer>()
             .HasOne(p => p.Player)
-            .WithMany(gr => gr.GameRoomsPlayers)
+            .WithMany(gr => gr.PlayerGameRooms)
             .HasForeignKey(p => p.PlayerId);
 
         builder.Entity<GameRoomPlayer>()

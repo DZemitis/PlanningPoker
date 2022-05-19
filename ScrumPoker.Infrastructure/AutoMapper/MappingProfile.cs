@@ -28,6 +28,6 @@ public class MappingProfile : Profile
         CreateMap<Player, PlayerInGameRoomApiResponse>();
         CreateMap<PlayerDto, Player>()
             .ForMember(dest=>dest.GameRooms, opt=>
-                opt.MapFrom(pd=>pd.GameRoomsPlayers.Select(x=>x.GameRoom)));
+                opt.MapFrom(pd=>pd.PlayerGameRooms.Select(x=>x.GameRoom)));
     }
 }

@@ -91,9 +91,9 @@ public class GameRoomRepository : IGameRoomRepository
         gameRoomDto.GameRoomPlayers.Remove(playerToRemove);
 
         var playerDto = PlayerIdValidation(playerId);
-        var gameRoomToRemove = playerDto.GameRoomsPlayers.Single(x => x.GameRoomId == gameRoomId);
+        var gameRoomToRemove = playerDto.PlayerGameRooms.Single(x => x.GameRoomId == gameRoomId);
         
-        playerDto.GameRoomsPlayers.Remove(gameRoomToRemove);
+        playerDto.PlayerGameRooms.Remove(gameRoomToRemove);
         _context.SaveChanges();
     }
 
@@ -105,7 +105,7 @@ public class GameRoomRepository : IGameRoomRepository
 
         var playerDto = PlayerIdValidation(playerId);
 
-        var gameRoomList = playerDto.GameRoomsPlayers;
+        var gameRoomList = playerDto.PlayerGameRooms;
         
         var gameRoomPlayers = new GameRoomPlayer
         {
@@ -145,7 +145,7 @@ public class GameRoomRepository : IGameRoomRepository
     private PlayerDto PlayerIdValidation(int playerId)
     {
         var playerDto = _context.Players
-            .Include(p=>p.GameRoomsPlayers)
+            .Include(p=>p.PlayerGameRooms)
             .SingleOrDefault(p => p.Id == playerId);
         
         if (playerDto == null)
