@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ScrumPoker.DataAccess.Models.Models;
 
-namespace ScrumPoker.DataAccess.Data.ContextExtensions;
+namespace ScrumPoker.DataAccess.Models.ContextExtensions;
 
 public class PlayerContextExtension
 {

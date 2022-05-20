@@ -1,6 +1,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using ScrumPoker.DataAccess.Data;
+using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.Infrastructure;
 using ScrumPoker.Infrastructure.AutoMapper;
 using ScrumPoker.Infrastructure.Middlewares;

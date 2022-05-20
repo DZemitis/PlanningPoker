@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ScrumPoker.DataAccess.Models.Models;
 
-namespace ScrumPoker.DataAccess.Data;
+namespace ScrumPoker.DataAccess.Models.EFContext;
 
 public interface IScrumPokerContext
 {

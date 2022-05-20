@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using ScrumPoker.DataAccess.Data.ContextExtensions;
+using ScrumPoker.DataAccess.Models.ContextExtensions;
 using ScrumPoker.DataAccess.Models.Models;
 
-namespace ScrumPoker.DataAccess.Data;
+namespace ScrumPoker.DataAccess.Models.EFContext;
 
 public class ScrumPokerContext : DbContext, IScrumPokerContext
 {

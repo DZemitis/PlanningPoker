@@ -3,6 +3,7 @@ using ScrumPoker.Business;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.DataAccess.Data;
 using ScrumPoker.DataAccess.Interfaces;
+using ScrumPoker.DataAccess.Models.EFContext;
 
 namespace ScrumPoker.Infrastructure;
 
