@@ -9,7 +9,9 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
 {
     public int Order => int.MaxValue - 10;
 
-    public void OnActionExecuting(ActionExecutingContext context) { }
+    public void OnActionExecuting(ActionExecutingContext context)
+    {
+    }
 
     public void OnActionExecuted(ActionExecutedContext context)
     {
@@ -33,7 +35,7 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
                 Field = context.Exception.GetType().ToString(),
                 Messages = new List<string> {httpResponseException.Message}
             };
-                
+
             var response = new ScrumPokerErrorResponse
             {
                 Errors = new List<ScrumPokerError>
@@ -41,7 +43,7 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
                     errorResponse
                 }
             };
-                
+
             context.Result = new ObjectResult(response)
             {
                 StatusCode = statusCode

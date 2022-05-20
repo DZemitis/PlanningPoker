@@ -1,27 +1,31 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Interfaces;
+using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
-using ScrumPoker.DataAccess.PersistenceMock;
 
 namespace ScrumPoker.DataAccess.Data;
 
 /// <inheritdoc />
 public class PlayerRepository : IPlayerRepository
 {
-    private static int _id { get; set; }
     private readonly IMapper _mapper;
+    private readonly IScrumPokerContext _context;
 
-    public PlayerRepository(IMapper mapper)
+    public PlayerRepository(IMapper mapper, IScrumPokerContext context)
     {
         _mapper = mapper;
+        _context = context;
     }
 
     public IEnumerable<Player> GetAll()
     {
-        var playerListResponse = _mapper.Map<List<Player>>(TempDb.PlayerList);
+        var Players = _context.Players
+            .Include(p => p.PlayerGameRooms).ThenInclude(grp=>grp.GameRoom);
+        var playerListResponse = _mapper.Map<List<Player>>(Players);
         
         return playerListResponse;
     }
@@ -42,11 +46,11 @@ public class PlayerRepository : IPlayerRepository
         var addPlayer = new PlayerDto
         {
             Name = createPlayerRequest.Name,
-            Email = createPlayerRequest.Email,
-            Id = ++_id
+            Email = createPlayerRequest.Email
         };
         
-        TempDb.PlayerList.Add(addPlayer);
+        _context.Players.Add(addPlayer);
+        _context.SaveChanges();
         var playerDtoResponse = _mapper.Map<Player>(addPlayer);
 
         return playerDtoResponse;
@@ -58,6 +62,7 @@ public class PlayerRepository : IPlayerRepository
         var playerDto = PlayerIdValidation(updatePlayerRequest.Id);
 
         playerDto.Name = updatePlayerRequest.Name;
+        _context.SaveChanges();
 
         var playerDtoResponse = _mapper.Map<Player>(playerDto);
 
@@ -66,22 +71,24 @@ public class PlayerRepository : IPlayerRepository
 
     public void DeleteById(int id)
     {
-        PlayerIdValidation(id);
-        
-        TempDb.PlayerList.RemoveAll(x => x.Id == id);
+        var playerDto = PlayerIdValidation(id);
+        _context.Players.Remove(playerDto);
+        _context.SaveChanges();
     }
 
-    private static void ValidateAlreadyExist(Player player)
+    private void ValidateAlreadyExist(Player player)
     {
-        if (TempDb.GameRooms.Any(x => x.Id == player.Id))
+        if (_context.Players.Any(p => p.Id == player.Id))
         {
             throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
         }
     }
     
-    private static PlayerDto PlayerIdValidation(int playerId)
+    private PlayerDto PlayerIdValidation(int playerId)
     {
-        var playerDto = TempDb.PlayerList.SingleOrDefault(x => x.Id == playerId);
+        var playerDto = _context.Players
+            .Include(p=>p.PlayerGameRooms).ThenInclude(grp=>grp.GameRoom)
+            .SingleOrDefault(x => x.Id == playerId);
 
         if (playerDto == null)
         {

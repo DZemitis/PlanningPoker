@@ -3,6 +3,7 @@ using ScrumPoker.Business;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.DataAccess.Data;
 using ScrumPoker.DataAccess.Interfaces;
+using ScrumPoker.DataAccess.Models.EFContext;
 
 namespace ScrumPoker.Infrastructure;
 
@@ -14,5 +15,6 @@ public static class DependencyInjection
         services.AddTransient<IGameRoomRepository, GameRoomRepository>();
         services.AddTransient<IPlayerRepository, PlayerRepository>();
         services.AddTransient<IPlayerService, PlayerService>();
+        services.AddTransient<IScrumPokerContext, ScrumPokerContext>();
     }
 }
