@@ -1,15 +1,21 @@
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
-using ScrumPoker.DataAccess.Data;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.Infrastructure;
 using ScrumPoker.Infrastructure.AutoMapper;
 using ScrumPoker.Infrastructure.Middlewares;
 using ScrumPoker.Web.Validators;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ScrumPokerContext>(opt =>

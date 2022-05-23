@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using ScrumPoker.Common;
 using ScrumPoker.Web.Models.Models.WebResponse;
 
@@ -7,6 +8,14 @@ namespace ScrumPoker.Infrastructure.Middlewares;
 
 public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
 {
+    private readonly ILogger<HttpResponseExceptionFilter> _logger;
+
+
+    public HttpResponseExceptionFilter(ILogger<HttpResponseExceptionFilter> logger)
+    {
+        _logger = logger;
+    }
+
     public int Order => int.MaxValue - 10;
 
     public void OnActionExecuting(ActionExecutingContext context)
