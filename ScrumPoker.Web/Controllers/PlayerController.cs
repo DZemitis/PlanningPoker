@@ -80,7 +80,7 @@ public class PlayerController : ControllerBase
     [Route("Update")]
     public IActionResult UpdatePlayer(UpdatePlayerApiRequest playerRequest)
     {
-        _logger.LogInformation("Request to change player(ID{ID}) name to {name}",playerRequest.Id ,playerRequest.Name);
+        _logger.LogInformation("Request to change player(ID {ID}) name to {name}",playerRequest.Id ,playerRequest.Name);
         var updatePlayerRequest = _mapper.Map<Player>(playerRequest);
         var updatePlayer = _playerService.Update(updatePlayerRequest);
         var updatePlayerResponse = _mapper.Map<PlayerApiResponse>(updatePlayer);
@@ -97,7 +97,7 @@ public class PlayerController : ControllerBase
     [Route("Delete/{id:int}")]
     public IActionResult DeletePlayerById(int id)
     {
-        _logger.LogInformation("Request to delete player(ID{id})", id);
+        _logger.LogInformation("Request to delete player(ID {id})", id);
         _playerService.DeleteById(id);
 
         return Ok($"Player with ID : {id} has been deleted");
