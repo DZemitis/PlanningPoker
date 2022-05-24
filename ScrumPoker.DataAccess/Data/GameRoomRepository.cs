@@ -128,7 +128,7 @@ public class GameRoomRepository : IGameRoomRepository
     {
         if (_context.GameRooms.Any(x => x.Id == gameRoomRequest.Id))
         {
-            _logger.LogWarning("Could not make game room with already existing ID {0}", gameRoomRequest.Id);
+            _logger.LogWarning("Game room with ID{Id} already exists", gameRoomRequest.Id);
             throw new IdAlreadyExistException($"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
         }
     }
@@ -141,7 +141,7 @@ public class GameRoomRepository : IGameRoomRepository
         
         if (gameRoomDto == null)
         {
-            _logger.LogWarning("Game Room with ID {0} could not be found", gameRoomId);
+            _logger.LogWarning("Game Room with ID {Id} could not be found", gameRoomId);
             throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
         }
 
@@ -156,7 +156,7 @@ public class GameRoomRepository : IGameRoomRepository
         
         if (playerDto == null)
         {
-            _logger.LogWarning("Player with ID {0} has not been found", playerId);
+            _logger.LogWarning("Player with ID {Id} could not been found", playerId);
             throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
         }
 
@@ -168,7 +168,7 @@ public class GameRoomRepository : IGameRoomRepository
         var playerDto = gameRoomDto.GameRoomPlayers.SingleOrDefault(gr => gr.PlayerId == playerId);
         if (playerDto == null)
         {
-            _logger.LogWarning("Player with ID {0} in Game Room with ID {1} was not found", playerId, gameRoomDto.Id);
+            _logger.LogWarning("Player(ID{PlayerId}) in Game Room (ID{GameRoomId}) was not found", playerId, gameRoomDto.Id);
             throw new IdNotFoundException($"{typeof(Player)} in game room {gameRoomDto.Id} with player ID {playerId} not found");
         }
 

@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
+using ScrumPoker.DataAccess.Models.Models;
 using ScrumPoker.Web.Models.Models.WebRequest;
 using ScrumPoker.Web.Models.Models.WebResponse;
 
@@ -14,11 +15,13 @@ public class PlayerController : ControllerBase
 {
     private readonly IPlayerService _playerService;
     private readonly IMapper _mapper;
+    private readonly ILogger<PlayerController> _logger;
 
-    public PlayerController(IPlayerService playerService, IMapper mapper)
+    public PlayerController(IPlayerService playerService, IMapper mapper, ILogger<PlayerController> logger)
     {
         _playerService = playerService;
         _mapper = mapper;
+        _logger = logger;
     }
     
     /// <summary>
@@ -29,6 +32,7 @@ public class PlayerController : ControllerBase
     [Route("List")]
     public IActionResult GetAllPlayers()
     {
+        _logger.LogInformation("Request to get all players list");
         var playerList = _playerService.GetAll();
         var playerDisplayList = playerList.Select(player => _mapper.Map<PlayerApiResponse>(player)).ToList();
         return Ok(playerDisplayList);
@@ -43,6 +47,7 @@ public class PlayerController : ControllerBase
     [Route("{id:int}")]
     public IActionResult GetPlayerById(int id)
     {
+        _logger.LogInformation("Request to get player by ID {id}", id);
         var player = _playerService.GetById(id);
         var playerDisplay = _mapper.Map<PlayerApiResponse>(player);
 
@@ -58,6 +63,7 @@ public class PlayerController : ControllerBase
     [Route("Create")]
     public IActionResult CreatePlayer(CreatePlayerApiRequest playerRequest)
     {
+        _logger.LogInformation("Request to create player with name {name}, email {email}", playerRequest.Name, playerRequest.Email);
         var createPlayerRequest = _mapper.Map<Player>(playerRequest);
         var createPlayer = _playerService.Create(createPlayerRequest);
         var playerResponse = _mapper.Map<PlayerApiResponse>(createPlayer);
@@ -74,6 +80,7 @@ public class PlayerController : ControllerBase
     [Route("Update")]
     public IActionResult UpdatePlayer(UpdatePlayerApiRequest playerRequest)
     {
+        _logger.LogInformation("Request to change player(ID{ID}) name to {name}",playerRequest.Id ,playerRequest.Name);
         var updatePlayerRequest = _mapper.Map<Player>(playerRequest);
         var updatePlayer = _playerService.Update(updatePlayerRequest);
         var updatePlayerResponse = _mapper.Map<PlayerApiResponse>(updatePlayer);
@@ -90,6 +97,7 @@ public class PlayerController : ControllerBase
     [Route("Delete/{id:int}")]
     public IActionResult DeletePlayerById(int id)
     {
+        _logger.LogInformation("Request to delete player(ID{id})", id);
         _playerService.DeleteById(id);
 
         return Ok($"Player with ID : {id} has been deleted");
