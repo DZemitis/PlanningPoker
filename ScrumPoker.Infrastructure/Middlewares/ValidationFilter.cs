@@ -3,7 +3,7 @@ using ScrumPoker.Web.Models.Models.WebResponse;
 
 namespace ScrumPoker.Infrastructure.Middlewares;
 
-public static class ValidationFilter
+public  class ValidationFilter
 {
     public static IActionResult Process(ActionContext context)
     {
@@ -22,7 +22,6 @@ public static class ValidationFilter
         {
             Errors = errors.ToList()
         };
-        
         return new BadRequestObjectResult(errorResponse);
     }
 }

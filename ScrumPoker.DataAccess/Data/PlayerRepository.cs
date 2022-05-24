@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.NotFoundExceptions;
@@ -14,11 +15,13 @@ public class PlayerRepository : IPlayerRepository
 {
     private readonly IMapper _mapper;
     private readonly IScrumPokerContext _context;
+    private readonly ILogger<PlayerRepository> _logger;
 
-    public PlayerRepository(IMapper mapper, IScrumPokerContext context)
+    public PlayerRepository(IMapper mapper, IScrumPokerContext context, ILogger<PlayerRepository> logger)
     {
         _mapper = mapper;
         _context = context;
+        _logger = logger;
     }
 
     public IEnumerable<Player> GetAll()
@@ -80,6 +83,7 @@ public class PlayerRepository : IPlayerRepository
     {
         if (_context.Players.Any(p => p.Id == player.Id))
         {
+            _logger.LogWarning("Player with ID{ID} already exists", player.Id);
             throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
         }
     }
@@ -92,6 +96,7 @@ public class PlayerRepository : IPlayerRepository
 
         if (playerDto == null)
         {
+            _logger.LogWarning("Player with ID{ID} could not be found", playerId);
             throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
         }
 

@@ -4,6 +4,7 @@ using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Web.Models.Models.WebRequest;
 using ScrumPoker.Web.Models.Models.WebResponse;
+using Serilog;
 
 namespace ScrumPoker.Web.Controllers;
 
@@ -13,13 +14,15 @@ public class GameRoomController : ControllerBase
 {
     private readonly IGameRoomService _gameRoomService;
     private readonly IMapper _mapper;
+    private readonly ILogger<GameRoomController> _logger;
 
-    public GameRoomController(IGameRoomService gameRoomService, IMapper mapper)
+    public GameRoomController(IGameRoomService gameRoomService, IMapper mapper, ILogger<GameRoomController> logger)
     {
         _gameRoomService = gameRoomService;
         _mapper = mapper;
+        _logger = logger;
     }
-
+    
     /// <summary>
     /// Returns full list of game rooms
     /// </summary>
@@ -28,9 +31,10 @@ public class GameRoomController : ControllerBase
     [Route("List")]
     public IActionResult GetFullGameRoomList()
     {
+        _logger.LogInformation("Request to get list of all game rooms");
         var gameRoomList = _gameRoomService.GetAll();
         var gameRoomListResponse = _mapper.Map<List<GameRoomApiResponse>>(gameRoomList);
-       
+
         return Ok(gameRoomListResponse);
     }
 
@@ -43,9 +47,10 @@ public class GameRoomController : ControllerBase
     [Route("{id:int}")]
     public IActionResult GetRoomById(int id)
     {
+        _logger.LogInformation("Request to find game room with ID {Id}", id);
         var gameRoom = _gameRoomService.GetById(id);
         var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(gameRoom);
-
+        
         return Ok(gameRoomResponse);
     }
 
@@ -58,11 +63,12 @@ public class GameRoomController : ControllerBase
     [Route("Create")]
     public IActionResult CreateGameRoom(CreateGameRoomApiRequest gameRoomRequest)
     {
+        _logger.LogInformation("Request to create game room with name - {Name}", gameRoomRequest.Name);
         var createGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
 
         var createGameRoom = _gameRoomService.Create(createGameRoomRequest);
         var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(createGameRoom);
-
+        
         return Created("", gameRoomResponse);
     }
 
@@ -75,6 +81,7 @@ public class GameRoomController : ControllerBase
     [Route("Update")]
     public IActionResult UpdateGameRoom(UpdateGameRoomApiRequest gameRoomRequest)
     {
+        _logger.LogInformation("Request to change game rooms(ID {Id}) name to - {Name}", gameRoomRequest.Id, gameRoomRequest.Name);
         var updateGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
 
         var updateGameRoom = _gameRoomService.Update(updateGameRoomRequest);
@@ -91,8 +98,9 @@ public class GameRoomController : ControllerBase
     [Route("DeleteAll")]
     public IActionResult DeleteAllGameRooms()
     {
+        _logger.LogInformation("Request to delete all game rooms");
         _gameRoomService.DeleteAll();
-
+        
         return Ok("All game rooms has been deleted");
     }
 
@@ -105,6 +113,7 @@ public class GameRoomController : ControllerBase
     [Route("Delete/{id:int}")]
     public IActionResult DeleteGameRoomById(int id)
     {
+        _logger.LogInformation("Request to delete game room with ID - {Id}", id);
         _gameRoomService.DeleteById(id);
 
         return Ok($"Game room with ID : {id} has been deleted");
@@ -120,6 +129,7 @@ public class GameRoomController : ControllerBase
     [Route("AddPlayer")]
     public IActionResult AddPlayerToRoom(int idOfGameRoomToAdd, int idOfPlayerToAdd)
     {
+        _logger.LogInformation("Request to add player(ID {PlayerId}) to game room(ID {GameRoomId})", idOfPlayerToAdd, idOfGameRoomToAdd);
         _gameRoomService.AddPlayer(idOfGameRoomToAdd, idOfPlayerToAdd);
         var getGameRoom = _gameRoomService.GetById(idOfGameRoomToAdd);
         var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(getGameRoom);
@@ -137,6 +147,7 @@ public class GameRoomController : ControllerBase
     [Route("RemovePlayer")]
     public IActionResult RemovePlayerFromRoom(int gameRoomId, int playerId)
     {
+        _logger.LogInformation("Request to remove player(ID {PlayerId}) from game room(ID {GameRoomId})", playerId, gameRoomId);
         _gameRoomService.RemovePlayer(gameRoomId, playerId);
 
         return Ok("Player has been removed from room");

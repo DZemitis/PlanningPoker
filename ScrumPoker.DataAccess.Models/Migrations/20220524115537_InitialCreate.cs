@@ -2,9 +2,9 @@
 
 #nullable disable
 
-namespace ScrumPoker.DataAccess.Migrations
+namespace ScrumPoker.DataAccess.Models.Migrations
 {
-    public partial class Init : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
