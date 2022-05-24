@@ -4,6 +4,7 @@ using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Web.Models.Models.WebRequest;
 using ScrumPoker.Web.Models.Models.WebResponse;
+using Serilog;
 
 namespace ScrumPoker.Web.Controllers;
 
@@ -21,7 +22,7 @@ public class GameRoomController : ControllerBase
         _mapper = mapper;
         _logger = logger;
     }
-
+    
     /// <summary>
     /// Returns full list of game rooms
     /// </summary>
