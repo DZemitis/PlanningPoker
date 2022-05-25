@@ -9,7 +9,7 @@ public class GameRoomPlayerContextExtension
     {
         builder.Entity<GameRoomPlayer>()
             .HasKey(gp => new {gp.GameRoomId, gp.PlayerId});
-
+        
         builder.Entity<GameRoomPlayer>()
             .HasOne(gr => gr.GameRoom)
             .WithMany(p => p.GameRoomPlayers)

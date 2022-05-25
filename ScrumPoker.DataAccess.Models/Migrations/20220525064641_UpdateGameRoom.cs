@@ -4,23 +4,10 @@
 
 namespace ScrumPoker.DataAccess.Models.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class UpdateGameRoom : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "GameRooms",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GameRooms", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Players",
                 columns: table => new
@@ -33,6 +20,29 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GameRooms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MasterId = table.Column<int>(type: "int", nullable: false),
+                    Story = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Round = table.Column<int>(type: "int", nullable: false),
+                    RoundState = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GameRooms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GameRooms_Players_MasterId",
+                        column: x => x.MasterId,
+                        principalTable: "Players",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,6 +73,11 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                 name: "IX_GameRooms_Id",
                 table: "GameRooms",
                 column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GameRooms_MasterId",
+                table: "GameRooms",
+                column: "MasterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GameRoomsPlayers_GameRoomId_PlayerId",

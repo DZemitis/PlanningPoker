@@ -48,9 +48,11 @@ public class GameRoomRepository : IGameRoomRepository
         
         var addGameRoom = new GameRoomDto
         {
-            Name = gameRoomRequest.Name
+            Name = gameRoomRequest.Name,
+            Story = gameRoomRequest.Story,
+            MasterID = _context.Players.Single(x=>x.Id == gameRoomRequest.MasterId)
         };
-
+        
         var gameRoomDto = _mapper.Map<GameRoomDto>(addGameRoom);
         _context.GameRooms.Add(gameRoomDto);
         _context.SaveChanges();

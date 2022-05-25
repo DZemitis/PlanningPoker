@@ -11,8 +11,8 @@ using ScrumPoker.DataAccess.Models.EFContext;
 namespace ScrumPoker.DataAccess.Models.Migrations
 {
     [DbContext(typeof(ScrumPokerContext))]
-    [Migration("20220524115537_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220525064641_UpdateGameRoom")]
+    partial class UpdateGameRoom
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,13 +31,28 @@ namespace ScrumPoker.DataAccess.Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("MasterId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Round")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoundState")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Story")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id");
+
+                    b.HasIndex("MasterId");
 
                     b.ToTable("GameRooms", (string)null);
                 });
@@ -80,6 +95,17 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                     b.HasIndex("Id", "Email");
 
                     b.ToTable("Players", (string)null);
+                });
+
+            modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.GameRoomDto", b =>
+                {
+                    b.HasOne("ScrumPoker.DataAccess.Models.Models.PlayerDto", "Master")
+                        .WithMany()
+                        .HasForeignKey("MasterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Master");
                 });
 
             modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.GameRoomPlayer", b =>
