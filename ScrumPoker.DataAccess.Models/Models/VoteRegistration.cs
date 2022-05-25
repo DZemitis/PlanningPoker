@@ -6,5 +6,5 @@ public class VoteRegistration
     public int PlayerId { get; set; }
     public int GameRoomId { get; set; }
     public int Vote { get; set; }
-    public int RoundNr { get; set; }
+    public int RoundId { get; set; }
 }

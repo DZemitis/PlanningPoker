@@ -8,4 +8,5 @@ public class GameRoomDto
     public PlayerDto MasterID { get; set; } = null!;
     public string Story { get; set; } = null!;
     public Round Round { get; set; } = null!;
+    public int CurrentRoundId { get; set; }
 }
