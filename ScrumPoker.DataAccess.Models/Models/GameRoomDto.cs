@@ -7,6 +7,5 @@ public class GameRoomDto
     public ICollection<GameRoomPlayer> GameRoomPlayers { get; set; } = null!;
     public PlayerDto MasterID { get; set; } = null!;
     public string Story { get; set; } = null!;
-    public int Round { get; set; }
-    public int RoundState { get; set; }
+    public RoundState RoundState { get; set; } = null!;
 }
