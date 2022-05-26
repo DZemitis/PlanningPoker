@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.ConflictExceptions;
+using ScrumPoker.Common.Models;
 using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.EFContext;
@@ -175,5 +176,44 @@ public class GameRoomRepository : IGameRoomRepository
         }
 
         return playerDto;
+    }
+
+    public void SetRound(GameRoom gameRoom)
+    {
+        var gameRoomDto = GameRoomIdValidation(gameRoom.Id);
+        gameRoomDto.CurrentRoundId = gameRoom.CurrentRoundId;
+
+        _context.SaveChanges();
+    }
+
+    public void SetRoundState(GameRoom gameRoom)
+    {
+        var gameRoomDto = GameRoomIdValidation(gameRoom.Id);
+        gameRoomDto.RoundDto.RoundState = gameRoom.Round!.RoundState;
+
+        _context.SaveChanges();
+    }
+    
+    public void CreateVote(VoteRegistration voteRequest)
+    {
+        var gameRoomDto = GameRoomIdValidation(voteRequest.GameRoomId);
+        var playerDto = PlayerIdValidationInGameRoom(voteRequest.PlayerId, gameRoomDto);
+        var voteRegistrationDto = _context.Votes;
+        
+        var voteRequestDto = new VoteRegistrationDto
+        {
+            Vote = voteRequest.Id,
+            PlayerId = voteRequest.PlayerId,
+            GameRoomId = voteRequest.GameRoomId,
+            RoundId = voteRequest.RoundId,
+        };
+        
+        var expectedRoundState = gameRoomDto.RoundDto.RoundState;
+        if (expectedRoundState.Equals((RoundState) 2))
+        {
+            voteRegistrationDto.Add(voteRequestDto);
+        }
+
+        _context.SaveChanges();
     }
 }

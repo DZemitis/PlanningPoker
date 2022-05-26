@@ -7,6 +7,6 @@ public class GameRoom
     public List<Player> Players { get; set; } = null!;
     public string Story { get; set; } = null!;
     public int MasterId { get; set; }
-    public int? Round { get; set; }
-    public int? RoundState { get; set; }
+    public int CurrentRoundId { get; set; }
+    public Round? Round { get; set; }
 }

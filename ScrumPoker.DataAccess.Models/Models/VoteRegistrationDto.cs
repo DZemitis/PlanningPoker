@@ -1,6 +1,6 @@
 namespace ScrumPoker.DataAccess.Models.Models;
 
-public class VoteRegistration
+public class VoteRegistrationDto
 {
     public int Id { get; set; }
     public int PlayerId { get; set; }

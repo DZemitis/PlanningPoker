@@ -78,7 +78,7 @@ public class PlayerRepository : IPlayerRepository
         _context.Players.Remove(playerDto);
         _context.SaveChanges();
     }
-
+    
     private void ValidateAlreadyExist(Player player)
     {
         if (_context.Players.Any(p => p.Id == player.Id))

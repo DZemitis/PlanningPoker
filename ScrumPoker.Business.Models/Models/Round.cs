@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
-namespace ScrumPoker.DataAccess.Models.Models;
+namespace ScrumPoker.Business.Models.Models;
 
 public class Round
 {
