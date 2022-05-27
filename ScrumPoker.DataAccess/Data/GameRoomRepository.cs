@@ -17,12 +17,14 @@ public class GameRoomRepository : IGameRoomRepository
     private readonly IMapper _mapper;
     private readonly IScrumPokerContext _context;
     private readonly ILogger<GameRoomRepository> _logger;
+    private readonly IValidation _validator;
 
-    public GameRoomRepository(IMapper mapper, IScrumPokerContext context, ILogger<GameRoomRepository> logger)
+    public GameRoomRepository(IMapper mapper, IScrumPokerContext context, ILogger<GameRoomRepository> logger, IValidation validator)
     {
         _mapper = mapper;
         _context = context;
         _logger = logger;
+        _validator = validator;
     }
 
     public List<GameRoom> GetAll()
@@ -39,7 +41,7 @@ public class GameRoomRepository : IGameRoomRepository
     
     public GameRoom GetById(int id)
     {
-        var gameRoomDto = GameRoomIdValidation(id);
+        var gameRoomDto = _validator.GameRoomIdValidation(id);
         
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
         return gameRoomDtoResponse;
@@ -47,7 +49,7 @@ public class GameRoomRepository : IGameRoomRepository
 
     public GameRoom Create(GameRoom gameRoomRequest)
     {
-        ValidateAlreadyExistException(gameRoomRequest);
+        _validator.ValidateAlreadyExistException(gameRoomRequest);
         var Round = _context.Rounds;
         
         var initialRound = new RoundDto
@@ -79,7 +81,7 @@ public class GameRoomRepository : IGameRoomRepository
 
     public GameRoom Update(GameRoom gameRoomRequest)
     {
-        var gameRoomDto = GameRoomIdValidation(gameRoomRequest.Id);
+        var gameRoomDto = _validator.GameRoomIdValidation(gameRoomRequest.Id);
 
         gameRoomDto.Name = gameRoomRequest.Name;
         _context.SaveChanges();
@@ -97,21 +99,21 @@ public class GameRoomRepository : IGameRoomRepository
 
     public void DeleteById(int id)
     {
-        var gameRoomDto = GameRoomIdValidation(id);
+        var gameRoomDto = _validator.GameRoomIdValidation(id);
         _context.GameRooms.Remove(gameRoomDto);
         _context.SaveChanges();
     }
 
     public void RemoveGameRoomPlayerById(int gameRoomId, int playerId)
     {
-        var gameRoomDto = GameRoomIdValidation(gameRoomId);
+        var gameRoomDto = _validator.GameRoomIdValidation(gameRoomId);
 
-        var playerToRemove = PlayerIdValidationInGameRoom(playerId, gameRoomDto);
+        var playerToRemove = _validator.PlayerIdValidationInGameRoom(playerId, gameRoomDto);
 
         
         gameRoomDto.GameRoomPlayers.Remove(playerToRemove);
 
-        var playerDto = PlayerIdValidation(playerId);
+        var playerDto = _validator.PlayerIdValidation(playerId);
         var gameRoomToRemove = playerDto.PlayerGameRooms.Single(x => x.GameRoomId == gameRoomId);
         
         playerDto.PlayerGameRooms.Remove(gameRoomToRemove);
@@ -120,11 +122,11 @@ public class GameRoomRepository : IGameRoomRepository
 
     public void AddPlayerToRoom(int gameRoomId, int playerId)
     {
-        var gameRoomDto = GameRoomIdValidation(gameRoomId);
+        var gameRoomDto = _validator.GameRoomIdValidation(gameRoomId);
         
         var playerList = gameRoomDto.GameRoomPlayers;
 
-        var playerDto = PlayerIdValidation(playerId);
+        var playerDto = _validator.PlayerIdValidation(playerId);
 
         var gameRoomList = playerDto.PlayerGameRooms;
         
@@ -141,60 +143,60 @@ public class GameRoomRepository : IGameRoomRepository
         _context.SaveChanges();
     }
 
-    private void ValidateAlreadyExistException(GameRoom gameRoomRequest)
-    {
-        if (_context.GameRooms.Any(x => x.Id == gameRoomRequest.Id))
-        {
-            _logger.LogWarning("Game room with ID{Id} already exists", gameRoomRequest.Id);
-            throw new IdAlreadyExistException($"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
-        }
-    }
+    // private void ValidateAlreadyExistException(GameRoom gameRoomRequest)
+    // {
+    //     if (_context.GameRooms.Any(x => x.Id == gameRoomRequest.Id))
+    //     {
+    //         _logger.LogWarning("Game room with ID{Id} already exists", gameRoomRequest.Id);
+    //         throw new IdAlreadyExistException($"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
+    //     }
+    // }
 
-    private GameRoomDto GameRoomIdValidation(int gameRoomId)
-    {
-        var gameRoomDto = _context.GameRooms
-            .Include(gr=>gr.GameRoomPlayers).ThenInclude(x=>x.Player)
-            .SingleOrDefault(g => g.Id == gameRoomId);
-        
-        if (gameRoomDto == null)
-        {
-            _logger.LogWarning("Game Room with ID {Id} could not be found", gameRoomId);
-            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
-        }
-
-        return gameRoomDto;
-    }
-
-    private PlayerDto PlayerIdValidation(int playerId)
-    {
-        var playerDto = _context.Players
-            .Include(p=>p.PlayerGameRooms)
-            .SingleOrDefault(p => p.Id == playerId);
-        
-        if (playerDto == null)
-        {
-            _logger.LogWarning("Player with ID {Id} could not been found", playerId);
-            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
-        }
-
-        return playerDto;
-    }
-
-    private GameRoomPlayer PlayerIdValidationInGameRoom(int playerId, GameRoomDto gameRoomDto)
-    {
-        var playerDto = gameRoomDto.GameRoomPlayers.SingleOrDefault(gr => gr.PlayerId == playerId);
-        if (playerDto == null)
-        {
-            _logger.LogWarning("Player(ID{PlayerId}) in Game Room (ID{GameRoomId}) was not found", playerId, gameRoomDto.Id);
-            throw new IdNotFoundException($"{typeof(Player)} in game room {gameRoomDto.Id} with player ID {playerId} not found");
-        }
-
-        return playerDto;
-    }
+    // private GameRoomDto GameRoomIdValidation(int gameRoomId)
+    // {
+    //     var gameRoomDto = _context.GameRooms
+    //         .Include(gr=>gr.GameRoomPlayers).ThenInclude(x=>x.Player)
+    //         .SingleOrDefault(g => g.Id == gameRoomId);
+    //     
+    //     if (gameRoomDto == null)
+    //     {
+    //         _logger.LogWarning("Game Room with ID {Id} could not be found", gameRoomId);
+    //         throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
+    //     }
+    //
+    //     return gameRoomDto;
+    // }
+    //
+    // private PlayerDto PlayerIdValidation(int playerId)
+    // {
+    //     var playerDto = _context.Players
+    //         .Include(p=>p.PlayerGameRooms)
+    //         .SingleOrDefault(p => p.Id == playerId);
+    //     
+    //     if (playerDto == null)
+    //     {
+    //         _logger.LogWarning("Player with ID {Id} could not been found", playerId);
+    //         throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
+    //     }
+    //
+    //     return playerDto;
+    // }
+    //
+    // private GameRoomPlayer PlayerIdValidationInGameRoom(int playerId, GameRoomDto gameRoomDto)
+    // {
+    //     var playerDto = gameRoomDto.GameRoomPlayers.SingleOrDefault(gr => gr.PlayerId == playerId);
+    //     if (playerDto == null)
+    //     {
+    //         _logger.LogWarning("Player(ID{PlayerId}) in Game Room (ID{GameRoomId}) was not found", playerId, gameRoomDto.Id);
+    //         throw new IdNotFoundException($"{typeof(Player)} in game room {gameRoomDto.Id} with player ID {playerId} not found");
+    //     }
+    //
+    //     return playerDto;
+    // }
 
     public void SetRound(GameRoom gameRoom)
     {
-        var gameRoomDto = GameRoomIdValidation(gameRoom.Id);
+        var gameRoomDto = _validator.GameRoomIdValidation(gameRoom.Id);
         gameRoomDto.CurrentRoundId = gameRoom.CurrentRoundId;
 
         _context.SaveChanges(); 
@@ -202,7 +204,7 @@ public class GameRoomRepository : IGameRoomRepository
 
     public void SetRoundState(GameRoom gameRoom)
     {
-        var gameRoomDto = GameRoomIdValidation(gameRoom.Id);
+        var gameRoomDto = _validator.GameRoomIdValidation(gameRoom.Id);
         gameRoomDto.RoundDto.RoundState = gameRoom.Round.RoundState;
 
         _context.SaveChanges();
@@ -210,8 +212,8 @@ public class GameRoomRepository : IGameRoomRepository
     
     public void CreateVote(VoteRegistration voteRequest)
     {
-        var gameRoomDto = GameRoomIdValidation(voteRequest.GameRoomId);
-        var playerDto = PlayerIdValidationInGameRoom(voteRequest.PlayerId, gameRoomDto);
+        var gameRoomDto = _validator.GameRoomIdValidation(voteRequest.GameRoomId);
+        _validator.PlayerIdValidationInGameRoom(voteRequest.PlayerId, gameRoomDto);
         var voteRegistrationDto = _context.Votes;
         var votingHistory = _context.Rounds.Select(x => x.Votes).First();
 
@@ -233,18 +235,7 @@ public class GameRoomRepository : IGameRoomRepository
         _context.SaveChanges();
     }
 
-    public void ClearRoundVotes(GameRoom gameRoom)
-    {
-        var gameRoomDto = GameRoomIdValidation(gameRoom.Id);
-        var votesDto = _context.Votes;
-        var votes = _context.Votes.Where(x=>x.GameRoomId == gameRoom.Id);
-        
-        votesDto.RemoveRange(votes);
-
-        _context.SaveChanges();
-    }
-
-    private string RoundStateDescription(RoundState roundState)
+    public string RoundStateDescription(RoundState roundState)
     {
         var description = string.Empty;
         switch (roundState)
@@ -255,8 +246,6 @@ public class GameRoomRepository : IGameRoomRepository
                return description = "Please submit your vote";
             case RoundState.VoteReview:
                return description = "Votes are being reviewed";
-            default:
-                break;
         }
 
         return description;

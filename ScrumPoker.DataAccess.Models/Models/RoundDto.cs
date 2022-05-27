@@ -10,5 +10,5 @@ public class RoundDto
     public int RoundId { get; set; }
     public RoundState RoundState { get; set; }
     public string Description { get; set; } = null!;
-    public List<VoteRegistrationDto>? Votes { get; set; }
+    public List<VoteRegistrationDto> Votes { get; set; } = null!;
 }
