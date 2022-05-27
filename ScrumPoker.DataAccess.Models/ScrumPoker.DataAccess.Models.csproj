@@ -23,4 +23,8 @@
       <ProjectReference Include="..\ScrumPoker.Common\ScrumPoker.Common.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Migrations" />
+    </ItemGroup>
+
 </Project>

@@ -8,5 +8,5 @@ public class GameRoom
     public string Story { get; set; } = null!;
     public int MasterId { get; set; }
     public int CurrentRoundId { get; set; }
-    public Round? Round { get; set; }
+    public Round Round { get; set; } = null!;
 }

@@ -28,7 +28,9 @@ public class GameRoomRepository : IGameRoomRepository
     public List<GameRoom> GetAll()
     {
         var gameRooms = _context.GameRooms
-            .Include(gr => gr.GameRoomPlayers).ThenInclude(p=>p.Player);
+            .Include(gr => gr.GameRoomPlayers).ThenInclude(p => p.Player)
+            .Include(gr => gr.MasterID)
+            .Include(x=>x.RoundDto);
         
         var gameRoomListResponse = _mapper.Map<List<GameRoom>>(gameRooms);
         
@@ -46,14 +48,26 @@ public class GameRoomRepository : IGameRoomRepository
     public GameRoom Create(GameRoom gameRoomRequest)
     {
         ValidateAlreadyExistException(gameRoomRequest);
+        var Round = _context.Rounds;
+        
+        var initialRound = new RoundDto
+        {
+            RoundState = RoundState.Grooming,
+            Description = RoundStateDescription(RoundState.Grooming),
+            RoundId = 2
+        };
+        _context.Rounds.Add(initialRound);
+        _context.SaveChanges();
         
         var addGameRoom = new GameRoomDto
         {
             Name = gameRoomRequest.Name,
             Story = gameRoomRequest.Story,
-            MasterID = _context.Players.Single(x=>x.Id == gameRoomRequest.MasterId)
+            MasterID = _context.Players.Single(x=>x.Id == gameRoomRequest.MasterId),
+            RoundDto = initialRound,
+            CurrentRoundId = initialRound.RoundId
         };
-        
+
         var gameRoomDto = _mapper.Map<GameRoomDto>(addGameRoom);
         _context.GameRooms.Add(gameRoomDto);
         _context.SaveChanges();
@@ -183,13 +197,13 @@ public class GameRoomRepository : IGameRoomRepository
         var gameRoomDto = GameRoomIdValidation(gameRoom.Id);
         gameRoomDto.CurrentRoundId = gameRoom.CurrentRoundId;
 
-        _context.SaveChanges();
+        _context.SaveChanges(); 
     }
 
     public void SetRoundState(GameRoom gameRoom)
     {
         var gameRoomDto = GameRoomIdValidation(gameRoom.Id);
-        gameRoomDto.RoundDto.RoundState = gameRoom.Round!.RoundState;
+        gameRoomDto.RoundDto.RoundState = gameRoom.Round.RoundState;
 
         _context.SaveChanges();
     }
@@ -199,7 +213,8 @@ public class GameRoomRepository : IGameRoomRepository
         var gameRoomDto = GameRoomIdValidation(voteRequest.GameRoomId);
         var playerDto = PlayerIdValidationInGameRoom(voteRequest.PlayerId, gameRoomDto);
         var voteRegistrationDto = _context.Votes;
-        
+        var votingHistory = _context.Rounds.Select(x => x.Votes).First();
+
         var voteRequestDto = new VoteRegistrationDto
         {
             Vote = voteRequest.Id,
@@ -212,8 +227,38 @@ public class GameRoomRepository : IGameRoomRepository
         if (expectedRoundState.Equals((RoundState) 2))
         {
             voteRegistrationDto.Add(voteRequestDto);
+            votingHistory.Add(voteRequestDto);
         }
 
         _context.SaveChanges();
+    }
+
+    public void ClearRoundVotes(GameRoom gameRoom)
+    {
+        var gameRoomDto = GameRoomIdValidation(gameRoom.Id);
+        var votesDto = _context.Votes;
+        var votes = _context.Votes.Where(x=>x.GameRoomId == gameRoom.Id);
+        
+        votesDto.RemoveRange(votes);
+
+        _context.SaveChanges();
+    }
+
+    private string RoundStateDescription(RoundState roundState)
+    {
+        var description = string.Empty;
+        switch (roundState)
+        {
+            case RoundState.Grooming:
+               return description = "You may ask questions";
+            case RoundState.VoteRegistration:
+               return description = "Please submit your vote";
+            case RoundState.VoteReview:
+               return description = "Votes are being reviewed";
+            default:
+                break;
+        }
+
+        return description;
     }
 }
