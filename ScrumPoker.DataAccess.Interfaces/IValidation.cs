@@ -9,5 +9,6 @@ public interface IValidation
     PlayerDto PlayerIdValidation(int playerId);
     GameRoomPlayer PlayerIdValidationInGameRoom(int playerId, GameRoomDto gameRoomDto);
 
-    void ValidateAlreadyExistException(GameRoom gameRoomRequest);
+    void ValidateAlreadyExistGameRoom(GameRoom gameRoomRequest);
+    void ValidateAlreadyExistPlayer(Player player);
 }

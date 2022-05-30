@@ -65,12 +65,21 @@ public class Validation : IValidation
         return playerDto;
     }
     
-    public void ValidateAlreadyExistException(GameRoom gameRoomRequest)
+    public void ValidateAlreadyExistGameRoom(GameRoom gameRoomRequest)
     {
         if (_context.GameRooms.Any(x => x.Id == gameRoomRequest.Id))
         {
             _logger.LogWarning("Game room with ID{Id} already exists", gameRoomRequest.Id);
             throw new IdAlreadyExistException($"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
+        }
+    }
+    
+    public void ValidateAlreadyExistPlayer(Player player)
+    {
+        if (_context.Players.Any(p => p.Id == player.Id))
+        {
+            _logger.LogWarning("Player with ID{ID} already exists", player.Id);
+            throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
         }
     }
 }

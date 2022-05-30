@@ -2,9 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
-using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.Models;
-using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
@@ -49,7 +47,7 @@ public class GameRoomRepository : IGameRoomRepository
 
     public GameRoom Create(GameRoom gameRoomRequest)
     {
-        _validator.ValidateAlreadyExistException(gameRoomRequest);
+        _validator.ValidateAlreadyExistGameRoom(gameRoomRequest);
         var Round = _context.Rounds;
         
         var initialRound = new RoundDto
@@ -142,112 +140,16 @@ public class GameRoomRepository : IGameRoomRepository
         gameRoomList.Add(gameRoomPlayers);
         _context.SaveChanges();
     }
-
-    // private void ValidateAlreadyExistException(GameRoom gameRoomRequest)
-    // {
-    //     if (_context.GameRooms.Any(x => x.Id == gameRoomRequest.Id))
-    //     {
-    //         _logger.LogWarning("Game room with ID{Id} already exists", gameRoomRequest.Id);
-    //         throw new IdAlreadyExistException($"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
-    //     }
-    // }
-
-    // private GameRoomDto GameRoomIdValidation(int gameRoomId)
-    // {
-    //     var gameRoomDto = _context.GameRooms
-    //         .Include(gr=>gr.GameRoomPlayers).ThenInclude(x=>x.Player)
-    //         .SingleOrDefault(g => g.Id == gameRoomId);
-    //     
-    //     if (gameRoomDto == null)
-    //     {
-    //         _logger.LogWarning("Game Room with ID {Id} could not be found", gameRoomId);
-    //         throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
-    //     }
-    //
-    //     return gameRoomDto;
-    // }
-    //
-    // private PlayerDto PlayerIdValidation(int playerId)
-    // {
-    //     var playerDto = _context.Players
-    //         .Include(p=>p.PlayerGameRooms)
-    //         .SingleOrDefault(p => p.Id == playerId);
-    //     
-    //     if (playerDto == null)
-    //     {
-    //         _logger.LogWarning("Player with ID {Id} could not been found", playerId);
-    //         throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
-    //     }
-    //
-    //     return playerDto;
-    // }
-    //
-    // private GameRoomPlayer PlayerIdValidationInGameRoom(int playerId, GameRoomDto gameRoomDto)
-    // {
-    //     var playerDto = gameRoomDto.GameRoomPlayers.SingleOrDefault(gr => gr.PlayerId == playerId);
-    //     if (playerDto == null)
-    //     {
-    //         _logger.LogWarning("Player(ID{PlayerId}) in Game Room (ID{GameRoomId}) was not found", playerId, gameRoomDto.Id);
-    //         throw new IdNotFoundException($"{typeof(Player)} in game room {gameRoomDto.Id} with player ID {playerId} not found");
-    //     }
-    //
-    //     return playerDto;
-    // }
-
-    public void SetRound(GameRoom gameRoom)
-    {
-        var gameRoomDto = _validator.GameRoomIdValidation(gameRoom.Id);
-        gameRoomDto.CurrentRoundId = gameRoom.CurrentRoundId;
-
-        _context.SaveChanges(); 
-    }
-
-    public void SetRoundState(GameRoom gameRoom)
-    {
-        var gameRoomDto = _validator.GameRoomIdValidation(gameRoom.Id);
-        gameRoomDto.RoundDto.RoundState = gameRoom.Round.RoundState;
-
-        _context.SaveChanges();
-    }
     
-    public void CreateVote(VoteRegistration voteRequest)
-    {
-        var gameRoomDto = _validator.GameRoomIdValidation(voteRequest.GameRoomId);
-        _validator.PlayerIdValidationInGameRoom(voteRequest.PlayerId, gameRoomDto);
-        var voteRegistrationDto = _context.Votes;
-        var votingHistory = _context.Rounds.Select(x => x.Votes).First();
-
-        var voteRequestDto = new VoteRegistrationDto
-        {
-            Vote = voteRequest.Id,
-            PlayerId = voteRequest.PlayerId,
-            GameRoomId = voteRequest.GameRoomId,
-            RoundId = voteRequest.RoundId,
-        };
-        
-        var expectedRoundState = gameRoomDto.RoundDto.RoundState;
-        if (expectedRoundState.Equals((RoundState) 2))
-        {
-            voteRegistrationDto.Add(voteRequestDto);
-            votingHistory.Add(voteRequestDto);
-        }
-
-        _context.SaveChanges();
-    }
-
     public string RoundStateDescription(RoundState roundState)
     {
         var description = string.Empty;
-        switch (roundState)
+        return roundState switch
         {
-            case RoundState.Grooming:
-               return description = "You may ask questions";
-            case RoundState.VoteRegistration:
-               return description = "Please submit your vote";
-            case RoundState.VoteReview:
-               return description = "Votes are being reviewed";
-        }
-
-        return description;
+            RoundState.Grooming => description = "You may ask questions",
+            RoundState.VoteRegistration => description = "Please submit your vote",
+            RoundState.VoteReview => description = "Votes are being reviewed",
+            _ => description
+        };
     }
 }

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
 using ScrumPoker.Common.Models;
 
 namespace ScrumPoker.DataAccess.Models.Models;
