@@ -2,8 +2,6 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
-using ScrumPoker.Common.ConflictExceptions;
-using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
@@ -16,12 +14,14 @@ public class PlayerRepository : IPlayerRepository
     private readonly IMapper _mapper;
     private readonly IScrumPokerContext _context;
     private readonly ILogger<PlayerRepository> _logger;
+    private readonly IValidation _validator;
 
-    public PlayerRepository(IMapper mapper, IScrumPokerContext context, ILogger<PlayerRepository> logger)
+    public PlayerRepository(IMapper mapper, IScrumPokerContext context, ILogger<PlayerRepository> logger, IValidation validator)
     {
         _mapper = mapper;
         _context = context;
         _logger = logger;
+        _validator = validator;
     }
 
     public IEnumerable<Player> GetAll()
@@ -35,7 +35,7 @@ public class PlayerRepository : IPlayerRepository
 
     public Player GetById(int id)
     {
-        var playerDto = PlayerIdValidation(id);
+        var playerDto = _validator.PlayerIdValidation(id);
 
         var playerDtoResponse = _mapper.Map<Player>(playerDto);
         
@@ -44,7 +44,7 @@ public class PlayerRepository : IPlayerRepository
 
     public Player Create(Player createPlayerRequest)
     {
-        ValidateAlreadyExist(createPlayerRequest);
+        _validator.ValidateAlreadyExistPlayer(createPlayerRequest);
         
         var addPlayer = new PlayerDto
         {
@@ -62,7 +62,7 @@ public class PlayerRepository : IPlayerRepository
     public Player Update(Player updatePlayerRequest)
     {
         
-        var playerDto = PlayerIdValidation(updatePlayerRequest.Id);
+        var playerDto = _validator.PlayerIdValidation(updatePlayerRequest.Id);
 
         playerDto.Name = updatePlayerRequest.Name;
         _context.SaveChanges();
@@ -74,32 +74,8 @@ public class PlayerRepository : IPlayerRepository
 
     public void DeleteById(int id)
     {
-        var playerDto = PlayerIdValidation(id);
+        var playerDto = _validator.PlayerIdValidation(id);
         _context.Players.Remove(playerDto);
         _context.SaveChanges();
-    }
-
-    private void ValidateAlreadyExist(Player player)
-    {
-        if (_context.Players.Any(p => p.Id == player.Id))
-        {
-            _logger.LogWarning("Player with ID{ID} already exists", player.Id);
-            throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
-        }
-    }
-    
-    private PlayerDto PlayerIdValidation(int playerId)
-    {
-        var playerDto = _context.Players
-            .Include(p=>p.PlayerGameRooms).ThenInclude(grp=>grp.GameRoom)
-            .SingleOrDefault(x => x.Id == playerId);
-
-        if (playerDto == null)
-        {
-            _logger.LogWarning("Player with ID{ID} could not be found", playerId);
-            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
-        }
-
-        return playerDto;
     }
 }
