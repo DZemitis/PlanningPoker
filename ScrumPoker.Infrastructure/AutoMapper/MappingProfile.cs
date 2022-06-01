@@ -16,11 +16,17 @@ public class MappingProfile : Profile
                     opt.Ignore());
         CreateMap<UpdateGameRoomApiRequest, GameRoom>();
         CreateMap<GameRoom, GameRoomDto>();
-        CreateMap<GameRoom, GameRoomApiResponse>();
+        CreateMap<GameRoom, GameRoomApiResponse>()
+            .ForMember(dest=>dest.MasterId, opt=>
+                opt.MapFrom(x=>x.MasterId));
         CreateMap<GameRoom, GameRoomInPlayerListApiResponse>();
         CreateMap<GameRoomDto, GameRoom>()
             .ForMember(dest => dest.Players, opt =>
-                opt.MapFrom(src => src.GameRoomPlayers.Select(x => x.Player)));
+                opt.MapFrom(src => src.GameRoomPlayers.Select(x => x.Player)))
+            .ForMember(dest=>dest.MasterId, opt=>
+                opt.MapFrom(x=>x.MasterId.Id))
+            .ForMember(x=>x.CurrentRoundId, opt=>
+                opt.MapFrom(src=>src.RoundDto.RoundId));
         CreateMap<CreatePlayerApiRequest, Player>();
         CreateMap<UpdatePlayerApiRequest, Player>();
         CreateMap<Player, PlayerDto>();

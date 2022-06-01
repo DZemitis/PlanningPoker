@@ -30,7 +30,7 @@ namespace ScrumPoker.DataAccess.Models.Migrations
             migrationBuilder.AddColumn<int>("RoundDtoRoundId", "GameRooms", type: "int", nullable: false);
             migrationBuilder.AddColumn<int>("CurrentRoundId", "GameRooms", type: "int", nullable: false);
             
-            migrationBuilder.AddForeignKey("FK_GameRooms_Players_MasterIDId", 
+            migrationBuilder.AddForeignKey("FK_GameRooms_Players_MasterId", 
                 "GameRooms", 
                 "MasterId",
                 "Players",
