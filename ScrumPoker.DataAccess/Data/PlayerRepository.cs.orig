@@ -12,14 +12,23 @@ public class PlayerRepository : IPlayerRepository
 {
     private readonly IMapper _mapper;
     private readonly IScrumPokerContext _context;
-    private readonly IValidation _validator;
+<<<<<<< HEAD
     private readonly IValidation _validator;
 
-    public PlayerRepository(IMapper mapper, IScrumPokerContext context, ILogger<PlayerRepository> logger)
+    public PlayerRepository(IMapper mapper, IScrumPokerContext context, IValidation validator)
     {
         _mapper = mapper;
         _context = context;
-        _validator = validator;
+=======
+    private readonly ILogger<PlayerRepository> _logger;
+    private readonly IValidation _validator;
+
+    public PlayerRepository(IMapper mapper, IScrumPokerContext context, ILogger<PlayerRepository> logger, IValidation validator)
+    {
+        _mapper = mapper;
+        _context = context;
+        _logger = logger;
+>>>>>>> b188ff6b15841fcd9a487d8cf95b340979e66018
         _validator = validator;
     }
 

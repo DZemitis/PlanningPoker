@@ -1,0 +1,17 @@
+using System.ComponentModel.DataAnnotations;
+using ScrumPoker.Common.Models;
+
+namespace ScrumPoker.DataAccess.Models.Models;
+
+public class RoundDto
+{
+    [Key]
+    public int RoundId { get; set; }
+<<<<<<< HEAD
+    public int GameRoomId { get; set; }
+=======
+>>>>>>> b188ff6b15841fcd9a487d8cf95b340979e66018
+    public RoundState RoundState { get; set; }
+    public string Description { get; set; } = null!;
+    public List<VoteRegistrationDto> Votes { get; set; } = null!;
+}

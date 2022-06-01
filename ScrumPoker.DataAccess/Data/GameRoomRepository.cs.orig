@@ -14,14 +14,23 @@ public class GameRoomRepository : IGameRoomRepository
 {
     private readonly IMapper _mapper;
     private readonly IScrumPokerContext _context;
-    private readonly IValidation _validator;
+<<<<<<< HEAD
     private readonly IValidation _validator;
 
     public GameRoomRepository(IMapper mapper, IScrumPokerContext context, IValidation validator)
     {
         _mapper = mapper;
         _context = context;
-        _validator = validator;
+=======
+    private readonly ILogger<GameRoomRepository> _logger;
+    private readonly IValidation _validator;
+
+    public GameRoomRepository(IMapper mapper, IScrumPokerContext context, ILogger<GameRoomRepository> logger, IValidation validator)
+    {
+        _mapper = mapper;
+        _context = context;
+        _logger = logger;
+>>>>>>> b188ff6b15841fcd9a487d8cf95b340979e66018
         _validator = validator;
     }
 
@@ -62,9 +71,12 @@ public class GameRoomRepository : IGameRoomRepository
         var addGameRoom = new GameRoomDto
         {
             Name = gameRoomRequest.Name,
+<<<<<<< HEAD
+=======
+            Story = gameRoomRequest.Story,
+>>>>>>> b188ff6b15841fcd9a487d8cf95b340979e66018
             MasterID = _context.Players.Single(x=>x.Id == gameRoomRequest.MasterId),
             RoundDto = initialRound,
-            CurrentRoundId = initialRound.RoundId
             CurrentRoundId = initialRound.RoundId
         };
 

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ScrumPoker.Common.Models;
 using ScrumPoker.DataAccess.Models.ContextExtensions;
 using ScrumPoker.DataAccess.Models.Models;
 
@@ -10,7 +11,9 @@ public class ScrumPokerContext : DbContext, IScrumPokerContext
     public DbSet<RoundDto> Rounds { get; set; } = null!;
     public DbSet<VoteRegistrationDto> Votes { get; set; } = null!;
     public DbSet<PlayerDto> Players { get; set; } = null!;
-
+    public DbSet<RoundDto> Rounds { get; set; } = null!;
+    public DbSet<VoteRegistrationDto> Votes { get; set; } = null!;
+    public DbSet<VoteReviewDto> VoteReviews { get; set; } = null!;
     public ScrumPokerContext(DbContextOptions<ScrumPokerContext> options) : base(options)
     {
  

@@ -9,9 +9,10 @@ public interface IScrumPokerContext
     DbSet<GameRoomDto> GameRooms { get; set; }
     DbSet<RoundDto> Rounds { get; set; }
     DbSet<VoteRegistrationDto> Votes { get; set; }
-    DbSet<RoundDto> Rounds { get; set; }
-    DbSet<VoteRegistrationDto> Votes { get; set; }
+<<<<<<< HEAD
+=======
     DbSet<VoteReviewDto> VoteReviews { get; set; }
+>>>>>>> b188ff6b15841fcd9a487d8cf95b340979e66018
     int SaveChanges();
     Task<int> SaveChangesAsync();
 }

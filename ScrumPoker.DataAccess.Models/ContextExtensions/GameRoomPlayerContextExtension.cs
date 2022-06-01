@@ -9,16 +9,18 @@ public class GameRoomPlayerContextExtension
     {
         builder.Entity<GameRoomPlayer>()
             .HasKey(gp => new {gp.GameRoomId, gp.PlayerId});
-
+        
         builder.Entity<GameRoomPlayer>()
             .HasOne(gr => gr.GameRoom)
             .WithMany(p => p.GameRoomPlayers)
-            .HasForeignKey(gr => gr.GameRoomId);
+            .HasForeignKey(gr => gr.GameRoomId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<GameRoomPlayer>()
             .HasOne(p => p.Player)
             .WithMany(gr => gr.PlayerGameRooms)
-            .HasForeignKey(p => p.PlayerId);
+            .HasForeignKey(p => p.PlayerId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<GameRoomPlayer>()
             .HasIndex(gp => new {gp.GameRoomId, gp.PlayerId});

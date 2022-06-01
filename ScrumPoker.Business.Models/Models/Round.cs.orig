@@ -1,0 +1,18 @@
+using ScrumPoker.Common.Models;
+
+namespace ScrumPoker.Business.Models.Models;
+
+public class Round
+{
+    public int RoundId { get; set; }
+<<<<<<< HEAD
+    public int GameRoomId { get; set; }
+    public RoundState RoundState { get; set; }
+    public string Description { get; set; } = null!;
+    public List<VoteRegistration> Votes { get; set; } = null!;
+=======
+    public RoundState RoundState { get; set; }
+    public string Description { get; set; } = null!;
+    public List<VoteRegistration>? Votes { get; set; }
+>>>>>>> b188ff6b15841fcd9a487d8cf95b340979e66018
+}

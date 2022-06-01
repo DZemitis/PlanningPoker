@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
+=======
 using ScrumPoker.Common.Models;
+>>>>>>> b188ff6b15841fcd9a487d8cf95b340979e66018
 using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.DataAccess.Models.ContextExtensions;
