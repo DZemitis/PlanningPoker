@@ -24,7 +24,7 @@ public class RoundRepository : IRoundRepository
     public void SetRoundState(Round round)
     {
         var gameRoomDto = _validator.GameRoomIdValidation(round.GameRoomId);
-        gameRoomDto.RoundDto.RoundState = round.RoundState;
+        gameRoomDto.CurrentRound.RoundState = round.RoundState;
 
         _context.SaveChanges();
     }

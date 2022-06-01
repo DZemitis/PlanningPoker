@@ -38,7 +38,7 @@ public class VoteRegistrationRepository : IVoteRegistrationRepository
             RoundId = voteRequest.RoundId
         };
         
-        var expectedRoundState = gameRoomDto.RoundDto.RoundState;
+        var expectedRoundState = gameRoomDto.CurrentRound.RoundState;
         if (expectedRoundState.Equals((RoundState) 2))
         {
             voteRegistrationDto.Add(voteRequestDto);

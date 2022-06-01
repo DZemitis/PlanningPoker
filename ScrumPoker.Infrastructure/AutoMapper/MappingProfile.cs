@@ -24,9 +24,9 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Players, opt =>
                 opt.MapFrom(src => src.GameRoomPlayers.Select(x => x.Player)))
             .ForMember(dest=>dest.MasterId, opt=>
-                opt.MapFrom(x=>x.MasterId.Id))
+                opt.MapFrom(x=>x.Master.Id))
             .ForMember(x=>x.CurrentRoundId, opt=>
-                opt.MapFrom(src=>src.RoundDto.RoundId));
+                opt.MapFrom(src=>src.CurrentRound.RoundId));
         CreateMap<CreatePlayerApiRequest, Player>();
         CreateMap<UpdatePlayerApiRequest, Player>();
         CreateMap<Player, PlayerDto>();
