@@ -48,11 +48,11 @@ public class VoteRegistrationRepository : IVoteRegistrationRepository
         _context.SaveChanges();
     }
 
-    public void ClearRoundVotes(GameRoom gameRoom)
+    public void ClearRoundVotes(VoteRegistrationDto vote)
     {
-        _validator.GameRoomIdValidation(gameRoom.Id);
+        _validator.GameRoomIdValidation(vote.GameRoomId);
         var votesDto = _context.Votes;
-        var votes = _context.Votes.Where(x=>x.GameRoomId == gameRoom.Id);
+        var votes = _context.Votes.Where(x=>x.GameRoomId == vote.GameRoomId);
         
         votesDto.RemoveRange(votes);
 
