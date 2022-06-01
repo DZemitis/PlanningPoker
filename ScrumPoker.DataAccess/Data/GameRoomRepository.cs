@@ -29,7 +29,7 @@ public class GameRoomRepository : IGameRoomRepository
     {
         var gameRooms = _context.GameRooms
             .Include(gr => gr.GameRoomPlayers).ThenInclude(p => p.Player)
-            .Include(gr => gr.MasterID)
+            .Include(gr => gr.MasterId)
             .Include(x=>x.RoundDto);
         
         var gameRoomListResponse = _mapper.Map<List<GameRoom>>(gameRooms);
@@ -62,7 +62,7 @@ public class GameRoomRepository : IGameRoomRepository
         var addGameRoom = new GameRoomDto
         {
             Name = gameRoomRequest.Name,
-            MasterID = _context.Players.Single(x=>x.Id == gameRoomRequest.MasterId),
+            MasterId = _context.Players.Single(x=>x.Id == gameRoomRequest.MasterId),
             RoundDto = initialRound,
             CurrentRoundId = initialRound.RoundId
         };
