@@ -5,5 +5,6 @@ namespace ScrumPoker.DataAccess.Interfaces;
 public interface IRoundRepository
 {
     void SetRoundState(Round round);
-    void SetRound(Round round);
+    Round GetById(int id);
+    void Update(Round round);
 }

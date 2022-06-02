@@ -20,5 +20,6 @@ public static class DependencyInjection
         services.AddTransient<IValidation, Validation>();
         services.AddTransient<IVoteRegistrationRepository, VoteRegistrationRepository>();
         services.AddTransient<IRoundRepository, RoundRepository>();
+        services.AddTransient<IRoundService, RoundService>();
     }
 }

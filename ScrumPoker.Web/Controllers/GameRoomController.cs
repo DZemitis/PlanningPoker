@@ -4,7 +4,6 @@ using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Web.Models.Models.WebRequest;
 using ScrumPoker.Web.Models.Models.WebResponse;
-using Serilog;
 
 namespace ScrumPoker.Web.Controllers;
 

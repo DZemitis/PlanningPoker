@@ -48,14 +48,15 @@ public class GameRoomRepository : IGameRoomRepository
     public GameRoom Create(GameRoom gameRoomRequest)
     {
         _validator.ValidateAlreadyExistGameRoom(gameRoomRequest);
+        _validator.PlayerIdValidation(gameRoomRequest.MasterId);
         var Round = _context.Rounds;
         
         var initialRound = new RoundDto
         {
             RoundState = RoundState.Grooming,
-            Description = RoundStateDescription(RoundState.Grooming),
-            RoundId = 2
+            Description = gameRoomRequest.Round.Description
         };
+        
         _context.Rounds.Add(initialRound);
         _context.SaveChanges();
         
@@ -72,7 +73,10 @@ public class GameRoomRepository : IGameRoomRepository
         _context.SaveChanges();
         
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
-
+        
+        initialRound.GameRoomId = gameRoomDtoResponse.Id;
+        _context.SaveChanges();
+        
         return gameRoomDtoResponse;
     }
 
@@ -138,17 +142,5 @@ public class GameRoomRepository : IGameRoomRepository
         playerList.Add(gameRoomPlayers);
         gameRoomList.Add(gameRoomPlayers);
         _context.SaveChanges();
-    }
-    
-    public string RoundStateDescription(RoundState roundState)
-    {
-        var description = string.Empty;
-        return roundState switch
-        {
-            RoundState.Grooming => description = "You may ask questions",
-            RoundState.VoteRegistration => description = "Please submit your vote",
-            RoundState.VoteReview => description = "Votes are being reviewed",
-            _ => description
-        };
     }
 }

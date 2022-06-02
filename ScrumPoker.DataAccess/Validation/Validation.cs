@@ -26,7 +26,10 @@ public class Validation : IValidation
     public GameRoomDto GameRoomIdValidation(int gameRoomId)
     {
         var gameRoomDto = _context.GameRooms
-            .Include(gr=>gr.GameRoomPlayers).ThenInclude(x=>x.Player)
+            .Include(gr=>gr.GameRoomPlayers)
+            .ThenInclude(x=>x.Player)
+            .Include(x=>x.Master)
+            .Include(x=>x.CurrentRound)
             .SingleOrDefault(g => g.Id == gameRoomId);
         
         if (gameRoomDto == null)

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.EFContext;
+using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.DataAccess.Data;
 
@@ -20,7 +21,15 @@ public class RoundRepository : IRoundRepository
         _logger = logger;
         _validator = validator;
     }
-    
+
+    public Round GetById(int id)
+    {
+        var roundDto = _context.Rounds.SingleOrDefault(x => x.RoundId == id);
+        var roundResponse = _mapper.Map<Round>(roundDto);
+
+        return roundResponse;
+    }
+
     public void SetRoundState(Round round)
     {
         var gameRoomDto = _validator.GameRoomIdValidation(round.GameRoomId);
@@ -28,11 +37,11 @@ public class RoundRepository : IRoundRepository
 
         _context.SaveChanges();
     }
-    
-    public void SetRound(Round round)
+
+    public void Update(Round round)
     {
-        var gameRoomDto = _validator.GameRoomIdValidation(round.GameRoomId);
-        gameRoomDto.CurrentRoundId = round.RoundId;
+        var roundDto = _context.Rounds.SingleOrDefault(r => r.RoundId == round.RoundId);
+        roundDto.RoundState = round.RoundState;
 
         _context.SaveChanges();
     }
