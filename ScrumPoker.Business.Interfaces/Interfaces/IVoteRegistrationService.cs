@@ -1,9 +1,10 @@
 using ScrumPoker.Business.Models.Models;
 
-namespace ScrumPoker.DataAccess.Interfaces;
+namespace ScrumPoker.Business.Interfaces.Interfaces;
 
-public interface IVoteRegistrationRepository
+public interface IVoteRegistrationService
 {
     VoteRegistration GetById(int id);
     VoteRegistration Create(VoteRegistration vote);
+    void Update(VoteRegistration vote);
 }

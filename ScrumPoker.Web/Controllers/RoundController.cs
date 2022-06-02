@@ -12,9 +12,9 @@ public class RoundController : ControllerBase
 {
     private readonly IRoundService _roundService;
     private readonly IMapper _mapper;
-    private readonly ILogger<GameRoomController> _logger;
+    private readonly ILogger<RoundController> _logger;
 
-    public RoundController(IRoundService roundService, IMapper mapper, ILogger<GameRoomController> logger)
+    public RoundController(IRoundService roundService, IMapper mapper, ILogger<RoundController> logger)
     {
         _roundService = roundService;
         _mapper = mapper;

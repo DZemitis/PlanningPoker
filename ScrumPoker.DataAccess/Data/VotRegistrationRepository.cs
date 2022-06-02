@@ -23,8 +23,17 @@ public class VoteRegistrationRepository : IVoteRegistrationRepository
         _validator = validator;
     }
 
-    public void CreateVote(VoteRegistration voteRequest)
+    public VoteRegistration GetById(int id)
     {
+       var voteRegistrationDto = _context.Votes.SingleOrDefault(v => v.Id == id);
+       var voteRegistrationResponse = _mapper.Map<VoteRegistration>(voteRegistrationDto);
+
+       return voteRegistrationResponse;
+    }
+    
+    public VoteRegistration Create(VoteRegistration voteRequest)
+    {
+        
         var gameRoomDto = _validator.GameRoomIdValidation(voteRequest.GameRoomId);
         _validator.PlayerIdValidationInGameRoom(voteRequest.PlayerId, gameRoomDto);
         var voteRegistrationDto = _context.Votes;
@@ -46,6 +55,10 @@ public class VoteRegistrationRepository : IVoteRegistrationRepository
         }
 
         _context.SaveChanges();
+        
+        var voteRegistrationResponse = _mapper.Map<VoteRegistration>(voteRequestDto);
+
+        return voteRegistrationResponse;
     }
 
     public void ClearRoundVotes(VoteRegistrationDto vote)
