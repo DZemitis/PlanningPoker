@@ -7,4 +7,5 @@ public interface IVoteRegistrationService
     VoteRegistration GetById(int id);
     VoteRegistration Create(VoteRegistration vote);
     void Update(VoteRegistration vote);
+    void ClearRoundVotes(VoteRegistration vote);
 }

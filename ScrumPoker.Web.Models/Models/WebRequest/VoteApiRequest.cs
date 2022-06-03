@@ -1,6 +1,6 @@
 namespace ScrumPoker.Web.Models.Models.WebRequest;
 
-public class CreateVoteApiRequest
+public class VoteApiRequest
 {
     public int PlayerId { get; set; }
     public int Vote { get; set; }

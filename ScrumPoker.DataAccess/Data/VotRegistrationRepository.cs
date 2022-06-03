@@ -1,7 +1,6 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
-using ScrumPoker.Common.Models;
 using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
@@ -38,6 +37,7 @@ public class VoteRegistrationRepository : IVoteRegistrationRepository
         _validator.PlayerIdValidationInGameRoom(voteRequest.PlayerId, gameRoomDto);
         var voteRegistrationDto = _context.Votes;
         var votingHistory = _context.Rounds.Select(x => x.Votes).First();
+        
 
         var voteRequestDto = new VoteRegistrationDto
         {
@@ -46,14 +46,10 @@ public class VoteRegistrationRepository : IVoteRegistrationRepository
             GameRoomId = voteRequest.GameRoomId,
             RoundId = voteRequest.RoundId
         };
-        
-        var expectedRoundState = gameRoomDto.CurrentRound.RoundState;
-        if (expectedRoundState.Equals((RoundState) 2))
-        {
-            voteRegistrationDto.Add(voteRequestDto);
-            votingHistory.Add(voteRequestDto);
-        }
-
+       
+        voteRegistrationDto.Add(voteRequestDto);
+        _context.SaveChanges();
+        votingHistory.Add(voteRequestDto);
         _context.SaveChanges();
         
         var voteRegistrationResponse = _mapper.Map<VoteRegistration>(voteRequestDto);
@@ -61,7 +57,7 @@ public class VoteRegistrationRepository : IVoteRegistrationRepository
         return voteRegistrationResponse;
     }
 
-    public void ClearRoundVotes(VoteRegistrationDto vote)
+    public void ClearRoundVotes(VoteRegistration vote)
     {
         _validator.GameRoomIdValidation(vote.GameRoomId);
         var votesDto = _context.Votes;

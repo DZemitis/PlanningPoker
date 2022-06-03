@@ -2,7 +2,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
-using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.Web.Models.Models.WebRequest;
 
 namespace ScrumPoker.Web.Controllers;
@@ -23,14 +22,30 @@ public class VoteController : ControllerBase
         _logger = logger;
     }
 
+    [HttpGet]
+    [Route("GetAllFromRound")]
+    public IActionResult GetAllFromRound(int id)
+    {
+        return Ok();
+    }
+
     [HttpPost]
     [Route("Create")]
-    public IActionResult Create(CreateVoteApiRequest voteApiRequest)
+    public IActionResult Create(VoteApiRequest voteApiRequest)
     {
         var voteRequest = _mapper.Map<VoteRegistration>(voteApiRequest);
-       var voteResponse = _voteRegistrationService.Create(voteRequest);
+        var voteResponse = _voteRegistrationService.Create(voteRequest);
 
         return Created("", voteResponse);
     }
-    
+
+    [HttpDelete]
+    [Route("ClearVotes")]
+    public IActionResult ClearRoundVotes(VoteApiRequest voteApiRequest)
+    {
+        var voteRequest = _mapper.Map<VoteRegistration>(voteApiRequest);
+        _voteRegistrationService.ClearRoundVotes(voteRequest);
+        
+        return Ok($"All votes from round(ID: {voteApiRequest.RoundId}) has been cleared");
+    }
 }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.Models;
+using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
@@ -49,7 +50,6 @@ public class GameRoomRepository : IGameRoomRepository
     {
         _validator.ValidateAlreadyExistGameRoom(gameRoomRequest);
         _validator.PlayerIdValidation(gameRoomRequest.MasterId);
-        var Round = _context.Rounds;
         
         var initialRound = new RoundDto
         {
@@ -57,25 +57,17 @@ public class GameRoomRepository : IGameRoomRepository
             Description = gameRoomRequest.Round.Description
         };
         
-        _context.Rounds.Add(initialRound);
-        _context.SaveChanges();
-        
         var addGameRoom = new GameRoomDto
         {
             Name = gameRoomRequest.Name,
             Master = _context.Players.Single(x=>x.Id == gameRoomRequest.MasterId),
             CurrentRound = initialRound,
-            CurrentRoundId = initialRound.RoundId
         };
-
-        var gameRoomDto = _mapper.Map<GameRoomDto>(addGameRoom);
-        _context.GameRooms.Add(gameRoomDto);
+        
+        _context.GameRooms.Add(addGameRoom);
         _context.SaveChanges();
         
-        var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
-        
-        initialRound.GameRoomId = gameRoomDtoResponse.Id;
-        _context.SaveChanges();
+        var gameRoomDtoResponse = _mapper.Map<GameRoom>(addGameRoom);
         
         return gameRoomDtoResponse;
     }
@@ -123,7 +115,7 @@ public class GameRoomRepository : IGameRoomRepository
 
     public void AddPlayerToRoom(int gameRoomId, int playerId)
     {
-        var gameRoomDto = _validator.GameRoomIdValidation(gameRoomId);
+        var gameRoomDto = AddPlayerGameRoomIdValidation(gameRoomId);
         
         var playerList = gameRoomDto.GameRoomPlayers;
 
@@ -140,7 +132,21 @@ public class GameRoomRepository : IGameRoomRepository
         };
         
         playerList.Add(gameRoomPlayers);
-        gameRoomList.Add(gameRoomPlayers);
         _context.SaveChanges();
+    }
+    
+    private GameRoomDto AddPlayerGameRoomIdValidation(int gameRoomId)
+    {
+        var gameRoomDto = _context.GameRooms
+            .Include(gr=>gr.GameRoomPlayers).ThenInclude(x=>x.Player)
+            .SingleOrDefault(g => g.Id == gameRoomId);
+        
+        if (gameRoomDto == null)
+        {
+            _logger.LogWarning("Game Room with ID {Id} could not be found", gameRoomId);
+            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
+        }
+
+        return gameRoomDto;
     }
 }

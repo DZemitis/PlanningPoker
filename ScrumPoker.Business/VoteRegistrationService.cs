@@ -27,4 +27,9 @@ public class VoteRegistrationService : IVoteRegistrationService
     {
         throw new NotImplementedException();
     }
+
+    public void ClearRoundVotes(VoteRegistration vote)
+    {
+        _voteRegistrationRepository.ClearRoundVotes(vote);
+    }
 }

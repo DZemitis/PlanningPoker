@@ -85,4 +85,19 @@ public class Validation : IValidation
             throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
         }
     }
+    
+    public GameRoomDto AddPlayerGameRoomIdValidation(int gameRoomId)
+    {
+        var gameRoomDto = _context.GameRooms
+            .Include(gr=>gr.GameRoomPlayers).ThenInclude(x=>x.Player)
+            .SingleOrDefault(g => g.Id == gameRoomId);
+        
+        if (gameRoomDto == null)
+        {
+            _logger.LogWarning("Game Room with ID {Id} could not be found", gameRoomId);
+            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
+        }
+
+        return gameRoomDto;
+    }
 }

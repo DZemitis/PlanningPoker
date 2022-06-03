@@ -11,4 +11,5 @@ public interface IValidation
 
     void ValidateAlreadyExistGameRoom(GameRoom gameRoomRequest);
     void ValidateAlreadyExistPlayer(Player player);
+    GameRoomDto AddPlayerGameRoomIdValidation(int gameRoomId);
 }
