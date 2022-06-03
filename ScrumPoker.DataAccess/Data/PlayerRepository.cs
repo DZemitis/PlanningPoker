@@ -9,19 +9,17 @@ using ScrumPoker.DataAccess.Models.Models;
 namespace ScrumPoker.DataAccess.Data;
 
 /// <inheritdoc />
-public class PlayerRepository : IPlayerRepository
+public class PlayerRepository : RepositoryBase ,IPlayerRepository
 {
     private readonly IMapper _mapper;
     private readonly IScrumPokerContext _context;
     private readonly ILogger<PlayerRepository> _logger;
-    private readonly IValidation _validator;
 
-    public PlayerRepository(IMapper mapper, IScrumPokerContext context, ILogger<PlayerRepository> logger, IValidation validator)
+    public PlayerRepository(IMapper mapper, IScrumPokerContext context, ILogger<PlayerRepository> logger) : base(mapper, context, logger)
     {
         _mapper = mapper;
         _context = context;
         _logger = logger;
-        _validator = validator;
     }
 
     public IEnumerable<Player> GetAll()
@@ -35,7 +33,7 @@ public class PlayerRepository : IPlayerRepository
 
     public Player GetById(int id)
     {
-        var playerDto = _validator.PlayerIdValidation(id);
+        var playerDto = PlayerIdValidation(id);
 
         var playerDtoResponse = _mapper.Map<Player>(playerDto);
         
@@ -44,7 +42,7 @@ public class PlayerRepository : IPlayerRepository
 
     public Player Create(Player createPlayerRequest)
     {
-        _validator.ValidateAlreadyExistPlayer(createPlayerRequest);
+        ValidateAlreadyExistPlayer(createPlayerRequest);
         
         var addPlayer = new PlayerDto
         {
@@ -62,7 +60,7 @@ public class PlayerRepository : IPlayerRepository
     public Player Update(Player updatePlayerRequest)
     {
         
-        var playerDto = _validator.PlayerIdValidation(updatePlayerRequest.Id);
+        var playerDto = PlayerIdValidation(updatePlayerRequest.Id);
 
         playerDto.Name = updatePlayerRequest.Name;
         _context.SaveChanges();
@@ -74,7 +72,7 @@ public class PlayerRepository : IPlayerRepository
 
     public void DeleteById(int id)
     {
-        var playerDto = _validator.PlayerIdValidation(id);
+        var playerDto = PlayerIdValidation(id);
         _context.Players.Remove(playerDto);
         _context.SaveChanges();
     }

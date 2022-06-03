@@ -11,7 +11,7 @@ public class VotesExtension
             .HasKey(v => v.Id);
 
         builder.Entity<VoteRegistrationDto>()
-            .HasIndex(v => new {v.Id, v.GameRoomId, v.RoundId});
+            .HasIndex(v => new {v.Id, v.GameRoomId, v.RoundId, v.PlayerId});
 
         builder.Entity<VoteRegistrationDto>()
             .ToTable("Votes");

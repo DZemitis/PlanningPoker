@@ -11,19 +11,17 @@ using ScrumPoker.DataAccess.Models.Models;
 namespace ScrumPoker.DataAccess.Data;
 
 /// <inheritdoc />
-public class GameRoomRepository : IGameRoomRepository
+public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
 {
     private readonly IMapper _mapper;
     private readonly IScrumPokerContext _context;
     private readonly ILogger<GameRoomRepository> _logger;
-    private readonly IValidation _validator;
 
-    public GameRoomRepository(IMapper mapper, IScrumPokerContext context, ILogger<GameRoomRepository> logger, IValidation validator)
+    public GameRoomRepository(IMapper mapper, IScrumPokerContext context, ILogger<GameRoomRepository> logger) : base(mapper, context, logger)
     {
         _mapper = mapper;
         _context = context;
         _logger = logger;
-        _validator = validator;
     }
 
     public List<GameRoom> GetAll()
@@ -40,7 +38,7 @@ public class GameRoomRepository : IGameRoomRepository
     
     public GameRoom GetById(int id)
     {
-        var gameRoomDto = _validator.GameRoomIdValidation(id);
+        var gameRoomDto = GameRoomIdValidation(id);
         
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
         return gameRoomDtoResponse;
@@ -48,8 +46,8 @@ public class GameRoomRepository : IGameRoomRepository
 
     public GameRoom Create(GameRoom gameRoomRequest)
     {
-        _validator.ValidateAlreadyExistGameRoom(gameRoomRequest);
-        _validator.PlayerIdValidation(gameRoomRequest.MasterId);
+        ValidateAlreadyExistGameRoom(gameRoomRequest);
+        PlayerIdValidation(gameRoomRequest.MasterId);
         
         var initialRound = new RoundDto
         {
@@ -74,7 +72,7 @@ public class GameRoomRepository : IGameRoomRepository
 
     public GameRoom Update(GameRoom gameRoomRequest)
     {
-        var gameRoomDto = _validator.GameRoomIdValidation(gameRoomRequest.Id);
+        var gameRoomDto = GameRoomIdValidation(gameRoomRequest.Id);
 
         gameRoomDto.Name = gameRoomRequest.Name;
         _context.SaveChanges();
@@ -92,21 +90,21 @@ public class GameRoomRepository : IGameRoomRepository
 
     public void DeleteById(int id)
     {
-        var gameRoomDto = _validator.GameRoomIdValidation(id);
+        var gameRoomDto = GameRoomIdValidation(id);
         _context.GameRooms.Remove(gameRoomDto);
         _context.SaveChanges();
     }
 
     public void RemoveGameRoomPlayerById(int gameRoomId, int playerId)
     {
-        var gameRoomDto = _validator.GameRoomIdValidation(gameRoomId);
+        var gameRoomDto = GameRoomIdValidation(gameRoomId);
 
-        var playerToRemove = _validator.PlayerIdValidationInGameRoom(playerId, gameRoomDto);
+        var playerToRemove = PlayerIdValidationInGameRoom(playerId, gameRoomDto);
 
         
         gameRoomDto.GameRoomPlayers.Remove(playerToRemove);
 
-        var playerDto = _validator.PlayerIdValidation(playerId);
+        var playerDto = PlayerIdValidation(playerId);
         var gameRoomToRemove = playerDto.PlayerGameRooms.Single(x => x.GameRoomId == gameRoomId);
         
         playerDto.PlayerGameRooms.Remove(gameRoomToRemove);
@@ -115,11 +113,11 @@ public class GameRoomRepository : IGameRoomRepository
 
     public void AddPlayerToRoom(int gameRoomId, int playerId)
     {
-        var gameRoomDto = AddPlayerGameRoomIdValidation(gameRoomId);
+        var gameRoomDto = GameRoomIdValidation(gameRoomId);
         
         var playerList = gameRoomDto.GameRoomPlayers;
 
-        var playerDto = _validator.PlayerIdValidation(playerId);
+        var playerDto = PlayerIdValidation(playerId);
 
         var gameRoomList = playerDto.PlayerGameRooms;
         
@@ -130,11 +128,13 @@ public class GameRoomRepository : IGameRoomRepository
             GameRoom = gameRoomDto,
             GameRoomId = gameRoomDto.Id
         };
-        
+
+        /*_context.GameRoomsPlayers.Add(gameRoomPlayers);*/
         playerList.Add(gameRoomPlayers);
         _context.SaveChanges();
     }
     
+    /*
     private GameRoomDto AddPlayerGameRoomIdValidation(int gameRoomId)
     {
         var gameRoomDto = _context.GameRooms
@@ -148,5 +148,5 @@ public class GameRoomRepository : IGameRoomRepository
         }
 
         return gameRoomDto;
-    }
+    }*/
 }

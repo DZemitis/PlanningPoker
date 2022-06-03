@@ -7,19 +7,17 @@ using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.DataAccess.Data;
 
-public class VoteRegistrationRepository : IVoteRegistrationRepository
+public class VoteRegistrationRepository : RepositoryBase ,IVoteRegistrationRepository
 {
     private readonly IMapper _mapper;
     private readonly IScrumPokerContext _context;
     private readonly ILogger<VoteRegistrationRepository> _logger;
-    private readonly IValidation _validator;
 
-    public VoteRegistrationRepository(IMapper mapper, IScrumPokerContext context, ILogger<VoteRegistrationRepository> logger, IValidation validator)
+    public VoteRegistrationRepository(IMapper mapper, IScrumPokerContext context, ILogger<VoteRegistrationRepository> logger) : base(mapper, context, logger)
     {
         _mapper = mapper;
         _context = context;
         _logger = logger;
-        _validator = validator;
     }
 
     public VoteRegistration GetById(int id)
@@ -33,8 +31,8 @@ public class VoteRegistrationRepository : IVoteRegistrationRepository
     public VoteRegistration Create(VoteRegistration voteRequest)
     {
         
-        var gameRoomDto = _validator.GameRoomIdValidation(voteRequest.GameRoomId);
-        _validator.PlayerIdValidationInGameRoom(voteRequest.PlayerId, gameRoomDto);
+        var gameRoomDto = GameRoomIdValidation(voteRequest.GameRoomId);
+        PlayerIdValidationInGameRoom(voteRequest.PlayerId, gameRoomDto);
         var voteRegistrationDto = _context.Votes;
         var votingHistory = _context.Rounds.Select(x => x.Votes).First();
         
@@ -59,7 +57,7 @@ public class VoteRegistrationRepository : IVoteRegistrationRepository
 
     public void ClearRoundVotes(VoteRegistration vote)
     {
-        _validator.GameRoomIdValidation(vote.GameRoomId);
+        GameRoomIdValidation(vote.GameRoomId);
         var votesDto = _context.Votes;
         var votes = _context.Votes.Where(x=>x.GameRoomId == vote.GameRoomId);
         

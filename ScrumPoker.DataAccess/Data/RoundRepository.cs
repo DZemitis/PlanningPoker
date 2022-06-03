@@ -7,19 +7,17 @@ using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.DataAccess.Data;
 
-public class RoundRepository : IRoundRepository
+public class RoundRepository : RepositoryBase ,IRoundRepository
 {
     private readonly IMapper _mapper;
     private readonly IScrumPokerContext _context;
     private readonly ILogger<RoundRepository> _logger;
-    private readonly IValidation _validator;
 
-    public RoundRepository(IMapper mapper, IScrumPokerContext context, ILogger<RoundRepository> logger, IValidation validator)
+    public RoundRepository(IMapper mapper, IScrumPokerContext context, ILogger<RoundRepository> logger) : base(mapper, context, logger)
     {
         _mapper = mapper;
         _context = context;
         _logger = logger;
-        _validator = validator;
     }
 
     public Round GetById(int id)
@@ -32,7 +30,7 @@ public class RoundRepository : IRoundRepository
 
     public void SetRoundState(Round round)
     {
-        var gameRoomDto = _validator.GameRoomIdValidation(round.GameRoomId);
+        var gameRoomDto = GameRoomIdValidation(round.GameRoomId);
         gameRoomDto.CurrentRound.RoundState = round.RoundState;
 
         _context.SaveChanges();

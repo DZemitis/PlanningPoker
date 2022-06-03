@@ -22,6 +22,8 @@ public class ScrumPokerContext : DbContext, IScrumPokerContext
         GameRoomPlayerContextExtension.GameRoomPlayer(builder);
         GameRoomContextExtension.GameRoom(builder);
         PlayerContextExtension.Player(builder);
+        RoundsExtension.Round(builder);
+        VotesExtension.Votes(builder);
     }
 
     public async Task<int> SaveChangesAsync()
