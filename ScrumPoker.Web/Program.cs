@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.Infrastructure;
 using ScrumPoker.Infrastructure.AutoMapper;
+using ScrumPoker.Infrastructure.Configuration;
 using ScrumPoker.Infrastructure.Middlewares;
 using ScrumPoker.Web.Validators;
 using Serilog;
@@ -27,7 +28,8 @@ builder.Services.AddDbContext<ScrumPokerContext>(opt =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.ConfigureSwagger();
+
 builder.Services.Register();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddControllers(options =>
@@ -47,6 +49,8 @@ builder.Services
         fv.RegisterValidatorsFromAssemblyContaining<CreateGameRoomApiRequestValidator>();
     });
 
+builder.AddJwtAuthentication();
+
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -56,8 +60,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
