@@ -27,8 +27,10 @@ public class GameRoomService : IGameRoomService
     public GameRoom Create(GameRoom gameRoomRequest)
     {
         var gameRoom =_gameRoomRepository.Create(gameRoomRequest);
+        _gameRoomRepository.AddPlayerToRoom(gameRoom.Id, gameRoom.MasterId);
+        var gameRoomResponse = _gameRoomRepository.GetById(gameRoom.Id);
 
-        return gameRoom;
+        return gameRoomResponse;
     }
 
     public GameRoom Update(GameRoom gameRoomRequest)

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.Models;
-using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
@@ -118,35 +117,15 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
         var playerList = gameRoomDto.GameRoomPlayers;
 
         var playerDto = PlayerIdValidation(playerId);
-
-        var gameRoomList = playerDto.PlayerGameRooms;
         
         var gameRoomPlayers = new GameRoomPlayer
         {
             Player = playerDto,
-            PlayerId = playerDto.Id,
             GameRoom = gameRoomDto,
-            GameRoomId = gameRoomDto.Id
         };
 
         /*_context.GameRoomsPlayers.Add(gameRoomPlayers);*/
         playerList.Add(gameRoomPlayers);
         _context.SaveChanges();
     }
-    
-    /*
-    private GameRoomDto AddPlayerGameRoomIdValidation(int gameRoomId)
-    {
-        var gameRoomDto = _context.GameRooms
-            .Include(gr=>gr.GameRoomPlayers).ThenInclude(x=>x.Player)
-            .SingleOrDefault(g => g.Id == gameRoomId);
-        
-        if (gameRoomDto == null)
-        {
-            _logger.LogWarning("Game Room with ID {Id} could not be found", gameRoomId);
-            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
-        }
-
-        return gameRoomDto;
-    }*/
 }
