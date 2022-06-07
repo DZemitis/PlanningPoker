@@ -31,8 +31,6 @@ public class VoteRegistrationRepository : RepositoryBase ,IVoteRegistrationRepos
     public VoteRegistration Create(VoteRegistration voteRequest)
     {
         
-        var gameRoomDto = GameRoomIdValidation(voteRequest.GameRoomId);
-        PlayerIdValidationInGameRoom(voteRequest.PlayerId, gameRoomDto);
         var voteRegistrationDto = _context.Votes;
         var votingHistory = _context.Rounds.Select(x => x.Votes).First();
         
@@ -41,7 +39,6 @@ public class VoteRegistrationRepository : RepositoryBase ,IVoteRegistrationRepos
         {
             Vote = voteRequest.Vote,
             PlayerId = voteRequest.PlayerId,
-            GameRoomId = voteRequest.GameRoomId,
             RoundId = voteRequest.RoundId
         };
        
@@ -57,9 +54,8 @@ public class VoteRegistrationRepository : RepositoryBase ,IVoteRegistrationRepos
 
     public void ClearRoundVotes(VoteRegistration vote)
     {
-        GameRoomIdValidation(vote.GameRoomId);
         var votesDto = _context.Votes;
-        var votes = _context.Votes.Where(x=>x.GameRoomId == vote.GameRoomId);
+        var votes = _context.Votes.Where(x=>x.RoundId == vote.RoundId);
         
         votesDto.RemoveRange(votes);
 

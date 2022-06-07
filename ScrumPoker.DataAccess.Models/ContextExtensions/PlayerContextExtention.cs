@@ -11,7 +11,7 @@ public class PlayerContextExtension
             .HasKey(p => p.Id);
 
         builder.Entity<PlayerDto>()
-            .HasIndex(p => new { p.Id, p.Email });
+            .HasIndex(p => p.Id);
 
         builder.Entity<PlayerDto>()
             .ToTable("Players");

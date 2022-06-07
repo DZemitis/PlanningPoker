@@ -12,7 +12,7 @@ public class RoundsExtension
 
         builder.Entity<RoundDto>()
             .HasIndex(r => new { r.RoundId, r.GameRoomId });
-      
+        
         builder.Entity<RoundDto>()
             .ToTable("Rounds");
     }
