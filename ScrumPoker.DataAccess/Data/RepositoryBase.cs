@@ -62,7 +62,7 @@ public abstract class RepositoryBase
             _logger.LogWarning("Player(ID{PlayerId}) in Game Room (ID{GameRoomId}) was not found", playerId, gameRoomDto.Id);
             throw new IdNotFoundException($"{typeof(Player)} in game room {gameRoomDto.Id} with player ID {playerId} not found");
         }
-
+        
         return playerDto;
     }
 

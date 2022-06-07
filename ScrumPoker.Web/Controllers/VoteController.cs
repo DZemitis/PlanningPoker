@@ -26,7 +26,8 @@ public class VoteController : ControllerBase
     [Route("GetAllFromRound")]
     public IActionResult GetAllFromRound(int id)
     {
-        return Ok();
+        var voteList = _voteRegistrationService.GetById(id);
+        return Ok(voteList);
     }
 
     [HttpPost]
@@ -41,11 +42,10 @@ public class VoteController : ControllerBase
 
     [HttpDelete]
     [Route("ClearVotes")]
-    public IActionResult ClearRoundVotes(VoteApiRequest voteApiRequest)
+    public IActionResult ClearRoundVotes(int roundId)
     {
-        var voteRequest = _mapper.Map<VoteRegistration>(voteApiRequest);
-        _voteRegistrationService.ClearRoundVotes(voteRequest);
-        
-        return Ok($"All votes from round(ID: {voteApiRequest.RoundId}) has been cleared");
+        _voteRegistrationService.ClearRoundVotes(roundId);
+
+        return Ok($"All votes from round(ID: {roundId}) has been cleared");
     }
 }

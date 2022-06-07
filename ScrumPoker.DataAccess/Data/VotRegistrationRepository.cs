@@ -7,33 +7,33 @@ using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.DataAccess.Data;
 
-public class VoteRegistrationRepository : RepositoryBase ,IVoteRegistrationRepository
+public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepository
 {
     private readonly IMapper _mapper;
     private readonly IScrumPokerContext _context;
     private readonly ILogger<VoteRegistrationRepository> _logger;
 
-    public VoteRegistrationRepository(IMapper mapper, IScrumPokerContext context, ILogger<VoteRegistrationRepository> logger) : base(mapper, context, logger)
+    public VoteRegistrationRepository(IMapper mapper, IScrumPokerContext context,
+        ILogger<VoteRegistrationRepository> logger) : base(mapper, context, logger)
     {
         _mapper = mapper;
         _context = context;
         _logger = logger;
     }
 
-    public VoteRegistration GetById(int id)
+    public List<VoteRegistration> GetById(int id)
     {
-       var voteRegistrationDto = _context.Votes.SingleOrDefault(v => v.Id == id);
-       var voteRegistrationResponse = _mapper.Map<VoteRegistration>(voteRegistrationDto);
+        var voteRegistrationDto = _context.Votes.Where(x => x.RoundId == id).ToList();
+        var voteRegistrationResponse = _mapper.Map<List<VoteRegistration>>(voteRegistrationDto);
 
-       return voteRegistrationResponse;
+        return voteRegistrationResponse;
     }
-    
+
     public VoteRegistration Create(VoteRegistration voteRequest)
     {
-        
         var voteRegistrationDto = _context.Votes;
         var votingHistory = _context.Rounds.Select(x => x.Votes).First();
-        
+
 
         var voteRequestDto = new VoteRegistrationDto
         {
@@ -41,22 +41,22 @@ public class VoteRegistrationRepository : RepositoryBase ,IVoteRegistrationRepos
             PlayerId = voteRequest.PlayerId,
             RoundId = voteRequest.RoundId
         };
-       
+
         voteRegistrationDto.Add(voteRequestDto);
         _context.SaveChanges();
         votingHistory.Add(voteRequestDto);
         _context.SaveChanges();
-        
+
         var voteRegistrationResponse = _mapper.Map<VoteRegistration>(voteRequestDto);
 
         return voteRegistrationResponse;
     }
 
-    public void ClearRoundVotes(VoteRegistration vote)
+    public void ClearRoundVotes(int roundId)
     {
         var votesDto = _context.Votes;
-        var votes = _context.Votes.Where(x=>x.RoundId == vote.RoundId);
-        
+        var votes = _context.Votes.Where(x => x.RoundId == roundId);
+
         votesDto.RemoveRange(votes);
 
         _context.SaveChanges();

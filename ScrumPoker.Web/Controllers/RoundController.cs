@@ -38,4 +38,13 @@ public class RoundController : ControllerBase
 
         return Ok(GetRoundById(roundApiRequest.RoundId));
     }
+
+    [HttpGet]
+    [Route("History")]
+    public IActionResult GetHistory(int roundId)
+    {
+        var x = _roundService.GetHistory(roundId);
+        return Ok(x);
+    }
+    
 }

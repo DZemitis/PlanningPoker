@@ -4,8 +4,8 @@ namespace ScrumPoker.Business.Interfaces.Interfaces;
 
 public interface IVoteRegistrationService
 {
-    VoteRegistration GetById(int id);
+    List<VoteRegistration> GetById(int id);
     VoteRegistration Create(VoteRegistration vote);
     void Update(VoteRegistration vote);
-    void ClearRoundVotes(VoteRegistration vote);
+    void ClearRoundVotes(int roundId);
 }

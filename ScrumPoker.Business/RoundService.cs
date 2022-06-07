@@ -23,4 +23,9 @@ public class RoundService : IRoundService
     {
         _roundRepository.Update(round);
     }
+
+    public List<VoteRegistration> GetHistory(int roundId)
+    {
+       return _roundRepository.GetHistory(roundId);
+    }
 }

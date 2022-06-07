@@ -6,4 +6,5 @@ public interface IRoundService
 {
     Round GetById(int id);
     void Update(Round round);
+    List<VoteRegistration> GetHistory(int roundId);
 }

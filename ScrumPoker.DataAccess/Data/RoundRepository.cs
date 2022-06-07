@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.DataAccess.Interfaces;
@@ -42,5 +43,13 @@ public class RoundRepository : RepositoryBase ,IRoundRepository
         roundDto.RoundState = round.RoundState;
 
         _context.SaveChanges();
+    }
+
+    public List<VoteRegistration> GetHistory(int roundId)
+    {
+        var x = _context.Rounds.Select(x => x.Votes).First();
+        var voteHistory = _mapper.Map<List<VoteRegistration>>(x);
+        
+        return voteHistory;
     }
 }

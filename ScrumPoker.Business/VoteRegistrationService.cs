@@ -1,6 +1,7 @@
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.DataAccess.Interfaces;
+using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.Business;
 
@@ -13,7 +14,7 @@ public class VoteRegistrationService : IVoteRegistrationService
         _voteRegistrationRepository = voteRegistrationRepository;
     }
 
-    public VoteRegistration GetById(int id)
+    public List<VoteRegistration> GetById(int id)
     {
         return _voteRegistrationRepository.GetById(id);
     }
@@ -28,8 +29,8 @@ public class VoteRegistrationService : IVoteRegistrationService
         throw new NotImplementedException();
     }
 
-    public void ClearRoundVotes(VoteRegistration vote)
+    public void ClearRoundVotes(int roundId)
     {
-        _voteRegistrationRepository.ClearRoundVotes(vote);
+        _voteRegistrationRepository.ClearRoundVotes(roundId);
     }
 }
