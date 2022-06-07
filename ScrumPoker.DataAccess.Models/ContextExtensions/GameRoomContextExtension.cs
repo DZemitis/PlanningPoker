@@ -15,12 +15,7 @@ public class GameRoomContextExtension
 
         builder.Entity<GameRoomDto>()
             .ToTable("GameRooms");
-
-        builder.Entity<GameRoomDto>()
-            .HasOne(g => g.Master)
-            .WithOne(p => p.MastersGameRoom)
-            .HasForeignKey<GameRoomDto>(g=>g.MasterId);
-
+        
         builder.Entity<GameRoomDto>()
             .HasOne(g => g.CurrentRound)
             .WithOne(r => r.GameRoom)

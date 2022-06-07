@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScrumPoker.DataAccess.Models.EFContext;
 
@@ -10,9 +11,10 @@ using ScrumPoker.DataAccess.Models.EFContext;
 namespace ScrumPoker.DataAccess.Models.Migrations
 {
     [DbContext(typeof(ScrumPokerContext))]
-    partial class ScrumPokerContextModelSnapshot : ModelSnapshot
+    [Migration("20220607083135_Update")]
+    partial class Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

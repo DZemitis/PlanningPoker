@@ -6,6 +6,5 @@ public class PlayerDto
     public string Name { get; set; } = null!;
     public string Email { get; set; } = null!;
     public ICollection<GameRoomPlayer> PlayerGameRooms { get; set; } = null!;
-    public GameRoomDto? MastersGameRoom { get; set; }
     public VoteRegistrationDto? PLayersVote { get; set; }
 }
