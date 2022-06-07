@@ -11,11 +11,11 @@ namespace ScrumPoker.DataAccess.Data;
 
 public abstract class RepositoryBase
 {
-    private readonly IMapper _mapper;
-    private readonly IScrumPokerContext _context;
-    private readonly ILogger _logger;
+    protected readonly IMapper _mapper;
+    protected readonly IScrumPokerContext _context;
+    private readonly ILogger<RepositoryBase> _logger;
 
-    protected RepositoryBase(IMapper mapper, IScrumPokerContext context, ILogger logger)
+    protected RepositoryBase(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger)
     {
         _mapper = mapper;
         _context = context;

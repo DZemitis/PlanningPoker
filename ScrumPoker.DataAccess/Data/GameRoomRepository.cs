@@ -12,15 +12,8 @@ namespace ScrumPoker.DataAccess.Data;
 /// <inheritdoc />
 public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
 {
-    private readonly IMapper _mapper;
-    private readonly IScrumPokerContext _context;
-    private readonly ILogger<GameRoomRepository> _logger;
-
-    public GameRoomRepository(IMapper mapper, IScrumPokerContext context, ILogger<GameRoomRepository> logger) : base(mapper, context, logger)
+    public GameRoomRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) : base(mapper, context, logger)
     {
-        _mapper = mapper;
-        _context = context;
-        _logger = logger;
     }
 
     public List<GameRoom> GetAll()
@@ -34,7 +27,7 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
         
         return gameRoomListResponse;
     }
-    
+
     public GameRoom GetById(int id)
     {
         var gameRoomDto = GameRoomIdValidation(id);

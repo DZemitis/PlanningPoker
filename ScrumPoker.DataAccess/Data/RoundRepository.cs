@@ -10,15 +10,8 @@ namespace ScrumPoker.DataAccess.Data;
 
 public class RoundRepository : RepositoryBase ,IRoundRepository
 {
-    private readonly IMapper _mapper;
-    private readonly IScrumPokerContext _context;
-    private readonly ILogger<RoundRepository> _logger;
-
-    public RoundRepository(IMapper mapper, IScrumPokerContext context, ILogger<RoundRepository> logger) : base(mapper, context, logger)
+    public RoundRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) : base(mapper, context, logger)
     {
-        _mapper = mapper;
-        _context = context;
-        _logger = logger;
     }
 
     public Round GetById(int id)
@@ -44,6 +37,7 @@ public class RoundRepository : RepositoryBase ,IRoundRepository
 
         _context.SaveChanges();
     }
+
 
     public List<VoteRegistration> GetHistory(int roundId)
     {

@@ -9,16 +9,8 @@ namespace ScrumPoker.DataAccess.Data;
 
 public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepository
 {
-    private readonly IMapper _mapper;
-    private readonly IScrumPokerContext _context;
-    private readonly ILogger<VoteRegistrationRepository> _logger;
-
-    public VoteRegistrationRepository(IMapper mapper, IScrumPokerContext context,
-        ILogger<VoteRegistrationRepository> logger) : base(mapper, context, logger)
+    public VoteRegistrationRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) : base(mapper, context, logger)
     {
-        _mapper = mapper;
-        _context = context;
-        _logger = logger;
     }
 
     public List<VoteRegistration> GetById(int id)
@@ -51,6 +43,7 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
 
         return voteRegistrationResponse;
     }
+
 
     public void ClearRoundVotes(int roundId)
     {

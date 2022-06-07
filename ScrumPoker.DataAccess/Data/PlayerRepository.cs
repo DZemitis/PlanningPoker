@@ -11,15 +11,8 @@ namespace ScrumPoker.DataAccess.Data;
 /// <inheritdoc />
 public class PlayerRepository : RepositoryBase ,IPlayerRepository
 {
-    private readonly IMapper _mapper;
-    private readonly IScrumPokerContext _context;
-    private readonly ILogger<PlayerRepository> _logger;
-
-    public PlayerRepository(IMapper mapper, IScrumPokerContext context, ILogger<PlayerRepository> logger) : base(mapper, context, logger)
+    public PlayerRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) : base(mapper, context, logger)
     {
-        _mapper = mapper;
-        _context = context;
-        _logger = logger;
     }
 
     public IEnumerable<Player> GetAll()
@@ -69,6 +62,7 @@ public class PlayerRepository : RepositoryBase ,IPlayerRepository
 
         return playerDtoResponse;
     }
+
 
     public void DeleteById(int id)
     {
