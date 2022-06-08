@@ -27,5 +27,11 @@ public class GameRoomContextExtension
             .WithOne()
             .HasForeignKey<GameRoomDto>(g => g.CurrentRoundId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<GameRoomDto>()
+            .HasOne(x => x.Master)
+            .WithMany()
+            .HasForeignKey(x => x.MasterId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

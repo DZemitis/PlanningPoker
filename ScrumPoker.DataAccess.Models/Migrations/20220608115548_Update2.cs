@@ -134,8 +134,7 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                 table: "GameRooms",
                 column: "MasterId",
                 principalTable: "Players",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_GameRooms_Rounds_CurrentRoundId",

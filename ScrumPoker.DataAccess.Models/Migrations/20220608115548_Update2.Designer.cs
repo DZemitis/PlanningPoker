@@ -12,7 +12,7 @@ using ScrumPoker.DataAccess.Models.EFContext;
 namespace ScrumPoker.DataAccess.Models.Migrations
 {
     [DbContext(typeof(ScrumPokerContext))]
-    [Migration("20220608114012_Update2")]
+    [Migration("20220608115548_Update2")]
     partial class Update2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -163,7 +163,7 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                     b.HasOne("ScrumPoker.DataAccess.Models.Models.PlayerDto", "Master")
                         .WithMany()
                         .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("CurrentRound");
