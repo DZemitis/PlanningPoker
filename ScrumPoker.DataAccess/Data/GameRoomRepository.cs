@@ -53,11 +53,13 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
             Description = gameRoomRequest.Round.Description,
             GameRoom = addGameRoom
         };
-       
-        _context.GameRooms.Add(addGameRoom);
+
         _context.Rounds.Add(initialRound);
         _context.SaveChanges();
-        
+        addGameRoom.CurrentRound = initialRound;
+        _context.SaveChanges();
+
+
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(addGameRoom);
         
         return gameRoomDtoResponse;
