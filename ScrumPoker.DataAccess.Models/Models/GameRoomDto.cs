@@ -9,4 +9,5 @@ public class GameRoomDto
     public PlayerDto Master { get; set; } = null!;
     public int CurrentRoundId { set; get; }
     public RoundDto CurrentRound { get; set; } = null!;
+    public List<RoundDto> Rounds { get; set; } = null!;
 }

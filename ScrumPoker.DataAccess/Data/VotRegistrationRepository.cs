@@ -35,7 +35,7 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
         };
 
         voteRegistrationDto.Add(voteRequestDto);
-        _context.SaveChanges();
+        /*_context.SaveChanges();*/
         votingHistory.Add(voteRequestDto);
         _context.SaveChanges();
 

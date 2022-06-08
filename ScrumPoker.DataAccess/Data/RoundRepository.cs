@@ -41,9 +41,9 @@ public class RoundRepository : RepositoryBase ,IRoundRepository
 
     public List<VoteRegistration> GetHistory(int roundId)
     {
-        var x = _context.Rounds.Select(x => x.Votes).First();
-        var voteHistory = _mapper.Map<List<VoteRegistration>>(x);
+        var voteHistoryList = _context.Rounds.Select(x => x.Votes).First();
+        var voteHistoryResponse = _mapper.Map<List<VoteRegistration>>(voteHistoryList);
         
-        return voteHistory;
+        return voteHistoryResponse;
     }
 }

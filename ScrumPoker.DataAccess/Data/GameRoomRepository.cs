@@ -55,6 +55,7 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
         };
         
         _context.GameRooms.Add(addGameRoom);
+        initialRound.GameRoomId = addGameRoom.Id;
         _context.SaveChanges();
         
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(addGameRoom);
