@@ -51,8 +51,9 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
         {
             RoundState = RoundState.Grooming,
             Description = gameRoomRequest.Round.Description,
+            GameRoom = addGameRoom
         };
-
+       
         _context.GameRooms.Add(addGameRoom);
         _context.Rounds.Add(initialRound);
         _context.SaveChanges();
