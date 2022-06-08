@@ -17,6 +17,10 @@ public class GameRoomContextExtension
             .ToTable("GameRooms");
 
         builder.Entity<GameRoomDto>()
+            .Property(x => x.CurrentRoundId)
+            .IsRequired(false);
+
+        builder.Entity<GameRoomDto>()
             .HasMany(x => x.Rounds)
             .WithOne(x => x.GameRoom)
             .HasForeignKey(x=>x.GameRoomId)

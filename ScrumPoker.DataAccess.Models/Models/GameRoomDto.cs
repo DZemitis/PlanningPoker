@@ -7,7 +7,7 @@ public class GameRoomDto
     public ICollection<GameRoomPlayer> GameRoomPlayers { get; set; } = null!;
     public int MasterId { get; set; }
     public PlayerDto Master { get; set; } = null!;
-    public int CurrentRoundId { set; get; }
-    public RoundDto CurrentRound { get; set; } = null!;
+    public int? CurrentRoundId { set; get; }
+    public RoundDto? CurrentRound { get; set; }
     public List<RoundDto> Rounds { get; set; } = null!;
 }

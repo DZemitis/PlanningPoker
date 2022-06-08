@@ -40,22 +40,21 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
     {
         ValidateAlreadyExistGameRoom(gameRoomRequest);
         PlayerIdValidation(gameRoomRequest.MasterId);
-        
-        var initialRound = new RoundDto
-        {
-            RoundState = RoundState.Grooming,
-            Description = gameRoomRequest.Round.Description
-        };
-        
+
         var addGameRoom = new GameRoomDto
         {
             Name = gameRoomRequest.Name,
             Master = _context.Players.Single(x=>x.Id == gameRoomRequest.MasterId),
-            CurrentRound = initialRound,
         };
         
+        var initialRound = new RoundDto
+        {
+            RoundState = RoundState.Grooming,
+            Description = gameRoomRequest.Round.Description,
+        };
+
         _context.GameRooms.Add(addGameRoom);
-        initialRound.GameRoomId = addGameRoom.Id;
+        _context.Rounds.Add(initialRound);
         _context.SaveChanges();
         
         var gameRoomDtoResponse = _mapper.Map<GameRoom>(addGameRoom);
