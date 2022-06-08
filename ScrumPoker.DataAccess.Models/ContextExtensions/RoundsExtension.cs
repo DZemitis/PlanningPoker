@@ -15,10 +15,5 @@ public class RoundsExtension
         
         builder.Entity<RoundDto>()
             .ToTable("Rounds");
-
-        builder.Entity<RoundDto>()
-            .HasOne(x => x.GameRoom)
-            .WithMany(x => x.Rounds)
-            .HasForeignKey(x => x.GameRoomId);
     }
 }

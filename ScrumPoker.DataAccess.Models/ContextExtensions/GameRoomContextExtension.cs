@@ -17,8 +17,15 @@ public class GameRoomContextExtension
             .ToTable("GameRooms");
 
         builder.Entity<GameRoomDto>()
+            .HasMany(x => x.Rounds)
+            .WithOne(x => x.GameRoom)
+            .HasForeignKey(x=>x.GameRoomId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<GameRoomDto>()
             .HasOne(g => g.CurrentRound)
-            .WithOne(r => r.GameRoom)
-            .HasForeignKey<GameRoomDto>(g => g.CurrentRoundId);
+            .WithOne()
+            .HasForeignKey<GameRoomDto>(g => g.CurrentRoundId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
