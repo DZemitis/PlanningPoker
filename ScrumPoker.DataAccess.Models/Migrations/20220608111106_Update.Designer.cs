@@ -12,8 +12,8 @@ using ScrumPoker.DataAccess.Models.EFContext;
 namespace ScrumPoker.DataAccess.Models.Migrations
 {
     [DbContext(typeof(ScrumPokerContext))]
-    [Migration("20220601123411_UpdateTrial")]
-    partial class UpdateTrial
+    [Migration("20220608111106_Update")]
+    partial class Update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,7 +44,8 @@ namespace ScrumPoker.DataAccess.Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CurrentRoundId");
+                    b.HasIndex("CurrentRoundId")
+                        .IsUnique();
 
                     b.HasIndex("Id");
 
@@ -80,15 +81,20 @@ namespace ScrumPoker.DataAccess.Models.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PLayersVoteId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Id", "Email");
+                    b.HasIndex("Id");
+
+                    b.HasIndex("PLayersVoteId");
 
                     b.ToTable("Players", (string)null);
                 });
@@ -113,7 +119,11 @@ namespace ScrumPoker.DataAccess.Models.Migrations
 
                     b.HasKey("RoundId");
 
-                    b.ToTable("Rounds");
+                    b.HasIndex("GameRoomId");
+
+                    b.HasIndex("RoundId", "GameRoomId");
+
+                    b.ToTable("Rounds", (string)null);
                 });
 
             modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.VoteRegistrationDto", b =>
@@ -124,13 +134,7 @@ namespace ScrumPoker.DataAccess.Models.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("GameRoomId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RoundDtoRoundId")
                         .HasColumnType("int");
 
                     b.Property<int>("RoundId")
@@ -141,16 +145,18 @@ namespace ScrumPoker.DataAccess.Models.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoundDtoRoundId");
+                    b.HasIndex("PlayerId");
 
-                    b.ToTable("Votes");
+                    b.HasIndex("RoundId");
+
+                    b.ToTable("Votes", (string)null);
                 });
 
             modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.GameRoomDto", b =>
                 {
                     b.HasOne("ScrumPoker.DataAccess.Models.Models.RoundDto", "CurrentRound")
-                        .WithMany()
-                        .HasForeignKey("CurrentRoundId")
+                        .WithOne()
+                        .HasForeignKey("ScrumPoker.DataAccess.Models.Models.GameRoomDto", "CurrentRoundId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -184,16 +190,50 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                     b.Navigation("Player");
                 });
 
+            modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.PlayerDto", b =>
+                {
+                    b.HasOne("ScrumPoker.DataAccess.Models.Models.VoteRegistrationDto", "PLayersVote")
+                        .WithMany()
+                        .HasForeignKey("PLayersVoteId");
+
+                    b.Navigation("PLayersVote");
+                });
+
+            modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.RoundDto", b =>
+                {
+                    b.HasOne("ScrumPoker.DataAccess.Models.Models.GameRoomDto", "GameRoom")
+                        .WithMany("Rounds")
+                        .HasForeignKey("GameRoomId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("GameRoom");
+                });
+
             modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.VoteRegistrationDto", b =>
                 {
-                    b.HasOne("ScrumPoker.DataAccess.Models.Models.RoundDto", null)
+                    b.HasOne("ScrumPoker.DataAccess.Models.Models.PlayerDto", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ScrumPoker.DataAccess.Models.Models.RoundDto", "Round")
                         .WithMany("Votes")
-                        .HasForeignKey("RoundDtoRoundId");
+                        .HasForeignKey("RoundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+
+                    b.Navigation("Round");
                 });
 
             modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.GameRoomDto", b =>
                 {
                     b.Navigation("GameRoomPlayers");
+
+                    b.Navigation("Rounds");
                 });
 
             modelBuilder.Entity("ScrumPoker.DataAccess.Models.Models.PlayerDto", b =>
