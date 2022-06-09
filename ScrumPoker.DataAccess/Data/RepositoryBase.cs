@@ -29,14 +29,11 @@ public abstract class RepositoryBase
             .Include(x=>x.Master)
             .Include(x=>x.CurrentRound)
             .SingleOrDefault(g => g.Id == gameRoomId);
-        
-        if (gameRoomDto == null)
-        {
-            _logger.LogWarning("Game Room with ID {Id} could not be found", gameRoomId);
-            throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
-        }
 
-        return gameRoomDto;
+        if (gameRoomDto != null) return gameRoomDto;
+        _logger.LogWarning("Game Room with ID {Id} could not be found", gameRoomId);
+        throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
+
     }
 
     protected PlayerDto PlayerIdValidation(int playerId)
@@ -44,43 +41,33 @@ public abstract class RepositoryBase
         var playerDto = _context.Players
             .Include(p=>p.PlayerGameRooms)
             .SingleOrDefault(p => p.Id == playerId);
-        
-        if (playerDto == null)
-        {
-            _logger.LogWarning("Player with ID {Id} could not been found", playerId);
-            throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
-        }
 
-        return playerDto;
+        if (playerDto != null) return playerDto;
+        _logger.LogWarning("Player with ID {Id} could not been found", playerId);
+        throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
+
     }
 
     protected GameRoomPlayer PlayerIdValidationInGameRoom(int playerId, GameRoomDto gameRoomDto)
     {
         var playerDto = gameRoomDto.GameRoomPlayers.SingleOrDefault(gr => gr.PlayerId == playerId);
-        if (playerDto == null)
-        {
-            _logger.LogWarning("Player(ID{PlayerId}) in Game Room (ID{GameRoomId}) was not found", playerId, gameRoomDto.Id);
-            throw new IdNotFoundException($"{typeof(Player)} in game room {gameRoomDto.Id} with player ID {playerId} not found");
-        }
-        
-        return playerDto;
+        if (playerDto != null) return playerDto;
+        _logger.LogWarning("Player(ID{PlayerId}) in Game Room (ID{GameRoomId}) was not found", playerId, gameRoomDto.Id);
+        throw new IdNotFoundException($"{typeof(Player)} in game room {gameRoomDto.Id} with player ID {playerId} not found");
+
     }
 
     protected void ValidateAlreadyExistGameRoom(GameRoom gameRoomRequest)
     {
-        if (_context.GameRooms.Any(x => x.Id == gameRoomRequest.Id))
-        {
-            _logger.LogWarning("Game room with ID{Id} already exists", gameRoomRequest.Id);
-            throw new IdAlreadyExistException($"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
-        }
+        if (!_context.GameRooms.Any(x => x.Id == gameRoomRequest.Id)) return;
+        _logger.LogWarning("Game room with ID{Id} already exists", gameRoomRequest.Id);
+        throw new IdAlreadyExistException($"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
     }
 
     protected void ValidateAlreadyExistPlayer(Player player)
     {
-        if (_context.Players.Any(p => p.Id == player.Id))
-        {
-            _logger.LogWarning("Player with ID{ID} already exists", player.Id);
-            throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
-        }
+        if (!_context.Players.Any(p => p.Id == player.Id)) return;
+        _logger.LogWarning("Player with ID{ID} already exists", player.Id);
+        throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
     }
 }

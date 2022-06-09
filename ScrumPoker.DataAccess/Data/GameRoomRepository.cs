@@ -44,7 +44,7 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
         var addGameRoom = new GameRoomDto
         {
             Name = gameRoomRequest.Name,
-            Master = _context.Players.Single(x=>x.Id == gameRoomRequest.MasterId),
+            Master = _context.Players.Single(x=>x.Id == gameRoomRequest.MasterId)
         };
         
         var initialRound = new RoundDto
@@ -120,10 +120,9 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
         var gameRoomPlayers = new GameRoomPlayer
         {
             Player = playerDto,
-            GameRoom = gameRoomDto,
+            GameRoom = gameRoomDto
         };
 
-        /*_context.GameRoomsPlayers.Add(gameRoomPlayers);*/
         playerList.Add(gameRoomPlayers);
         _context.SaveChanges();
     }

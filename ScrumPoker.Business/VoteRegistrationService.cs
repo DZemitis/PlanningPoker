@@ -1,7 +1,6 @@
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.DataAccess.Interfaces;
-using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.Business;
 

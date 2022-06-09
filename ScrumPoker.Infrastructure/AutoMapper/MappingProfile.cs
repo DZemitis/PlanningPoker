@@ -33,7 +33,7 @@ public class MappingProfile : Profile
                 opt.MapFrom(x=>x.Master.Id))
             .ForMember(x=>x.CurrentRoundId, 
                 opt=>
-                opt.MapFrom(src=>src.CurrentRound.RoundId));
+                opt.MapFrom(src=>src.CurrentRound!.RoundId));
         CreateMap<CreatePlayerApiRequest, Player>();
         CreateMap<UpdatePlayerApiRequest, Player>();
         CreateMap<Player, PlayerDto>();
