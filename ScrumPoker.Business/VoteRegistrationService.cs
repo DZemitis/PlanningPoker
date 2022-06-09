@@ -13,7 +13,12 @@ public class VoteRegistrationService : IVoteRegistrationService
         _voteRegistrationRepository = voteRegistrationRepository;
     }
 
-    public List<VoteRegistration> GetById(int id)
+    public List<VoteRegistration> GetListById(int id)
+    {
+        return _voteRegistrationRepository.GetListById(id);
+    }
+
+    public VoteRegistration GetById(int id)
     {
         return _voteRegistrationRepository.GetById(id);
     }
@@ -25,7 +30,7 @@ public class VoteRegistrationService : IVoteRegistrationService
 
     public void Update(VoteRegistration vote)
     {
-        throw new NotImplementedException();
+        _voteRegistrationRepository.Update(vote);
     }
 
     public void ClearRoundVotes(int roundId)

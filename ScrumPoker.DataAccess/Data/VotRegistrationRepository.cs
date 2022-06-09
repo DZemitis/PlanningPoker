@@ -9,11 +9,12 @@ namespace ScrumPoker.DataAccess.Data;
 
 public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepository
 {
-    public VoteRegistrationRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) : base(mapper, context, logger)
+    public VoteRegistrationRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) :
+        base(mapper, context, logger)
     {
     }
 
-    public List<VoteRegistration> GetById(int id)
+    public List<VoteRegistration> GetListById(int id)
     {
         var voteRegistrationDto = _context.Votes.Where(x => x.RoundId == id).ToList();
         var voteRegistrationResponse = _mapper.Map<List<VoteRegistration>>(voteRegistrationDto);
@@ -21,11 +22,23 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
         return voteRegistrationResponse;
     }
 
+    public VoteRegistration GetById(int id)
+    {
+        var voteRequest = _context.Votes.SingleOrDefault(x => x.Id == id);
+        var voteResponse = _mapper.Map<VoteRegistration>(voteRequest);
+
+        return voteResponse;
+    }
+
     public VoteRegistration Create(VoteRegistration voteRequest)
     {
+        var roundDto = RoundIdValidation(voteRequest.RoundId);
+        var gameRoomDto = GameRoomIdValidation(roundDto.GameRoomId);
+        PlayerIdValidationInGameRoom(voteRequest.PlayerId, gameRoomDto);
+
         var voteRegistrationDto = _context.Votes;
         var votingHistory = _context.Rounds.Select(x => x.Votes).First();
-
+        VoteAlreadyMadeException(voteRequest, voteRegistrationDto);
 
         var voteRequestDto = new VoteRegistrationDto
         {
@@ -35,7 +48,6 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
         };
 
         voteRegistrationDto.Add(voteRequestDto);
-        /*_context.SaveChanges();*/
         votingHistory.Add(voteRequestDto);
         _context.SaveChanges();
 
@@ -44,6 +56,16 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
         return voteRegistrationResponse;
     }
 
+    public void Update(VoteRegistration vote)
+    {
+        var voteRequest = _mapper.Map<VoteRegistrationDto>(vote);
+        PlayerIdValidation(vote.PlayerId);
+        VoteNotFoundException(voteRequest);
+        
+        voteRequest.Vote = vote.Vote;
+
+        _context.SaveChanges();
+    }
 
     public void ClearRoundVotes(int roundId)
     {

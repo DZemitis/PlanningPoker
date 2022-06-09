@@ -26,8 +26,17 @@ public class VoteController : ControllerBase
     [Route("GetAllFromRound")]
     public IActionResult GetAllFromRound(int id)
     {
-        var voteList = _voteRegistrationService.GetById(id);
+        var voteList = _voteRegistrationService.GetListById(id);
         return Ok(voteList);
+    }
+
+    [HttpGet]
+    [Route("{Id:int}")]
+    public IActionResult GetById(int id)
+    {
+        var voteResponse = _voteRegistrationService.GetById(id);
+
+        return Ok(voteResponse);
     }
 
     [HttpPost]
@@ -39,6 +48,18 @@ public class VoteController : ControllerBase
 
         return Created("", voteResponse);
     }
+
+    [HttpPut]
+    [Route("Update")]
+    public IActionResult Update(UpdateVoteApiRequest voteApiRequest)
+    {
+        var voteRequest = _mapper.Map<VoteRegistration>(voteApiRequest);
+        _voteRegistrationService.Update(voteRequest);
+        var voteResponse = _voteRegistrationService.GetById(voteApiRequest.Id);
+        
+        return Ok(voteResponse);
+    }
+
 
     [HttpDelete]
     [Route("ClearVotes")]

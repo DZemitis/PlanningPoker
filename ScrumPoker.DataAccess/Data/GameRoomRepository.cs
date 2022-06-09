@@ -80,9 +80,6 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
     public void DeleteAll()
     {
         _context.GameRooms.RemoveRange(_context.GameRooms);
-        _context.Players.RemoveRange(_context.Players);
-        _context.Rounds.RemoveRange(_context.Rounds);
-        _context.Votes.RemoveRange(_context.Votes);
         _context.SaveChanges();
     }
 

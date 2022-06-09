@@ -33,7 +33,6 @@ public abstract class RepositoryBase
         if (gameRoomDto != null) return gameRoomDto;
         _logger.LogWarning("Game Room with ID {Id} could not be found", gameRoomId);
         throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
-
     }
 
     protected PlayerDto PlayerIdValidation(int playerId)
@@ -45,8 +44,17 @@ public abstract class RepositoryBase
         if (playerDto != null) return playerDto;
         _logger.LogWarning("Player with ID {Id} could not been found", playerId);
         throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
-
     }
+
+    protected RoundDto RoundIdValidation(int roundId)
+    {
+        var roundDto = _context.Rounds.SingleOrDefault(r => r.RoundId == roundId);
+
+        if (roundDto != null) return roundDto;
+        _logger.LogWarning("Round with ID {roundId} could not been found", roundDto);
+        throw new IdNotFoundException($"{typeof(Round)} with ID {roundDto} not found");
+    }
+    
 
     protected GameRoomPlayer PlayerIdValidationInGameRoom(int playerId, GameRoomDto gameRoomDto)
     {
@@ -54,7 +62,6 @@ public abstract class RepositoryBase
         if (playerDto != null) return playerDto;
         _logger.LogWarning("Player(ID{PlayerId}) in Game Room (ID{GameRoomId}) was not found", playerId, gameRoomDto.Id);
         throw new IdNotFoundException($"{typeof(Player)} in game room {gameRoomDto.Id} with player ID {playerId} not found");
-
     }
 
     protected void ValidateAlreadyExistGameRoom(GameRoom gameRoomRequest)
@@ -69,5 +76,25 @@ public abstract class RepositoryBase
         if (!_context.Players.Any(p => p.Id == player.Id)) return;
         _logger.LogWarning("Player with ID{ID} already exists", player.Id);
         throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
+    }
+
+    protected void VoteAlreadyMadeException(VoteRegistration voteRequest, DbSet<VoteRegistrationDto> voteRegistrationDto)
+    {
+        var checkVote =
+            voteRegistrationDto.SingleOrDefault(x =>
+                x.PlayerId == voteRequest.PlayerId && x.RoundId == voteRequest.RoundId);
+
+        if (checkVote == null) return;
+        _logger.LogWarning("Player with ID {Id}, has already voted", voteRequest.PlayerId);
+        throw new VoteAlreadyExistException($"Player with ID {voteRequest.PlayerId} has already made his vote");
+    }
+
+    protected void VoteNotFoundException(VoteRegistrationDto voteRequest)
+    {
+        var checkVote = _context.Votes.SingleOrDefault(x => x.Id == voteRequest.Id);
+        if (checkVote == null)
+        {
+            throw new IdNotFoundException($"Vote with ID {voteRequest.Id} has not been found");
+        }
     }
 }
