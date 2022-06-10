@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.DataAccess.Interfaces;
@@ -20,18 +21,10 @@ public class RoundRepository : RepositoryBase ,IRoundRepository
 
         return roundResponse;
     }
-
-    public void SetRoundState(Round round)
-    {
-        var gameRoomDto = GameRoomIdValidation(round.GameRoomId);
-        gameRoomDto.CurrentRound!.RoundState = round.RoundState;
-
-        _context.SaveChanges();
-    }
-
+    
     public void Update(Round round)
     {
-        GameRoomIdValidation(round.GameRoomId);
+        RoundIdValidation(round.RoundId);
         var roundDto = _context.Rounds.SingleOrDefault(r => r.RoundId == round.RoundId);
         roundDto!.RoundState = round.RoundState;
 
@@ -42,7 +35,7 @@ public class RoundRepository : RepositoryBase ,IRoundRepository
     public List<VoteRegistration> GetHistory(int roundId)
     {
         var voteHistory = new List<VoteRegistrationDto>();
-        var voteHistoryList = _context.Rounds.Select(x => x.Votes);
+        var voteHistoryList = _context.Rounds.Include(x=>x.Votes).Select(x=>x.Votes);
         foreach (var votingList in voteHistoryList)
         {
             voteHistory.AddRange(votingList.Where(vote => vote.Id == roundId));

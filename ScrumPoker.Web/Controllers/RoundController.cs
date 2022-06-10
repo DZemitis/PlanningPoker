@@ -35,7 +35,7 @@ public class RoundController : ControllerBase
     {
         var round = _mapper.Map<Round>(roundApiRequest);
         _roundService.Update(round);
-
+        
         return Ok(GetRoundById(roundApiRequest.RoundId));
     }
 

@@ -38,7 +38,7 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
 
         var voteRegistrationDto = _context.Votes;
         var votingHistory = _context.Rounds.Select(x => x.Votes).First();
-        VoteAlreadyMadeException(voteRequest, voteRegistrationDto);
+        VoteAlreadyMadeValidation(voteRequest, voteRegistrationDto);
 
         var voteRequestDto = new VoteRegistrationDto
         {
@@ -59,10 +59,9 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
     public void Update(VoteRegistration vote)
     {
         var voteRequest = _mapper.Map<VoteRegistrationDto>(vote);
-        PlayerIdValidation(vote.PlayerId);
-        VoteNotFoundException(voteRequest);
-        
-        voteRequest.Vote = vote.Vote;
+        var voteRegistrationDto = VoteNotFoundValidation(voteRequest);
+
+        voteRegistrationDto.Vote = vote.Vote;
 
         _context.SaveChanges();
     }

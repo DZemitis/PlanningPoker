@@ -51,8 +51,8 @@ public abstract class RepositoryBase
         var roundDto = _context.Rounds.SingleOrDefault(r => r.RoundId == roundId);
 
         if (roundDto != null) return roundDto;
-        _logger.LogWarning("Round with ID {roundId} could not been found", roundDto);
-        throw new IdNotFoundException($"{typeof(Round)} with ID {roundDto} not found");
+        _logger.LogWarning("Round with ID {roundId} could not been found", roundId);
+        throw new IdNotFoundException($"{typeof(Round)} with ID {roundId} not found");
     }
     
 
@@ -78,7 +78,7 @@ public abstract class RepositoryBase
         throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
     }
 
-    protected void VoteAlreadyMadeException(VoteRegistration voteRequest, DbSet<VoteRegistrationDto> voteRegistrationDto)
+    protected void VoteAlreadyMadeValidation(VoteRegistration voteRequest, DbSet<VoteRegistrationDto> voteRegistrationDto)
     {
         var checkVote =
             voteRegistrationDto.SingleOrDefault(x =>
@@ -89,12 +89,10 @@ public abstract class RepositoryBase
         throw new VoteAlreadyExistException($"Player with ID {voteRequest.PlayerId} has already made his vote");
     }
 
-    protected void VoteNotFoundException(VoteRegistrationDto voteRequest)
+    protected VoteRegistrationDto VoteNotFoundValidation(VoteRegistrationDto voteRequest)
     {
         var checkVote = _context.Votes.SingleOrDefault(x => x.Id == voteRequest.Id);
-        if (checkVote == null)
-        {
-            throw new IdNotFoundException($"Vote with ID {voteRequest.Id} has not been found");
-        }
+        if (checkVote != null) return checkVote;
+        throw new IdNotFoundException($"Vote with ID {voteRequest.Id} has not been found");
     }
 }
