@@ -3,7 +3,7 @@ using ScrumPoker.Business.Models.Models;
 using ScrumPoker.DataAccess.Interfaces;
 
 namespace ScrumPoker.Business;
-
+/// <inheritdoc />
 public class VoteRegistrationService : IVoteRegistrationService
 {
     private readonly IVoteRegistrationRepository _voteRegistrationRepository;

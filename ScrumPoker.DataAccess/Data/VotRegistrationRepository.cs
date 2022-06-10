@@ -6,7 +6,7 @@ using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.DataAccess.Data;
-
+/// <inheritdoc />
 public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepository
 {
     public VoteRegistrationRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) :
@@ -68,6 +68,7 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
 
     public void ClearRoundVotes(int roundId)
     {
+        RoundIdValidation(roundId);
         var votesDto = _context.Votes;
         var votes = _context.Votes.Where(x => x.RoundId == roundId);
 

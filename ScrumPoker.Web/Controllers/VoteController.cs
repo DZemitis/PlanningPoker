@@ -22,6 +22,11 @@ public class VoteController : ControllerBase
         _logger = logger;
     }
 
+    /// <summary>
+    /// Returns list of votes in a round
+    /// </summary>
+    /// <param name="id">ID of the round</param>
+    /// <returns>List of votes</returns>
     [HttpGet]
     [Route("GetAllFromRound")]
     public IActionResult GetAllFromRound(int id)
@@ -32,6 +37,11 @@ public class VoteController : ControllerBase
         return Ok(voteList);
     }
 
+    /// <summary>
+    /// Returns a vote with specific ID
+    /// </summary>
+    /// <param name="id">ID of the vote</param>
+    /// <returns>Vote by ID</returns>
     [HttpGet]
     [Route("{Id:int}")]
     public IActionResult GetById(int id)
@@ -42,6 +52,11 @@ public class VoteController : ControllerBase
         return Ok(voteResponse);
     }
 
+    /// <summary>
+    /// Asks user to create a vote
+    /// </summary>
+    /// <param name="voteApiRequest">Vote request with player ID, round ID and vote</param>
+    /// <returns>Created vote with ID</returns>
     [HttpPost]
     [Route("Create")]
     public IActionResult Create(VoteApiRequest voteApiRequest)
@@ -53,6 +68,11 @@ public class VoteController : ControllerBase
         return Created("", voteResponse);
     }
 
+    /// <summary>
+    /// Update a vote, change voting result
+    /// </summary>
+    /// <param name="voteApiRequest">Vote update request with vote ID, voting result</param>
+    /// <returns>Updated vote</returns>
     [HttpPut]
     [Route("Update")]
     public IActionResult Update(UpdateVoteApiRequest voteApiRequest)
@@ -65,7 +85,11 @@ public class VoteController : ControllerBase
         return Ok(voteResponse);
     }
 
-
+    /// <summary>
+    /// Clears all vote in specific round
+    /// </summary>
+    /// <param name="roundId">Round ID</param>
+    /// <returns>Message, that all votes has been cleared in provided round</returns>
     [HttpDelete]
     [Route("ClearVotes")]
     public IActionResult ClearRoundVotes(int roundId)
