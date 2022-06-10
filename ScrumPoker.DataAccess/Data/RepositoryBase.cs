@@ -31,7 +31,7 @@ public abstract class RepositoryBase
             .SingleOrDefault(g => g.Id == gameRoomId);
 
         if (gameRoomDto != null) return gameRoomDto;
-        _logger.LogWarning("Game Room with ID {Id} could not be found", gameRoomId);
+        _logger.LogWarning("Game Room with ID {Id} could not been found", gameRoomId);
         throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
     }
 
@@ -93,6 +93,7 @@ public abstract class RepositoryBase
     {
         var checkVote = _context.Votes.SingleOrDefault(x => x.Id == voteRequest.Id);
         if (checkVote != null) return checkVote;
+        _logger.LogWarning("Vote with ID {Id} could not been found", voteRequest.Id);
         throw new IdNotFoundException($"Vote with ID {voteRequest.Id} has not been found");
     }
 }
