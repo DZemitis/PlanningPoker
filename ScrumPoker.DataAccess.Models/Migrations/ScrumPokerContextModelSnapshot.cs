@@ -202,7 +202,7 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                     b.HasOne("ScrumPoker.DataAccess.Models.Models.GameRoomDto", "GameRoom")
                         .WithMany("Rounds")
                         .HasForeignKey("GameRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("GameRoom");

@@ -23,13 +23,7 @@ public class GameRoomContextExtension
         builder.Entity<GameRoomDto>()
             .Property(x => x.MasterId)
             .IsRequired(false);
-
-        builder.Entity<GameRoomDto>()
-            .HasMany(x => x.Rounds)
-            .WithOne(x => x.GameRoom)
-            .HasForeignKey(x=>x.GameRoomId)
-            .OnDelete(DeleteBehavior.Cascade);
-
+        
         builder.Entity<GameRoomDto>()
             .HasOne(g => g.CurrentRound)
             .WithOne()

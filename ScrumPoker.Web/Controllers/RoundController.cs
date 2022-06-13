@@ -65,7 +65,7 @@ public class RoundController : ControllerBase
     [Route("Update")]
     public IActionResult Update(UpdateDescriptionRoundApiRequest roundApiRequest)
     {
-        _logger.LogInformation("Request to change rounds (ID {id}) description", roundApiRequest.RoundId);
+        _logger.LogInformation("Request to change description for the round (ID {id})", roundApiRequest.RoundId);
         var roundRequest = _mapper.Map<Round>(roundApiRequest);
         _roundService.Update(roundRequest);
         var round = _roundService.GetById(roundRequest.RoundId);

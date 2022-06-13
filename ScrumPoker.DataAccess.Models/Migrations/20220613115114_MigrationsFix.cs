@@ -4,7 +4,7 @@
 
 namespace ScrumPoker.DataAccess.Models.Migrations
 {
-    public partial class Update2 : Migration
+    public partial class MigrationsFix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,15 +30,13 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                 name: "CurrentRoundId",
                 table: "GameRooms",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "MasterId",
                 table: "GameRooms",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.CreateTable(
                 name: "Rounds",
@@ -57,8 +55,7 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                         name: "FK_Rounds_GameRooms_GameRoomId",
                         column: x => x.GameRoomId,
                         principalTable: "GameRooms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -102,7 +99,8 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                 name: "IX_GameRooms_CurrentRoundId",
                 table: "GameRooms",
                 column: "CurrentRoundId",
-                unique: true);
+                unique: true,
+                filter: "[CurrentRoundId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GameRooms_MasterId",
@@ -134,7 +132,8 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                 table: "GameRooms",
                 column: "MasterId",
                 principalTable: "Players",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.SetNull);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_GameRooms_Rounds_CurrentRoundId",
@@ -142,7 +141,7 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                 column: "CurrentRoundId",
                 principalTable: "Rounds",
                 principalColumn: "RoundId",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.SetNull);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Players_Votes_PLayersVoteId",

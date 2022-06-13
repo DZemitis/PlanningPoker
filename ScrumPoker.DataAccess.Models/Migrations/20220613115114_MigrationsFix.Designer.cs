@@ -12,8 +12,8 @@ using ScrumPoker.DataAccess.Models.EFContext;
 namespace ScrumPoker.DataAccess.Models.Migrations
 {
     [DbContext(typeof(ScrumPokerContext))]
-    [Migration("20220608125735_Update3")]
-    partial class Update3
+    [Migration("20220613115114_MigrationsFix")]
+    partial class MigrationsFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,7 +35,7 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                     b.Property<int?>("CurrentRoundId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MasterId")
+                    b.Property<int?>("MasterId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -158,13 +158,12 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                     b.HasOne("ScrumPoker.DataAccess.Models.Models.RoundDto", "CurrentRound")
                         .WithOne()
                         .HasForeignKey("ScrumPoker.DataAccess.Models.Models.GameRoomDto", "CurrentRoundId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("ScrumPoker.DataAccess.Models.Models.PlayerDto", "Master")
                         .WithMany()
                         .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("CurrentRound");
@@ -205,7 +204,7 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                     b.HasOne("ScrumPoker.DataAccess.Models.Models.GameRoomDto", "GameRoom")
                         .WithMany("Rounds")
                         .HasForeignKey("GameRoomId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("GameRoom");
