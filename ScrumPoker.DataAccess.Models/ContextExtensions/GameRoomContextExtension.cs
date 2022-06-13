@@ -21,21 +21,25 @@ public class GameRoomContextExtension
             .IsRequired(false);
 
         builder.Entity<GameRoomDto>()
+            .Property(x => x.MasterId)
+            .IsRequired(false);
+
+        builder.Entity<GameRoomDto>()
             .HasMany(x => x.Rounds)
             .WithOne(x => x.GameRoom)
             .HasForeignKey(x=>x.GameRoomId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<GameRoomDto>()
             .HasOne(g => g.CurrentRound)
             .WithOne()
             .HasForeignKey<GameRoomDto>(g => g.CurrentRoundId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder.Entity<GameRoomDto>()
             .HasOne(x => x.Master)
             .WithMany()
             .HasForeignKey(x => x.MasterId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }
