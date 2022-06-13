@@ -161,8 +161,7 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                     b.HasOne("ScrumPoker.DataAccess.Models.Models.PlayerDto", "Master")
                         .WithMany()
                         .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("CurrentRound");
 

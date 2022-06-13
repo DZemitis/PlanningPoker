@@ -12,7 +12,7 @@ using ScrumPoker.DataAccess.Models.EFContext;
 namespace ScrumPoker.DataAccess.Models.Migrations
 {
     [DbContext(typeof(ScrumPokerContext))]
-    [Migration("20220613115114_MigrationsFix")]
+    [Migration("20220613122003_MigrationsFix")]
     partial class MigrationsFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -163,8 +163,7 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                     b.HasOne("ScrumPoker.DataAccess.Models.Models.PlayerDto", "Master")
                         .WithMany()
                         .HasForeignKey("MasterId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("CurrentRound");
 
