@@ -31,6 +31,7 @@ public class RoundController : ControllerBase
     [Route("{id:int}")]
     public IActionResult GetRoundById(int id)
     {
+        _logger.LogInformation("Request to get round with ID {Id}", id);
         var round = _roundService.GetById(id);
         var roundResponse = _mapper.Map<RoundApiResponse>(round);
         
@@ -46,6 +47,7 @@ public class RoundController : ControllerBase
     [Route("SetState")]
     public IActionResult SetState(UpdateRoundApiRequest roundApiRequest)
     {
+        _logger.LogInformation("Request to change round(ID {id}) state", roundApiRequest.RoundId);
         var roundRequest = _mapper.Map<Round>(roundApiRequest);
         _roundService.SetState(roundRequest);
         var round = _roundService.GetById(roundRequest.RoundId);
@@ -63,6 +65,7 @@ public class RoundController : ControllerBase
     [Route("Update")]
     public IActionResult Update(UpdateDescriptionRoundApiRequest roundApiRequest)
     {
+        _logger.LogInformation("Request to change rounds (ID {id}) description", roundApiRequest.RoundId);
         var roundRequest = _mapper.Map<Round>(roundApiRequest);
         _roundService.Update(roundRequest);
         var round = _roundService.GetById(roundRequest.RoundId);
