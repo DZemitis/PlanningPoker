@@ -22,15 +22,23 @@ public class RoundRepository : RepositoryBase ,IRoundRepository
         return roundResponse;
     }
     
-    public void Update(Round round)
+    public void SetState(Round roundRequest)
     {
-        RoundIdValidation(round.RoundId);
-        var roundDto = _context.Rounds.SingleOrDefault(r => r.RoundId == round.RoundId);
-        roundDto!.RoundState = round.RoundState;
+        RoundIdValidation(roundRequest.RoundId);
+        var roundDto = _context.Rounds.SingleOrDefault(r => r.RoundId == roundRequest.RoundId);
+        roundDto!.RoundState = roundRequest.RoundState;
 
         _context.SaveChanges();
     }
+    
+    public void Update(Round roundRequest)
+    {
+        RoundIdValidation(roundRequest.RoundId);
+        var roundDto = _context.Rounds.SingleOrDefault(x => x.RoundId == roundRequest.RoundId);
+        roundDto!.Description = roundRequest.Description;
 
+        _context.SaveChanges();
+    }
 
     public List<VoteRegistration> GetHistory(int roundId)
     {

@@ -5,6 +5,7 @@ namespace ScrumPoker.Business.Interfaces.Interfaces;
 public interface IRoundService
 {
     Round GetById(int id);
-    void Update(Round round);
+    void SetState(Round round);
     List<VoteRegistration> GetHistory(int roundId);
+    void Update(Round roundRequest);
 }

@@ -8,4 +8,5 @@ public class RoundApiResponse
     public int GameRoomId { get; set; }
     public RoundState RoundState { get; set; }
     public string Description { get; set; } = null!;
+    public List<VoteInRoundApiResponse> Votes { get; set; } = null!;
 }

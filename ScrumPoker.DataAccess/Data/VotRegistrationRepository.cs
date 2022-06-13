@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.DataAccess.Interfaces;
+using ScrumPoker.DataAccess.Models.ContextExtensions;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
 
@@ -30,7 +31,7 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
         return voteResponse;
     }
 
-    public VoteRegistration Create(VoteRegistration voteRequest)
+    public VoteRegistration CreateOrUpdate(VoteRegistration voteRequest)
     {
         var roundDto = RoundIdValidation(voteRequest.RoundId);
         var gameRoomDto = GameRoomIdValidation(roundDto.GameRoomId);
@@ -38,34 +39,33 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
 
         var voteRegistrationDto = _context.Votes;
         var votingHistory = _context.Rounds.Select(x => x.Votes).First();
-        VoteAlreadyMadeValidation(voteRequest, voteRegistrationDto);
-
-        var voteRequestDto = new VoteRegistrationDto
+        
+        var checkVote =
+            voteRegistrationDto.SingleOrDefault(x =>
+                x.PlayerId == voteRequest.PlayerId && x.RoundId == voteRequest.RoundId);
+        
+        var voteRequestDto = new VoteRegistrationDto();
+        if (checkVote == null)
         {
-            Vote = voteRequest.Vote,
-            PlayerId = voteRequest.PlayerId,
-            RoundId = voteRequest.RoundId
-        };
+            voteRequestDto.Vote = voteRequest.Vote;
+            voteRequestDto.PlayerId = voteRequest.PlayerId;
+            voteRequestDto.RoundId = voteRequest.RoundId;
+            
+            voteRegistrationDto.Add(voteRequestDto);
+            votingHistory.Add(voteRequestDto);
+        }
+        else
+        {
+            checkVote.Vote = voteRequest.Vote;
+            voteRequestDto = _mapper.Map<VoteRegistrationDto>(checkVote);
+        }
 
-        voteRegistrationDto.Add(voteRequestDto);
-        votingHistory.Add(voteRequestDto);
         _context.SaveChanges();
-
         var voteRegistrationResponse = _mapper.Map<VoteRegistration>(voteRequestDto);
 
         return voteRegistrationResponse;
     }
-
-    public void Update(VoteRegistration vote)
-    {
-        var voteRequest = _mapper.Map<VoteRegistrationDto>(vote);
-        var voteRegistrationDto = VoteNotFoundValidation(voteRequest);
-
-        voteRegistrationDto.Vote = vote.Vote;
-
-        _context.SaveChanges();
-    }
-
+    
     public void ClearRoundVotes(int roundId)
     {
         RoundIdValidation(roundId);

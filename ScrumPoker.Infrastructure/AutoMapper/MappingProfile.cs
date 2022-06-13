@@ -45,10 +45,12 @@ public class MappingProfile : Profile
                 opt.MapFrom(pd=>pd.PlayerGameRooms.Select(x=>x.GameRoom)));
         CreateMap<RoundDto, Round>();
         CreateMap<Round, RoundApiResponse>();
+        CreateMap<UpdateDescriptionRoundApiRequest, Round>();
         CreateMap<UpdateRoundApiRequest, Round>();
         CreateMap<VoteRegistrationDto, VoteRegistration>();
         CreateMap<VoteApiRequest, VoteRegistration>();
         CreateMap<UpdateVoteApiRequest, VoteRegistration>();
         CreateMap<VoteRegistration, VoteRegistrationDto>();
+        CreateMap<VoteRegistration, VoteInRoundApiResponse>();
     }
 }

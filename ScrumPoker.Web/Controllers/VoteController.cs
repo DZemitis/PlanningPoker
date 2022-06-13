@@ -21,22 +21,7 @@ public class VoteController : ControllerBase
         _mapper = mapper;
         _logger = logger;
     }
-
-    /// <summary>
-    /// Returns list of votes in a round
-    /// </summary>
-    /// <param name="id">ID of the round</param>
-    /// <returns>List of votes</returns>
-    [HttpGet]
-    [Route("GetAllFromRound")]
-    public IActionResult GetAllFromRound(int id)
-    {
-        _logger.LogInformation("Request to get all votes from a round(ID {Id})", id);
-        var voteList = _voteRegistrationService.GetListById(id);
-        
-        return Ok(voteList);
-    }
-
+    
     /// <summary>
     /// Returns a vote with specific ID
     /// </summary>
@@ -53,38 +38,28 @@ public class VoteController : ControllerBase
     }
 
     /// <summary>
-    /// Asks user to create a vote
+    /// Asks user to create/update a vote
     /// </summary>
     /// <param name="voteApiRequest">Vote request with player ID, round ID and vote</param>
-    /// <returns>Created vote with ID</returns>
+    /// <returns>Created/Updated vote with ID</returns>
     [HttpPost]
     [Route("Create")]
-    public IActionResult Create(VoteApiRequest voteApiRequest)
+    public IActionResult CreateOrUpdate(VoteApiRequest voteApiRequest)
     {
         _logger.LogInformation("Request to create a vote for player with ID {playerId} in round with ID {roundId}", voteApiRequest.PlayerId, voteApiRequest.RoundId);
         var voteRequest = _mapper.Map<VoteRegistration>(voteApiRequest);
-        var voteResponse = _voteRegistrationService.Create(voteRequest);
+        var voteResponse = _voteRegistrationService.CreateOrUpdate(voteRequest);
 
         return Created("", voteResponse);
     }
 
-    /// <summary>
-    /// Update a vote, change voting result
-    /// </summary>
-    /// <param name="voteApiRequest">Vote update request with vote ID, voting result</param>
-    /// <returns>Updated vote</returns>
     [HttpPut]
     [Route("Update")]
     public IActionResult Update(UpdateVoteApiRequest voteApiRequest)
     {
-        _logger.LogInformation("Request to change vote to {voteResult} (ID {voteId})",voteApiRequest.Vote,voteApiRequest.Id);
-        var voteRequest = _mapper.Map<VoteRegistration>(voteApiRequest);
-        _voteRegistrationService.Update(voteRequest);
-        var voteResponse = _voteRegistrationService.GetById(voteApiRequest.Id);
-        
-        return Ok(voteResponse);
+        return Ok(_voteRegistrationService.GetById(voteApiRequest.Id));
     }
-
+    
     /// <summary>
     /// Clears all vote in specific round
     /// </summary>

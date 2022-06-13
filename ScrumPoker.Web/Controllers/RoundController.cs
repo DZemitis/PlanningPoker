@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Web.Models.Models.WebRequest;
+using ScrumPoker.Web.Models.Models.WebResponse;
 
 namespace ScrumPoker.Web.Controllers;
 
@@ -26,25 +27,32 @@ public class RoundController : ControllerBase
     public IActionResult GetRoundById(int id)
     {
         var round = _roundService.GetById(id);
-        return Ok(round);
+        var roundResponse = _mapper.Map<RoundApiResponse>(round);
+        
+        return Ok(roundResponse);
+    }
+
+    [HttpPut]
+    [Route("SetState")]
+    public IActionResult SetState(UpdateRoundApiRequest roundApiRequest)
+    {
+        var roundRequest = _mapper.Map<Round>(roundApiRequest);
+        _roundService.SetState(roundRequest);
+        var round = _roundService.GetById(roundRequest.RoundId);
+        var roundResponse = _mapper.Map<RoundApiResponse>(round);
+        
+        return Ok(roundResponse);
     }
 
     [HttpPut]
     [Route("Update")]
-    public IActionResult Update(UpdateRoundApiRequest roundApiRequest)
+    public IActionResult Update(UpdateDescriptionRoundApiRequest roundApiRequest)
     {
-        var round = _mapper.Map<Round>(roundApiRequest);
-        _roundService.Update(round);
+        var roundRequest = _mapper.Map<Round>(roundApiRequest);
+        _roundService.Update(roundRequest);
+        var round = _roundService.GetById(roundRequest.RoundId);
+        var roundResponse = _mapper.Map<RoundApiResponse>(round);
         
-        return Ok(GetRoundById(roundApiRequest.RoundId));
+        return Ok(roundResponse);
     }
-
-    [HttpGet]
-    [Route("History")]
-    public IActionResult GetHistory(int roundId)
-    {
-        var x = _roundService.GetHistory(roundId);
-        return Ok(x);
-    }
-    
 }

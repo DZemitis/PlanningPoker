@@ -23,16 +23,11 @@ public class VoteRegistrationService : IVoteRegistrationService
         return _voteRegistrationRepository.GetById(id);
     }
 
-    public VoteRegistration Create(VoteRegistration vote)
+    public VoteRegistration CreateOrUpdate(VoteRegistration vote)
     {
-        return _voteRegistrationRepository.Create(vote);
+        return _voteRegistrationRepository.CreateOrUpdate(vote);
     }
-
-    public void Update(VoteRegistration vote)
-    {
-        _voteRegistrationRepository.Update(vote);
-    }
-
+    
     public void ClearRoundVotes(int roundId)
     {
         _voteRegistrationRepository.ClearRoundVotes(roundId);

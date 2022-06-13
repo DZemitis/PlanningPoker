@@ -19,13 +19,18 @@ public class RoundService : IRoundService
         return round;
     }
 
-    public void Update(Round round)
+    public void SetState(Round round)
     {
-        _roundRepository.Update(round);
+        _roundRepository.SetState(round);
     }
 
     public List<VoteRegistration> GetHistory(int roundId)
     {
        return _roundRepository.GetHistory(roundId);
+    }
+
+    public void Update(Round roundRequest)
+    {
+        _roundRepository.Update(roundRequest);
     }
 }

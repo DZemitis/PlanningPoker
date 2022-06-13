@@ -21,12 +21,7 @@ public interface IVoteRegistrationRepository
     /// </summary>
     /// <param name="vote">Vote request</param>
     /// <returns>Created vote with ID</returns>
-    VoteRegistration Create(VoteRegistration vote);
-    /// <summary>
-    /// Update a vote, change voting result
-    /// </summary>
-    /// <param name="vote">Vote update request</param>
-    void Update(VoteRegistration vote);
+    VoteRegistration CreateOrUpdate(VoteRegistration vote);
     /// <summary>
     /// Clears all vote in specific round
     /// </summary>
