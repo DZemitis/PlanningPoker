@@ -8,7 +8,7 @@ using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.DataAccess.Data;
 
-/// <inheritdoc />
+/// <inheritdoc cref="ScrumPoker.DataAccess.Interfaces.IPlayerRepository" />
 public class PlayerRepository : RepositoryBase ,IPlayerRepository
 {
     public PlayerRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) : base(mapper, context, logger)

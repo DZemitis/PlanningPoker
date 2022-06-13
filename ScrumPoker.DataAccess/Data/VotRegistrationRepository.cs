@@ -2,12 +2,12 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.DataAccess.Interfaces;
-using ScrumPoker.DataAccess.Models.ContextExtensions;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.DataAccess.Data;
-/// <inheritdoc />
+
+/// <inheritdoc cref="ScrumPoker.DataAccess.Interfaces.IVoteRegistrationRepository"/>
 public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepository
 {
     public VoteRegistrationRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) :

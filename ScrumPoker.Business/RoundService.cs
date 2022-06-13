@@ -3,7 +3,7 @@ using ScrumPoker.Business.Models.Models;
 using ScrumPoker.DataAccess.Interfaces;
 
 namespace ScrumPoker.Business;
-
+/// <inheritdoc />
 public class RoundService : IRoundService
 {
     private readonly IRoundRepository _roundRepository;
@@ -23,12 +23,7 @@ public class RoundService : IRoundService
     {
         _roundRepository.SetState(round);
     }
-
-    public List<VoteRegistration> GetHistory(int roundId)
-    {
-       return _roundRepository.GetHistory(roundId);
-    }
-
+    
     public void Update(Round roundRequest)
     {
         _roundRepository.Update(roundRequest);

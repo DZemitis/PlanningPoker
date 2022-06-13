@@ -22,6 +22,11 @@ public class RoundController : ControllerBase
         _logger = logger;
     }
 
+    /// <summary>
+    /// Returns specific round with votes
+    /// </summary>
+    /// <param name="id">Round ID</param>
+    /// <returns>Round</returns>
     [HttpGet]
     [Route("{id:int}")]
     public IActionResult GetRoundById(int id)
@@ -32,6 +37,11 @@ public class RoundController : ControllerBase
         return Ok(roundResponse);
     }
 
+    /// <summary>
+    /// Request to set specific state of the round
+    /// </summary>
+    /// <param name="roundApiRequest">Set round request</param>
+    /// <returns>Updated Round</returns>
     [HttpPut]
     [Route("SetState")]
     public IActionResult SetState(UpdateRoundApiRequest roundApiRequest)
@@ -44,6 +54,11 @@ public class RoundController : ControllerBase
         return Ok(roundResponse);
     }
 
+    /// <summary>
+    /// Request to update round description
+    /// </summary>
+    /// <param name="roundApiRequest">Round update request</param>
+    /// <returns>Updated Round</returns>
     [HttpPut]
     [Route("Update")]
     public IActionResult Update(UpdateDescriptionRoundApiRequest roundApiRequest)

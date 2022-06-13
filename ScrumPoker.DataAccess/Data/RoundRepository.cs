@@ -7,7 +7,7 @@ using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.DataAccess.Data;
-
+/// <inheritdoc cref="ScrumPoker.DataAccess.Interfaces.IRoundRepository" />
 public class RoundRepository : RepositoryBase ,IRoundRepository
 {
     public RoundRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) : base(mapper, context, logger)
