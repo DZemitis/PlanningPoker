@@ -78,12 +78,19 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
 
     public void DeleteAll()
     {
+        Context.Rounds.RemoveRange(Context.Rounds);
+        Context.SaveChanges();
+        
         Context.GameRooms.RemoveRange(Context.GameRooms);
         Context.SaveChanges();
     }
 
     public void DeleteById(int id)
     {
+        var roundList = Context.Rounds.Where(x => x.GameRoomId == id);
+        Context.Rounds.RemoveRange(roundList);
+        Context.SaveChanges();
+        
         var gameRoomDto = GameRoomIdValidation(id);
         Context.GameRooms.Remove(gameRoomDto);
         Context.SaveChanges();
