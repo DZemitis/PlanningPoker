@@ -28,8 +28,9 @@ public abstract class RepositoryBase
             .ThenInclude(x=>x.Player)
             .Include(x=>x.Master)
             .Include(x=>x.CurrentRound)
+            .Include(x=>x.Rounds)
             .SingleOrDefault(g => g.Id == gameRoomId);
-
+        
         if (gameRoomDto != null) return gameRoomDto;
         _logger.LogWarning("Game Room with ID {Id} could not been found", gameRoomId);
         throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");

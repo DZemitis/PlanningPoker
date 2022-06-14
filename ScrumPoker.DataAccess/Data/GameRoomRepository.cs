@@ -55,8 +55,6 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
         };
 
         _context.Rounds.Add(initialRound);
-        var gameRoomDto = _context.GameRooms.Include(x => x.Rounds).First();
-        gameRoomDto.Rounds.Add(initialRound);
         _context.SaveChanges();
         addGameRoom.CurrentRound = initialRound;
         _context.SaveChanges();
