@@ -32,7 +32,7 @@ public class GameRoomController : ControllerBase
     {
         _logger.LogInformation("Request to get list of all game rooms");
         var gameRoomList = _gameRoomService.GetAll();
-        var gameRoomListResponse = _mapper.Map<List<GameRoomApiResponse>>(gameRoomList);
+        var gameRoomListResponse = _mapper.Map<List<GameRoomAllApiResponse>>(gameRoomList);
 
         return Ok(gameRoomListResponse);
     }

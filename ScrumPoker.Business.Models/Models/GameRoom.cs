@@ -8,4 +8,5 @@ public class GameRoom
     public int MasterId { get; set; }
     public int CurrentRoundId { get; set; }
     public Round Round { get; set; } = null!;
+    public List<Round> Rounds { get; set; } = null!;
 }

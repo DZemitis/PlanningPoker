@@ -36,6 +36,7 @@ public class RoundRepository : RepositoryBase ,IRoundRepository
         
         gameRoomDto.CurrentRound = createRound;
         _context.Rounds.Add(createRound);
+        gameRoomDto.Rounds.Add(createRound);
         _context.SaveChanges();
 
         var roundResponse = _mapper.Map<Round>(createRound);

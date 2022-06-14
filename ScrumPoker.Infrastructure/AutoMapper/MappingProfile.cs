@@ -19,6 +19,7 @@ public class MappingProfile : Profile
                     opt.MapFrom(src=>src.Description));
         CreateMap<UpdateGameRoomApiRequest, GameRoom>();
         CreateMap<GameRoom, GameRoomDto>();
+        CreateMap<GameRoom, GameRoomAllApiResponse>();
         CreateMap<GameRoom, GameRoomApiResponse>()
             .ForMember(dest=>dest.MasterId, 
                 opt=>
@@ -48,6 +49,7 @@ public class MappingProfile : Profile
         CreateMap<UpdateDescriptionRoundApiRequest, Round>();
         CreateMap<UpdateRoundApiRequest, Round>();
         CreateMap<CreateRoundApiRequest, Round>();
+        CreateMap<Round, RoundIdApiResponse>();
         CreateMap<VoteRegistrationDto, VoteRegistration>();
         CreateMap<VoteApiRequest, VoteRegistration>();
         CreateMap<UpdateVoteApiRequest, VoteRegistration>();
