@@ -47,6 +47,7 @@ public class MappingProfile : Profile
         CreateMap<Round, RoundApiResponse>();
         CreateMap<UpdateDescriptionRoundApiRequest, Round>();
         CreateMap<UpdateRoundApiRequest, Round>();
+        CreateMap<CreateRoundApiRequest, Round>();
         CreateMap<VoteRegistrationDto, VoteRegistration>();
         CreateMap<VoteApiRequest, VoteRegistration>();
         CreateMap<UpdateVoteApiRequest, VoteRegistration>();

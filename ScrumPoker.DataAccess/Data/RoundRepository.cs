@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
+using ScrumPoker.Common.Models;
 using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
@@ -19,6 +20,25 @@ public class RoundRepository : RepositoryBase ,IRoundRepository
         var roundDto = RoundIdValidation(id);
         var roundResponse = _mapper.Map<Round>(roundDto);
 
+        return roundResponse;
+    }
+
+    public Round Create(Round roundRequest)
+    {
+        var gameRoomDto = GameRoomIdValidation(roundRequest.GameRoomId);
+        
+        var createRound = new RoundDto
+        {
+            Description = roundRequest.Description,
+            GameRoomId = roundRequest.GameRoomId,
+            RoundState = RoundState.Grooming
+        };
+        
+        gameRoomDto.CurrentRound = createRound;
+        _context.Rounds.Add(createRound);
+        _context.SaveChanges();
+
+        var roundResponse = _mapper.Map<Round>(createRound);
         return roundResponse;
     }
     

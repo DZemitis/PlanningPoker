@@ -19,6 +19,13 @@ public class RoundService : IRoundService
         return round;
     }
 
+    public Round Create(Round roundRequest)
+    {
+       var round = _roundRepository.Create(roundRequest);
+
+       return round;
+    }
+
     public void SetState(Round round)
     {
         _roundRepository.SetState(round);

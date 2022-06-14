@@ -28,7 +28,7 @@ public class VoteController : ControllerBase
     /// <param name="id">ID of the vote</param>
     /// <returns>Vote by ID</returns>
     [HttpGet]
-    [Route("{Id:int}")]
+    [Route("{id:int}")]
     public IActionResult GetById(int id)
     {
         _logger.LogInformation("Request to geta a vote with ID {Id}", id);
@@ -36,7 +36,7 @@ public class VoteController : ControllerBase
 
         return Ok(voteResponse);
     }
-
+    
     /// <summary>
     /// Asks user to create/update a vote
     /// </summary>
