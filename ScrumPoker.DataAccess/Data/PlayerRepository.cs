@@ -17,9 +17,9 @@ public class PlayerRepository : RepositoryBase ,IPlayerRepository
 
     public IEnumerable<Player> GetAll()
     {
-        var Players = _context.Players
+        var players = Context.Players
             .Include(p => p.PlayerGameRooms).ThenInclude(grp=>grp.GameRoom);
-        var playerListResponse = _mapper.Map<List<Player>>(Players);
+        var playerListResponse = Mapper.Map<List<Player>>(players);
         
         return playerListResponse;
     }
@@ -28,7 +28,7 @@ public class PlayerRepository : RepositoryBase ,IPlayerRepository
     {
         var playerDto = PlayerIdValidation(id);
 
-        var playerDtoResponse = _mapper.Map<Player>(playerDto);
+        var playerDtoResponse = Mapper.Map<Player>(playerDto);
         
         return playerDtoResponse;
     }
@@ -43,9 +43,9 @@ public class PlayerRepository : RepositoryBase ,IPlayerRepository
             Email = createPlayerRequest.Email
         };
         
-        _context.Players.Add(addPlayer);
-        _context.SaveChanges();
-        var playerDtoResponse = _mapper.Map<Player>(addPlayer);
+        Context.Players.Add(addPlayer);
+        Context.SaveChanges();
+        var playerDtoResponse = Mapper.Map<Player>(addPlayer);
 
         return playerDtoResponse;
     }
@@ -56,18 +56,17 @@ public class PlayerRepository : RepositoryBase ,IPlayerRepository
         var playerDto = PlayerIdValidation(updatePlayerRequest.Id);
 
         playerDto.Name = updatePlayerRequest.Name;
-        _context.SaveChanges();
+        Context.SaveChanges();
 
-        var playerDtoResponse = _mapper.Map<Player>(playerDto);
+        var playerDtoResponse = Mapper.Map<Player>(playerDto);
 
         return playerDtoResponse;
     }
 
-
     public void DeleteById(int id)
     {
         var playerDto = PlayerIdValidation(id);
-        _context.Players.Remove(playerDto);
-        _context.SaveChanges();
+        Context.Players.Remove(playerDto);
+        Context.SaveChanges();
     }
 }

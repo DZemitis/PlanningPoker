@@ -18,12 +18,12 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
 
     public List<GameRoom> GetAll()
     {
-        var gameRooms = _context.GameRooms
+        var gameRooms = Context.GameRooms
             .Include(gr => gr.GameRoomPlayers).ThenInclude(p => p.Player)
             .Include(gr => gr.Master)
             .Include(x=>x.CurrentRound);
         
-        var gameRoomListResponse = _mapper.Map<List<GameRoom>>(gameRooms);
+        var gameRoomListResponse = Mapper.Map<List<GameRoom>>(gameRooms);
         
         return gameRoomListResponse;
     }
@@ -32,7 +32,7 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
     {
         var gameRoomDto = GameRoomIdValidation(id);
         
-        var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
+        var gameRoomDtoResponse = Mapper.Map<GameRoom>(gameRoomDto);
         return gameRoomDtoResponse;
     }
 
@@ -44,7 +44,7 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
         var addGameRoom = new GameRoomDto
         {
             Name = gameRoomRequest.Name,
-            Master = _context.Players.Single(x=>x.Id == gameRoomRequest.MasterId)
+            Master = Context.Players.Single(x=>x.Id == gameRoomRequest.MasterId)
         };
         
         var initialRound = new RoundDto
@@ -54,13 +54,12 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
             GameRoom = addGameRoom
         };
 
-        _context.Rounds.Add(initialRound);
-        _context.SaveChanges();
+        Context.Rounds.Add(initialRound);
+        Context.SaveChanges();
         addGameRoom.CurrentRound = initialRound;
-        _context.SaveChanges();
-
-
-        var gameRoomDtoResponse = _mapper.Map<GameRoom>(addGameRoom);
+        Context.SaveChanges();
+        
+        var gameRoomDtoResponse = Mapper.Map<GameRoom>(addGameRoom);
         
         return gameRoomDtoResponse;
     }
@@ -70,24 +69,24 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
         var gameRoomDto = GameRoomIdValidation(gameRoomRequest.Id);
 
         gameRoomDto.Name = gameRoomRequest.Name;
-        _context.SaveChanges();
+        Context.SaveChanges();
 
-        var gameRoomDtoResponse = _mapper.Map<GameRoom>(gameRoomDto);
+        var gameRoomDtoResponse = Mapper.Map<GameRoom>(gameRoomDto);
 
         return gameRoomDtoResponse;
     }
 
     public void DeleteAll()
     {
-        _context.GameRooms.RemoveRange(_context.GameRooms);
-        _context.SaveChanges();
+        Context.GameRooms.RemoveRange(Context.GameRooms);
+        Context.SaveChanges();
     }
 
     public void DeleteById(int id)
     {
         var gameRoomDto = GameRoomIdValidation(id);
-        _context.GameRooms.Remove(gameRoomDto);
-        _context.SaveChanges();
+        Context.GameRooms.Remove(gameRoomDto);
+        Context.SaveChanges();
     }
 
     public void RemoveGameRoomPlayerById(int gameRoomId, int playerId)
@@ -103,7 +102,7 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
         var gameRoomToRemove = playerDto.PlayerGameRooms.Single(x => x.GameRoomId == gameRoomId);
         
         playerDto.PlayerGameRooms.Remove(gameRoomToRemove);
-        _context.SaveChanges();
+        Context.SaveChanges();
     }
 
     public void AddPlayerToRoom(int gameRoomId, int playerId)
@@ -121,6 +120,6 @@ public class GameRoomRepository : RepositoryBase ,IGameRoomRepository
         };
 
         playerList.Add(gameRoomPlayers);
-        _context.SaveChanges();
+        Context.SaveChanges();
     }
 }

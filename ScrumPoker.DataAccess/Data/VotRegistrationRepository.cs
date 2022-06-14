@@ -17,16 +17,16 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
 
     public List<VoteRegistration> GetListById(int id)
     {
-        var voteRegistrationDto = _context.Votes.Where(x => x.RoundId == id).ToList();
-        var voteRegistrationResponse = _mapper.Map<List<VoteRegistration>>(voteRegistrationDto);
+        var voteRegistrationDto = Context.Votes.Where(x => x.RoundId == id).ToList();
+        var voteRegistrationResponse = Mapper.Map<List<VoteRegistration>>(voteRegistrationDto);
 
         return voteRegistrationResponse;
     }
 
     public VoteRegistration GetById(int id)
     {
-        var voteRequest = _context.Votes.SingleOrDefault(x => x.Id == id);
-        var voteResponse = _mapper.Map<VoteRegistration>(voteRequest);
+        var voteRequest = Context.Votes.SingleOrDefault(x => x.Id == id);
+        var voteResponse = Mapper.Map<VoteRegistration>(voteRequest);
 
         return voteResponse;
     }
@@ -37,8 +37,8 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
         var gameRoomDto = GameRoomIdValidation(roundDto.GameRoomId);
         PlayerIdValidationInGameRoom(voteRequest.PlayerId, gameRoomDto);
 
-        var voteRegistrationDto = _context.Votes;
-        var votingHistory = _context.Rounds.Select(x => x.Votes).First();
+        var voteRegistrationDto = Context.Votes;
+        var votingHistory = Context.Rounds.Select(x => x.Votes).First();
         
         var checkVote =
             voteRegistrationDto.SingleOrDefault(x =>
@@ -57,11 +57,11 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
         else
         {
             checkVote.Vote = voteRequest.Vote;
-            voteRequestDto = _mapper.Map<VoteRegistrationDto>(checkVote);
+            voteRequestDto = Mapper.Map<VoteRegistrationDto>(checkVote);
         }
 
-        _context.SaveChanges();
-        var voteRegistrationResponse = _mapper.Map<VoteRegistration>(voteRequestDto);
+        Context.SaveChanges();
+        var voteRegistrationResponse = Mapper.Map<VoteRegistration>(voteRequestDto);
 
         return voteRegistrationResponse;
     }
@@ -69,11 +69,11 @@ public class VoteRegistrationRepository : RepositoryBase, IVoteRegistrationRepos
     public void ClearRoundVotes(int roundId)
     {
         RoundIdValidation(roundId);
-        var votesDto = _context.Votes;
-        var votes = _context.Votes.Where(x => x.RoundId == roundId);
+        var votesDto = Context.Votes;
+        var votes = Context.Votes.Where(x => x.RoundId == roundId);
 
         votesDto.RemoveRange(votes);
 
-        _context.SaveChanges();
+        Context.SaveChanges();
     }
 }
