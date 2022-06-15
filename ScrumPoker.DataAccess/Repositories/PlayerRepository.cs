@@ -6,7 +6,7 @@ using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
 
-namespace ScrumPoker.DataAccess.Data;
+namespace ScrumPoker.DataAccess.Repositories;
 
 /// <inheritdoc cref="ScrumPoker.DataAccess.Interfaces.IPlayerRepository" />
 public class PlayerRepository : RepositoryBase ,IPlayerRepository

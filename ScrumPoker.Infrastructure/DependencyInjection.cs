@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ScrumPoker.Business;
 using ScrumPoker.Business.Interfaces.Interfaces;
-using ScrumPoker.DataAccess.Data;
 using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.EFContext;
+using ScrumPoker.DataAccess.Repositories;
 
 namespace ScrumPoker.Infrastructure;
 

@@ -7,7 +7,7 @@ using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
 
-namespace ScrumPoker.DataAccess.Data;
+namespace ScrumPoker.DataAccess.Repositories;
 
 public abstract class RepositoryBase
 {
