@@ -43,7 +43,7 @@ public class VoteController : ControllerBase
     /// <param name="voteApiRequest">Vote request with player ID, round ID and vote</param>
     /// <returns>Created/Updated vote with ID</returns>
     [HttpPost]
-    [Route("Create")]
+    [Route("Create/Update")]
     public IActionResult CreateOrUpdate(VoteApiRequest voteApiRequest)
     {
         _logger.LogInformation("Request to create a vote for player with ID {playerId} in round with ID {roundId}", voteApiRequest.PlayerId, voteApiRequest.RoundId);
@@ -53,13 +53,7 @@ public class VoteController : ControllerBase
         return Created("", voteResponse);
     }
 
-    [HttpPut]
-    [Route("Update")]
-    public IActionResult Update(UpdateVoteApiRequest voteApiRequest)
-    {
-        return Ok(_voteRegistrationService.GetById(voteApiRequest.Id));
-    }
-    
+   
     /// <summary>
     /// Clears all vote in specific round
     /// </summary>
