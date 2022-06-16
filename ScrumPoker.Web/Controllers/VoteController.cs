@@ -10,9 +10,9 @@ namespace ScrumPoker.Web.Controllers;
 [Route("[controller]")]
 public class VoteController : ControllerBase
 {
-    private readonly IVoteService _voteService;
-    private readonly IMapper _mapper;
     private readonly ILogger<VoteController> _logger;
+    private readonly IMapper _mapper;
+    private readonly IVoteService _voteService;
 
     public VoteController(IVoteService voteService, IMapper mapper,
         ILogger<VoteController> logger)
@@ -21,9 +21,9 @@ public class VoteController : ControllerBase
         _mapper = mapper;
         _logger = logger;
     }
-    
+
     /// <summary>
-    /// Returns a vote with specific ID
+    ///     Returns a vote with specific ID
     /// </summary>
     /// <param name="id">ID of the vote</param>
     /// <returns>Vote by ID</returns>
@@ -36,9 +36,9 @@ public class VoteController : ControllerBase
 
         return Ok(voteResponse);
     }
-    
+
     /// <summary>
-    /// Asks user to create/update a vote
+    ///     Asks user to create/update a vote
     /// </summary>
     /// <param name="voteApiRequest">Vote request with player ID, round ID and vote</param>
     /// <returns>Created/Updated vote with ID</returns>
@@ -46,16 +46,17 @@ public class VoteController : ControllerBase
     [Route("Create/Update")]
     public IActionResult CreateOrUpdate(VoteApiRequest voteApiRequest)
     {
-        _logger.LogInformation("Request to create a vote for player with ID {playerId} in round with ID {roundId}", voteApiRequest.PlayerId, voteApiRequest.RoundId);
+        _logger.LogInformation("Request to create a vote for player with ID {playerId} in round with ID {roundId}",
+            voteApiRequest.PlayerId, voteApiRequest.RoundId);
         var voteRequest = _mapper.Map<Vote>(voteApiRequest);
         var voteResponse = _voteService.CreateOrUpdate(voteRequest);
 
         return Created("", voteResponse);
     }
 
-   
+
     /// <summary>
-    /// Clears all vote in specific round
+    ///     Clears all vote in specific round
     /// </summary>
     /// <param name="roundId">Round ID</param>
     /// <returns>Message, that all votes has been cleared in provided round</returns>

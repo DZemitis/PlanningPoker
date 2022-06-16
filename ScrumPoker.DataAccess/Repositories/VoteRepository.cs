@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.ComTypes;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
@@ -9,7 +8,7 @@ using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.DataAccess.Repositories;
 
-/// <inheritdoc cref="IVoteRepository"/>
+/// <inheritdoc cref="IVoteRepository" />
 public class VoteRepository : RepositoryBase, IVoteRepository
 {
     public VoteRepository(IMapper mapper, IScrumPokerContext context,
@@ -47,7 +46,7 @@ public class VoteRepository : RepositoryBase, IVoteRepository
             throw new IdNotFoundException
                 ($"{typeof(Player)} in game room {gameRoomDto.Id} with player ID {voteRequest.PlayerId} not found");
         }
-        
+
         var vote =
             Context.Votes.SingleOrDefault(x =>
                 x.PlayerId == voteRequest.PlayerId && x.RoundId == voteRequest.RoundId);
@@ -55,7 +54,6 @@ public class VoteRepository : RepositoryBase, IVoteRepository
         var voteDto = new VoteDto();
         if (vote == null)
         {
-            
             voteDto.VoteResult = voteRequest.VoteResult;
             voteDto.PlayerId = voteRequest.PlayerId;
             voteDto.RoundId = voteRequest.RoundId;
@@ -77,7 +75,7 @@ public class VoteRepository : RepositoryBase, IVoteRepository
     public void ClearRoundVotes(int roundId)
     {
         var round = GetRoundById(roundId);
-        
+
         Context.Votes.RemoveRange(round.Votes);
 
         Context.SaveChanges();

@@ -3,6 +3,7 @@ using ScrumPoker.Business.Models.Models;
 using ScrumPoker.DataAccess.Interfaces;
 
 namespace ScrumPoker.Business;
+
 /// <inheritdoc />
 public class RoundService : IRoundService
 {
@@ -21,16 +22,16 @@ public class RoundService : IRoundService
 
     public Round Create(Round roundRequest)
     {
-       var round = _roundRepository.Create(roundRequest);
+        var round = _roundRepository.Create(roundRequest);
 
-       return round;
+        return round;
     }
 
     public void SetState(Round round)
     {
         _roundRepository.SetState(round);
     }
-    
+
     public void Update(Round roundRequest)
     {
         _roundRepository.Update(roundRequest);

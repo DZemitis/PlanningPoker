@@ -9,9 +9,10 @@ using ScrumPoker.DataAccess.Models.Models;
 namespace ScrumPoker.DataAccess.Repositories;
 
 /// <inheritdoc cref="ScrumPoker.DataAccess.Interfaces.IRoundRepository" />
-public class RoundRepository : RepositoryBase ,IRoundRepository
+public class RoundRepository : RepositoryBase, IRoundRepository
 {
-    public RoundRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) : base(mapper, context, logger)
+    public RoundRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) : base(mapper,
+        context, logger)
     {
     }
 
@@ -31,9 +32,9 @@ public class RoundRepository : RepositoryBase ,IRoundRepository
             GameRoomId = roundRequest.GameRoomId,
             RoundState = RoundState.Grooming
         };
-        
+
         var gameRoomDto = GetGameRoomById(roundRequest.GameRoomId);
-        
+
         gameRoomDto.CurrentRound = createRound;
         Context.Rounds.Add(createRound);
         gameRoomDto.Rounds.Add(createRound);
@@ -42,7 +43,7 @@ public class RoundRepository : RepositoryBase ,IRoundRepository
         var roundResponse = Mapper.Map<Round>(createRound);
         return roundResponse;
     }
-    
+
     public void SetState(Round roundRequest)
     {
         GetRoundById(roundRequest.RoundId);
@@ -51,7 +52,7 @@ public class RoundRepository : RepositoryBase ,IRoundRepository
 
         Context.SaveChanges();
     }
-    
+
     public void Update(Round roundRequest)
     {
         var roundDto = GetRoundById(roundRequest.RoundId);

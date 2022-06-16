@@ -9,18 +9,19 @@ using ScrumPoker.DataAccess.Models.Models;
 namespace ScrumPoker.DataAccess.Repositories;
 
 /// <inheritdoc cref="ScrumPoker.DataAccess.Interfaces.IPlayerRepository" />
-public class PlayerRepository : RepositoryBase ,IPlayerRepository
+public class PlayerRepository : RepositoryBase, IPlayerRepository
 {
-    public PlayerRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) : base(mapper, context, logger)
+    public PlayerRepository(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger) : base(mapper,
+        context, logger)
     {
     }
 
     public IEnumerable<Player> GetAll()
     {
         var players = Context.Players
-            .Include(p => p.PlayerGameRooms).ThenInclude(grp=>grp.GameRoom);
+            .Include(p => p.PlayerGameRooms).ThenInclude(grp => grp.GameRoom);
         var playerListResponse = Mapper.Map<List<Player>>(players);
-        
+
         return playerListResponse;
     }
 
@@ -29,7 +30,7 @@ public class PlayerRepository : RepositoryBase ,IPlayerRepository
         var playerDto = GetPlayerById(id);
 
         var playerDtoResponse = Mapper.Map<Player>(playerDto);
-        
+
         return playerDtoResponse;
     }
 
@@ -40,7 +41,7 @@ public class PlayerRepository : RepositoryBase ,IPlayerRepository
             Name = createPlayerRequest.Name,
             Email = createPlayerRequest.Email
         };
-        
+
         Context.Players.Add(addPlayer);
         Context.SaveChanges();
         var playerDtoResponse = Mapper.Map<Player>(addPlayer);
@@ -50,7 +51,6 @@ public class PlayerRepository : RepositoryBase ,IPlayerRepository
 
     public Player Update(Player updatePlayerRequest)
     {
-        
         var playerDto = GetPlayerById(updatePlayerRequest.Id);
 
         playerDto.Name = updatePlayerRequest.Name;

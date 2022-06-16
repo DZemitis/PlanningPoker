@@ -4,6 +4,5 @@ public class ConflictException : ScrumPokerException
 {
     protected ConflictException()
     {
-        
     }
 }

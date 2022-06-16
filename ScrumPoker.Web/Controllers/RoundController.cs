@@ -11,9 +11,9 @@ namespace ScrumPoker.Web.Controllers;
 [Route("[controller]")]
 public class RoundController : ControllerBase
 {
-    private readonly IRoundService _roundService;
-    private readonly IMapper _mapper;
     private readonly ILogger<RoundController> _logger;
+    private readonly IMapper _mapper;
+    private readonly IRoundService _roundService;
 
     public RoundController(IRoundService roundService, IMapper mapper, ILogger<RoundController> logger)
     {
@@ -23,7 +23,7 @@ public class RoundController : ControllerBase
     }
 
     /// <summary>
-    /// Returns specific round with votes
+    ///     Returns specific round with votes
     /// </summary>
     /// <param name="id">Round ID</param>
     /// <returns>Round</returns>
@@ -39,7 +39,7 @@ public class RoundController : ControllerBase
     }
 
     /// <summary>
-    /// Creates a round
+    ///     Creates a round
     /// </summary>
     /// <param name="roundApiRequest">Game room ID and round description</param>
     /// <returns>Created round</returns>
@@ -50,12 +50,12 @@ public class RoundController : ControllerBase
         _logger.LogInformation("Request to create a new round");
         var roundRequest = _mapper.Map<Round>(roundApiRequest);
         var roundResponse = _roundService.Create(roundRequest);
-        
+
         return Created("", roundResponse);
     }
 
     /// <summary>
-    /// Request to set specific state of the round
+    ///     Request to set specific state of the round
     /// </summary>
     /// <param name="roundApiRequest">Set round request</param>
     /// <returns>Updated Round</returns>
@@ -73,7 +73,7 @@ public class RoundController : ControllerBase
     }
 
     /// <summary>
-    /// Request to update round description
+    ///     Request to update round description
     /// </summary>
     /// <param name="roundApiRequest">Round update request</param>
     /// <returns>Updated Round</returns>

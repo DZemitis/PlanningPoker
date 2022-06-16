@@ -3,6 +3,7 @@ using ScrumPoker.Business.Models.Models;
 using ScrumPoker.DataAccess.Interfaces;
 
 namespace ScrumPoker.Business;
+
 /// <inheritdoc />
 public class VoteService : IVoteService
 {
@@ -27,7 +28,7 @@ public class VoteService : IVoteService
     {
         return _voteRepository.CreateOrUpdate(vote);
     }
-    
+
     public void ClearRoundVotes(int roundId)
     {
         _voteRepository.ClearRoundVotes(roundId);

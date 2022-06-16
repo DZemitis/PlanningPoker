@@ -23,7 +23,7 @@ public class GameRoomContextExtension
         builder.Entity<GameRoomDto>()
             .Property(x => x.MasterId)
             .IsRequired(false);
-        
+
         builder.Entity<GameRoomDto>()
             .HasOne(g => g.CurrentRound)
             .WithOne()

@@ -26,7 +26,7 @@ public class GameRoomService : IGameRoomService
 
     public GameRoom Create(GameRoom gameRoomRequest)
     {
-        var gameRoom =_gameRoomRepository.Create(gameRoomRequest);
+        var gameRoom = _gameRoomRepository.Create(gameRoomRequest);
         _gameRoomRepository.AddPlayerToRoom(gameRoom.Id, gameRoom.MasterId);
         var gameRoomResponse = _gameRoomRepository.GetById(gameRoom.Id);
 
@@ -47,6 +47,7 @@ public class GameRoomService : IGameRoomService
     {
         _gameRoomRepository.DeleteById(id);
     }
+
     public void AddPlayer(int gameRoomId, int playerId)
     {
         _gameRoomRepository.AddPlayerToRoom(gameRoomId, playerId);
