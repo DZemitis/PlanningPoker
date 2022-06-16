@@ -16,9 +16,9 @@ public static class DependencyInjection
         services.AddTransient<IPlayerRepository, PlayerRepository>();
         services.AddTransient<IPlayerService, PlayerService>();
         services.AddTransient<IScrumPokerContext, ScrumPokerContext>();
-        services.AddTransient<IVoteRegistrationRepository, VoteRegistrationRepository>();
+        services.AddTransient<IVoteRepository, VoteRepository>();
         services.AddTransient<IRoundRepository, RoundRepository>();
         services.AddTransient<IRoundService, RoundService>();
-        services.AddTransient<IVoteRegistrationService, VoteRegistrationService>();
+        services.AddTransient<IVoteService, VoteService>();
     }
 }

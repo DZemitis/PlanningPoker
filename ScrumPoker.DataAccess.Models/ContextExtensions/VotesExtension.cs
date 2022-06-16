@@ -7,21 +7,21 @@ public class VotesExtension
 {
     public static void Votes(ModelBuilder builder)
     {
-        builder.Entity<VoteRegistrationDto>()
+        builder.Entity<VoteDto>()
             .HasKey(v => v.Id);
         
-        builder.Entity<VoteRegistrationDto>()
+        builder.Entity<VoteDto>()
             .ToTable("Votes");
 
-        builder.Entity<VoteRegistrationDto>()
+        builder.Entity<VoteDto>()
             .HasIndex(v => v.RoundId);
 
-        builder.Entity<VoteRegistrationDto>()
+        builder.Entity<VoteDto>()
             .HasOne(r=>r.Round)
             .WithMany(r => r.Votes)
             .HasForeignKey(v => v.RoundId);
 
-        builder.Entity<VoteRegistrationDto>()
+        builder.Entity<VoteDto>()
             .HasOne(p => p.Player)
             .WithMany()
             .HasForeignKey(v => v.PlayerId);

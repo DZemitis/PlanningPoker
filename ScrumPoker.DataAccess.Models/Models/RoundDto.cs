@@ -11,5 +11,5 @@ public class RoundDto
     public GameRoomDto GameRoom { get; set; } = null!;
     public RoundState RoundState { get; set; }
     public string Description { get; set; } = null!;
-    public List<VoteRegistrationDto> Votes { get; set; } = null!;
+    public List<VoteDto> Votes { get; set; } = null!;
 }

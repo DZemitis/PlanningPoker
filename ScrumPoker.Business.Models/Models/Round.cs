@@ -8,5 +8,5 @@ public class Round
     public int GameRoomId { get; set; }
     public RoundState RoundState { get; set; }
     public string Description { get; set; } = null!;
-    public List<VoteRegistration> Votes { get; set; } = null!;
+    public List<Vote> Votes { get; set; } = null!;
 }

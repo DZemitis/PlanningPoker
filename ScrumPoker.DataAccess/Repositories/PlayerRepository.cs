@@ -26,7 +26,7 @@ public class PlayerRepository : RepositoryBase ,IPlayerRepository
 
     public Player GetById(int id)
     {
-        var playerDto = PlayerIdValidation(id);
+        var playerDto = GetPlayerById(id);
 
         var playerDtoResponse = Mapper.Map<Player>(playerDto);
         
@@ -35,8 +35,6 @@ public class PlayerRepository : RepositoryBase ,IPlayerRepository
 
     public Player Create(Player createPlayerRequest)
     {
-        ValidateAlreadyExistPlayer(createPlayerRequest);
-        
         var addPlayer = new PlayerDto
         {
             Name = createPlayerRequest.Name,
@@ -53,7 +51,7 @@ public class PlayerRepository : RepositoryBase ,IPlayerRepository
     public Player Update(Player updatePlayerRequest)
     {
         
-        var playerDto = PlayerIdValidation(updatePlayerRequest.Id);
+        var playerDto = GetPlayerById(updatePlayerRequest.Id);
 
         playerDto.Name = updatePlayerRequest.Name;
         Context.SaveChanges();
@@ -65,7 +63,7 @@ public class PlayerRepository : RepositoryBase ,IPlayerRepository
 
     public void DeleteById(int id)
     {
-        var playerDto = PlayerIdValidation(id);
+        var playerDto = GetPlayerById(id);
         Context.Players.Remove(playerDto);
         Context.SaveChanges();
     }

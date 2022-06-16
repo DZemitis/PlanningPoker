@@ -54,6 +54,6 @@ public class GameRoomService : IGameRoomService
 
     public void RemovePlayer(int gameRoomId, int playerId)
     {
-        _gameRoomRepository.RemoveGameRoomPlayerById(gameRoomId, playerId);
+        _gameRoomRepository.RemovePlayerById(gameRoomId, playerId);
     }
 }

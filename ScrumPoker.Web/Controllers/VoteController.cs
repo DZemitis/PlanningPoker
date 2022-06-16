@@ -10,14 +10,14 @@ namespace ScrumPoker.Web.Controllers;
 [Route("[controller]")]
 public class VoteController : ControllerBase
 {
-    private readonly IVoteRegistrationService _voteRegistrationService;
+    private readonly IVoteService _voteService;
     private readonly IMapper _mapper;
     private readonly ILogger<VoteController> _logger;
 
-    public VoteController(IVoteRegistrationService voteRegistrationService, IMapper mapper,
+    public VoteController(IVoteService voteService, IMapper mapper,
         ILogger<VoteController> logger)
     {
-        _voteRegistrationService = voteRegistrationService;
+        _voteService = voteService;
         _mapper = mapper;
         _logger = logger;
     }
@@ -32,7 +32,7 @@ public class VoteController : ControllerBase
     public IActionResult GetById(int id)
     {
         _logger.LogInformation("Request to geta a vote with ID {Id}", id);
-        var voteResponse = _voteRegistrationService.GetById(id);
+        var voteResponse = _voteService.GetById(id);
 
         return Ok(voteResponse);
     }
@@ -47,8 +47,8 @@ public class VoteController : ControllerBase
     public IActionResult CreateOrUpdate(VoteApiRequest voteApiRequest)
     {
         _logger.LogInformation("Request to create a vote for player with ID {playerId} in round with ID {roundId}", voteApiRequest.PlayerId, voteApiRequest.RoundId);
-        var voteRequest = _mapper.Map<VoteRegistration>(voteApiRequest);
-        var voteResponse = _voteRegistrationService.CreateOrUpdate(voteRequest);
+        var voteRequest = _mapper.Map<Vote>(voteApiRequest);
+        var voteResponse = _voteService.CreateOrUpdate(voteRequest);
 
         return Created("", voteResponse);
     }
@@ -64,7 +64,7 @@ public class VoteController : ControllerBase
     public IActionResult ClearRoundVotes(int roundId)
     {
         _logger.LogInformation("Request to clear all votes in Round with ID {roundId}", roundId);
-        _voteRegistrationService.ClearRoundVotes(roundId);
+        _voteService.ClearRoundVotes(roundId);
 
         return Ok($"All votes from round(ID: {roundId}) has been cleared");
     }

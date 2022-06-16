@@ -1,27 +1,27 @@
 using ScrumPoker.Business.Models.Models;
 
-namespace ScrumPoker.Business.Interfaces.Interfaces;
+namespace ScrumPoker.DataAccess.Interfaces;
 
-public interface IVoteRegistrationService
+public interface IVoteRepository
 {
     /// <summary>
     /// Returns list of votes in a round
     /// </summary>
     /// <param name="id">ID of the round</param>
     /// <returns>List of votes</returns>
-    List<VoteRegistration> GetListById(int id);
+    List<Vote> GetListById(int id);
     /// <summary>
     /// Returns a vote with specific ID
     /// </summary>
     /// <param name="id">ID of the vote</param>
     /// <returns>Vote by ID</returns>
-    VoteRegistration GetById(int id);
+    Vote GetById(int id);
     /// <summary>
     /// Asks user to create a vote
     /// </summary>
     /// <param name="vote">Vote request</param>
     /// <returns>Created vote with ID</returns>
-    VoteRegistration CreateOrUpdate(VoteRegistration vote);
+    Vote CreateOrUpdate(Vote vote);
     /// <summary>
     /// Clears all vote in specific round
     /// </summary>

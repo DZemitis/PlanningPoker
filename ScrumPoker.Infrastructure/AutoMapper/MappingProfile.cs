@@ -31,7 +31,7 @@ public class MappingProfile : Profile
                 opt.MapFrom(src => src.GameRoomPlayers.Select(x => x.Player)))
             .ForMember(dest=>dest.MasterId, 
                 opt=>
-                opt.MapFrom(x=>x.Master.Id))
+                opt.MapFrom(x=>x.MasterId))
             .ForMember(x=>x.CurrentRoundId, 
                 opt=>
                 opt.MapFrom(src=>src.CurrentRound!.RoundId));
@@ -50,10 +50,10 @@ public class MappingProfile : Profile
         CreateMap<UpdateRoundApiRequest, Round>();
         CreateMap<CreateRoundApiRequest, Round>();
         CreateMap<Round, RoundIdApiResponse>();
-        CreateMap<VoteRegistrationDto, VoteRegistration>();
-        CreateMap<VoteApiRequest, VoteRegistration>();
-        CreateMap<UpdateVoteApiRequest, VoteRegistration>();
-        CreateMap<VoteRegistration, VoteRegistrationDto>();
-        CreateMap<VoteRegistration, VoteInRoundApiResponse>();
+        CreateMap<VoteDto, Vote>();
+        CreateMap<VoteApiRequest, Vote>();
+        CreateMap<UpdateVoteApiRequest, Vote>();
+        CreateMap<Vote, VoteDto>();
+        CreateMap<Vote, VoteInRoundApiResponse>();
     }
 }

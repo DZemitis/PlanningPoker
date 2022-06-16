@@ -2,7 +2,6 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
-using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Models.EFContext;
 using ScrumPoker.DataAccess.Models.Models;
@@ -13,7 +12,7 @@ public abstract class RepositoryBase
 {
     protected readonly IMapper Mapper;
     protected readonly IScrumPokerContext Context;
-    private readonly ILogger<RepositoryBase> Logger;
+    protected readonly ILogger<RepositoryBase> Logger;
 
     protected RepositoryBase(IMapper mapper, IScrumPokerContext context, ILogger<RepositoryBase> logger)
     {
@@ -21,7 +20,7 @@ public abstract class RepositoryBase
         Context = context;
         Logger = logger;
     }
-    protected GameRoomDto GameRoomIdValidation(int gameRoomId)
+    protected GameRoomDto GetGameRoomById(int gameRoomId)
     {
         var gameRoomDto = Context.GameRooms
             .Include(gr=>gr.GameRoomPlayers)
@@ -36,10 +35,10 @@ public abstract class RepositoryBase
         throw new IdNotFoundException($"{typeof(GameRoom)} with ID {gameRoomId} not found");
     }
 
-    protected PlayerDto PlayerIdValidation(int playerId)
+    protected PlayerDto GetPlayerById(int playerId)
     {
         var playerDto = Context.Players
-            .Include(p=>p.PlayerGameRooms)
+            .Include(p=>p.PlayerGameRooms).ThenInclude(x=>x.GameRoom)
             .SingleOrDefault(p => p.Id == playerId);
 
         if (playerDto != null) return playerDto;
@@ -47,7 +46,7 @@ public abstract class RepositoryBase
         throw new IdNotFoundException($"{typeof(Player)} with ID {playerId} not found");
     }
 
-    protected RoundDto RoundIdValidation(int roundId)
+    protected RoundDto GetRoundById(int roundId)
     {
         var roundDto = Context.Rounds
             .Include(x=>x.Votes)
@@ -57,27 +56,13 @@ public abstract class RepositoryBase
         Logger.LogWarning("Round with ID {roundId} could not been found", roundId);
         throw new IdNotFoundException($"{typeof(Round)} with ID {roundId} not found");
     }
-    
 
-    protected GameRoomPlayer PlayerIdValidationInGameRoom(int playerId, GameRoomDto gameRoomDto)
+    protected VoteDto GetVoteById(int voteId)
     {
-        var playerDto = gameRoomDto.GameRoomPlayers.SingleOrDefault(gr => gr.PlayerId == playerId);
-        if (playerDto != null) return playerDto;
-        Logger.LogWarning("Player(ID{PlayerId}) in Game Room (ID{GameRoomId}) was not found", playerId, gameRoomDto.Id);
-        throw new IdNotFoundException($"{typeof(Player)} in game room {gameRoomDto.Id} with player ID {playerId} not found");
-    }
-
-    protected void ValidateAlreadyExistGameRoom(GameRoom gameRoomRequest)
-    {
-        if (!Context.GameRooms.Any(x => x.Id == gameRoomRequest.Id)) return;
-        Logger.LogWarning("Game room with ID{Id} already exists", gameRoomRequest.Id);
-        throw new IdAlreadyExistException($"{typeof(GameRoom)} with {gameRoomRequest.Id} already exist");
-    }
-
-    protected void ValidateAlreadyExistPlayer(Player player)
-    {
-        if (!Context.Players.Any(p => p.Id == player.Id)) return;
-        Logger.LogWarning("Player with ID{ID} already exists", player.Id);
-        throw new IdAlreadyExistException($"{typeof(Player)} with {player.Id} already exist");
+        var voteDto = Context.Votes.SingleOrDefault(x => x.Id == voteId);
+        
+        if (voteDto != null) return voteDto;
+        Logger.LogWarning("Vote with ID {id} could not be found", voteId);
+        throw new IdNotFoundException($"{typeof(Vote)} with ID {voteId} not found");
     }
 }
