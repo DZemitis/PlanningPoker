@@ -15,5 +15,25 @@ public class GameRoomContextExtension
 
         builder.Entity<GameRoomDto>()
             .ToTable("GameRooms");
+
+        builder.Entity<GameRoomDto>()
+            .Property(x => x.CurrentRoundId)
+            .IsRequired(false);
+
+        builder.Entity<GameRoomDto>()
+            .Property(x => x.MasterId)
+            .IsRequired(false);
+
+        builder.Entity<GameRoomDto>()
+            .HasOne(g => g.CurrentRound)
+            .WithOne()
+            .HasForeignKey<GameRoomDto>(g => g.CurrentRoundId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Entity<GameRoomDto>()
+            .HasOne(x => x.Master)
+            .WithMany()
+            .HasForeignKey(x => x.MasterId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

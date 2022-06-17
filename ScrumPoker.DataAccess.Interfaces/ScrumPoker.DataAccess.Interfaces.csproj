@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ScrumPoker.Business.Models\ScrumPoker.Business.Models.csproj" />
-      <ProjectReference Include="..\ScrumPoker.DataAccess.Models\ScrumPoker.DataAccess.Models.csproj" />
+        <ProjectReference Include="..\ScrumPoker.Business.Models\ScrumPoker.Business.Models.csproj"/>
+        <ProjectReference Include="..\ScrumPoker.DataAccess.Models\ScrumPoker.DataAccess.Models.csproj"/>
     </ItemGroup>
 
 </Project>

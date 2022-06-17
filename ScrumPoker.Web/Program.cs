@@ -30,22 +30,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Register();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddControllers(options =>
-    {
-        options.Filters.Add<HttpResponseExceptionFilter>();
-    })
-    .ConfigureApiBehaviorOptions(options =>
-    {
-        options.InvalidModelStateResponseFactory = ValidationFilter.Process;
-    })
+builder.Services.AddControllers(options => { options.Filters.Add<HttpResponseExceptionFilter>(); })
+    .ConfigureApiBehaviorOptions(options => { options.InvalidModelStateResponseFactory = ValidationFilter.Process; })
     .AddXmlSerializerFormatters();
 
 builder.Services
     .AddMvc()
-    .AddFluentValidation(fv =>
-    {
-        fv.RegisterValidatorsFromAssemblyContaining<CreateGameRoomApiRequestValidator>();
-    });
+    .AddFluentValidation(fv => { fv.RegisterValidatorsFromAssemblyContaining<CreateGameRoomApiRequestValidator>(); });
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

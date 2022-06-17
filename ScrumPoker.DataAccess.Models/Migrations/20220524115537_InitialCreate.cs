@@ -73,7 +73,7 @@ namespace ScrumPoker.DataAccess.Models.Migrations
                 name: "IX_GameRoomsPlayers_PlayerId",
                 table: "GameRoomsPlayers",
                 column: "PlayerId");
-
+            
             migrationBuilder.CreateIndex(
                 name: "IX_Players_Id_Email",
                 table: "Players",
