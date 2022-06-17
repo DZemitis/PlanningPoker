@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.NotFoundExceptions;
@@ -17,26 +18,26 @@ public class VoteRepository : RepositoryBase, IVoteRepository
     {
     }
 
-    public List<Vote> GetListById(int id)
+    public async Task<List<Vote>> GetListById(int id)
     {
-        var voteDto = Context.Votes.Where(x => x.RoundId == id).ToList();
+        var voteDto = await Context.Votes.Where(x => x.RoundId == id).ToListAsync();
         var voteResponse = Mapper.Map<List<Vote>>(voteDto);
 
         return voteResponse;
     }
 
-    public Vote GetById(int id)
+    public async Task<Vote> GetById(int id)
     {
-        var voteDto = GetVoteById(id);
+        var voteDto = await GetVoteById(id);
         var voteResponse = Mapper.Map<Vote>(voteDto);
 
         return voteResponse;
     }
 
-    public Vote CreateOrUpdate(Vote voteRequest)
+    public async Task<Vote> CreateOrUpdate(Vote voteRequest)
     {
-        var roundDto = GetRoundById(voteRequest.RoundId);
-        var gameRoomDto = GetGameRoomById(roundDto.GameRoomId);
+        var roundDto = await GetRoundById(voteRequest.RoundId);
+        var gameRoomDto = await GetGameRoomById(roundDto.GameRoomId);
         var playerDto = gameRoomDto.GameRoomPlayers.SingleOrDefault(gr => gr.PlayerId == voteRequest.PlayerId);
         if (playerDto == null)
         {
@@ -48,7 +49,7 @@ public class VoteRepository : RepositoryBase, IVoteRepository
         }
 
         var vote =
-            Context.Votes.SingleOrDefault(x =>
+            await Context.Votes.SingleOrDefaultAsync(x =>
                 x.PlayerId == voteRequest.PlayerId && x.RoundId == voteRequest.RoundId);
 
         var voteDto = new VoteDto();
@@ -58,7 +59,7 @@ public class VoteRepository : RepositoryBase, IVoteRepository
             voteDto.PlayerId = voteRequest.PlayerId;
             voteDto.RoundId = voteRequest.RoundId;
 
-            Context.Votes.Add(voteDto);
+            await Context.Votes.AddAsync(voteDto);
         }
         else
         {
@@ -66,18 +67,18 @@ public class VoteRepository : RepositoryBase, IVoteRepository
             voteDto = vote;
         }
 
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
         var voteResponse = Mapper.Map<Vote>(voteDto);
 
         return voteResponse;
     }
 
-    public void ClearRoundVotes(int roundId)
+    public async Task ClearRoundVotes(int roundId)
     {
-        var round = GetRoundById(roundId);
+        var round = await GetRoundById(roundId);
 
         Context.Votes.RemoveRange(round.Votes);
 
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
     }
 }

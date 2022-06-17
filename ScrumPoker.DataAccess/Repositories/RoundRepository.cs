@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.Models;
@@ -16,15 +17,15 @@ public class RoundRepository : RepositoryBase, IRoundRepository
     {
     }
 
-    public Round GetById(int id)
+    public async Task<Round> GetById(int id)
     {
-        var roundDto = GetRoundById(id);
+        var roundDto = await GetRoundById(id);
         var roundResponse = Mapper.Map<Round>(roundDto);
 
         return roundResponse;
     }
 
-    public Round Create(Round roundRequest)
+    public async Task<Round> Create(Round roundRequest)
     {
         var createRound = new RoundDto
         {
@@ -33,31 +34,31 @@ public class RoundRepository : RepositoryBase, IRoundRepository
             RoundState = RoundState.Grooming
         };
 
-        var gameRoomDto = GetGameRoomById(roundRequest.GameRoomId);
+        var gameRoomDto = await GetGameRoomById(roundRequest.GameRoomId);
 
         gameRoomDto.CurrentRound = createRound;
-        Context.Rounds.Add(createRound);
+        await Context.Rounds.AddAsync(createRound);
         gameRoomDto.Rounds.Add(createRound);
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
 
         var roundResponse = Mapper.Map<Round>(createRound);
         return roundResponse;
     }
 
-    public void SetState(Round roundRequest)
+    public async Task SetState(Round roundRequest)
     {
-        GetRoundById(roundRequest.RoundId);
-        var roundDto = Context.Rounds.SingleOrDefault(r => r.RoundId == roundRequest.RoundId);
+        await GetRoundById(roundRequest.RoundId);
+        var roundDto = await Context.Rounds.SingleOrDefaultAsync(r => r.RoundId == roundRequest.RoundId);
         roundDto!.RoundState = roundRequest.RoundState;
 
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
     }
 
-    public void Update(Round roundRequest)
+    public async Task Update(Round roundRequest)
     {
-        var roundDto = GetRoundById(roundRequest.RoundId);
+        var roundDto = await GetRoundById(roundRequest.RoundId);
         roundDto.Description = roundRequest.Description;
 
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
     }
 }

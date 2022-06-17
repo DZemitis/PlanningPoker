@@ -20,6 +20,7 @@ public class MappingProfile : Profile
         CreateMap<UpdateGameRoomApiRequest, GameRoom>();
         CreateMap<GameRoom, GameRoomDto>();
         CreateMap<GameRoom, GameRoomAllApiResponse>();
+        CreateMap<GameRoom, GameRoomAddPlayerApiResponse>();
         CreateMap<GameRoom, GameRoomApiResponse>()
             .ForMember(dest => dest.MasterId,
                 opt =>

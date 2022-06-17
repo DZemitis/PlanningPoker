@@ -28,10 +28,10 @@ public class GameRoomController : ControllerBase
     /// <returns>List of game rooms</returns>
     [HttpGet]
     [Route("List")]
-    public IActionResult GetFullGameRoomList()
+    public async Task<IActionResult> GetFullGameRoomList()
     {
         _logger.LogInformation("Request to get list of all game rooms");
-        var gameRoomList = _gameRoomService.GetAll();
+        var gameRoomList = await _gameRoomService.GetAll();
         var gameRoomListResponse = _mapper.Map<List<GameRoomAllApiResponse>>(gameRoomList);
 
         return Ok(gameRoomListResponse);
@@ -44,10 +44,10 @@ public class GameRoomController : ControllerBase
     /// <returns>Game room by ID</returns>
     [HttpGet]
     [Route("{id:int}")]
-    public IActionResult GetRoomById(int id)
+    public async Task<IActionResult> GetRoomById(int id)
     {
         _logger.LogInformation("Request to find game room with ID {Id}", id);
-        var gameRoom = _gameRoomService.GetById(id);
+        var gameRoom = await _gameRoomService.GetById(id);
         var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(gameRoom);
 
         return Ok(gameRoomResponse);
@@ -60,12 +60,12 @@ public class GameRoomController : ControllerBase
     /// <returns>Game room with name and ID</returns>
     [HttpPost]
     [Route("Create")]
-    public IActionResult CreateGameRoom(CreateGameRoomApiRequest gameRoomRequest)
+    public async Task<IActionResult> CreateGameRoom(CreateGameRoomApiRequest gameRoomRequest)
     {
         _logger.LogInformation("Request to create game room with name - {Name}", gameRoomRequest.Name);
         var createGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
 
-        var createGameRoom = _gameRoomService.Create(createGameRoomRequest);
+        var createGameRoom = await _gameRoomService.Create(createGameRoomRequest);
         var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(createGameRoom);
 
         return Created("", gameRoomResponse);
@@ -79,13 +79,13 @@ public class GameRoomController : ControllerBase
     /// <returns>Updated game room</returns>
     [HttpPut]
     [Route("Update")]
-    public IActionResult UpdateGameRoom(UpdateGameRoomApiRequest gameRoomRequest)
+    public async Task<IActionResult> UpdateGameRoom(UpdateGameRoomApiRequest gameRoomRequest)
     {
         _logger.LogInformation("Request to change game rooms(ID {Id}) name to - {Name}", gameRoomRequest.Id,
             gameRoomRequest.Name);
         var updateGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
 
-        var updateGameRoom = _gameRoomService.Update(updateGameRoomRequest);
+        var updateGameRoom = await _gameRoomService.Update(updateGameRoomRequest);
         var updateGameRoomResponse = _mapper.Map<GameRoomApiResponse>(updateGameRoom);
 
         return Ok(updateGameRoomResponse);
@@ -97,10 +97,10 @@ public class GameRoomController : ControllerBase
     /// <returns>Confirmation of deleting all game rooms</returns>
     [HttpDelete]
     [Route("DeleteAll")]
-    public IActionResult DeleteAllGameRooms()
+    public async Task<IActionResult> DeleteAllGameRooms()
     {
         _logger.LogInformation("Request to delete all game rooms");
-        _gameRoomService.DeleteAll();
+        await _gameRoomService.DeleteAll();
 
         return Ok("All game rooms has been deleted");
     }
@@ -112,10 +112,10 @@ public class GameRoomController : ControllerBase
     /// <returns>Confirmation of deletion</returns>
     [HttpDelete]
     [Route("Delete/{id:int}")]
-    public IActionResult DeleteGameRoomById(int id)
+    public async Task<IActionResult> DeleteGameRoomById(int id)
     {
         _logger.LogInformation("Request to delete game room with ID - {Id}", id);
-        _gameRoomService.DeleteById(id);
+        await _gameRoomService.DeleteById(id);
 
         return Ok($"Game room with ID : {id} has been deleted");
     }
@@ -128,13 +128,13 @@ public class GameRoomController : ControllerBase
     /// <returns>Updated Game Room</returns>
     [HttpPut]
     [Route("AddPlayer")]
-    public IActionResult AddPlayerToRoom(int idOfGameRoomToAdd, int idOfPlayerToAdd)
+    public async Task<IActionResult> AddPlayerToRoom(int idOfGameRoomToAdd, int idOfPlayerToAdd)
     {
         _logger.LogInformation("Request to add player(ID {PlayerId}) to game room(ID {GameRoomId})", idOfPlayerToAdd,
             idOfGameRoomToAdd);
-        _gameRoomService.AddPlayer(idOfGameRoomToAdd, idOfPlayerToAdd);
-        var getGameRoom = _gameRoomService.GetById(idOfGameRoomToAdd);
-        var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(getGameRoom);
+        await _gameRoomService.AddPlayer(idOfGameRoomToAdd, idOfPlayerToAdd);
+        var getGameRoom = await _gameRoomService.GetById(idOfGameRoomToAdd);
+        var gameRoomResponse = _mapper.Map<GameRoomAddPlayerApiResponse>(getGameRoom);
 
         return Ok(gameRoomResponse);
     }
@@ -147,11 +147,11 @@ public class GameRoomController : ControllerBase
     /// <returns>Confirmation of removal</returns>
     [HttpDelete]
     [Route("RemovePlayer")]
-    public IActionResult RemovePlayerFromRoom(int gameRoomId, int playerId)
+    public async Task<IActionResult> RemovePlayerFromRoom(int gameRoomId, int playerId)
     {
         _logger.LogInformation("Request to remove player(ID {PlayerId}) from game room(ID {GameRoomId})", playerId,
             gameRoomId);
-        _gameRoomService.RemovePlayer(gameRoomId, playerId);
+        await _gameRoomService.RemovePlayer(gameRoomId, playerId);
 
         return Ok("Player has been removed from room");
     }

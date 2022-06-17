@@ -16,25 +16,27 @@ public class PlayerRepository : RepositoryBase, IPlayerRepository
     {
     }
 
-    public IEnumerable<Player> GetAll()
+    public async Task<IEnumerable<Player>> GetAll()
     {
-        var players = Context.Players
-            .Include(p => p.PlayerGameRooms).ThenInclude(grp => grp.GameRoom);
+        var players = await Context.Players
+            .Include(p => p.PlayerGameRooms)
+            .ThenInclude(grp => grp.GameRoom).ToListAsync();
+
         var playerListResponse = Mapper.Map<List<Player>>(players);
 
         return playerListResponse;
     }
 
-    public Player GetById(int id)
+    public async Task<Player> GetById(int id)
     {
-        var playerDto = GetPlayerById(id);
+        var playerDto = await GetPlayerById(id);
 
         var playerDtoResponse = Mapper.Map<Player>(playerDto);
 
         return playerDtoResponse;
     }
 
-    public Player Create(Player createPlayerRequest)
+    public async Task<Player> Create(Player createPlayerRequest)
     {
         var addPlayer = new PlayerDto
         {
@@ -42,29 +44,29 @@ public class PlayerRepository : RepositoryBase, IPlayerRepository
             Email = createPlayerRequest.Email
         };
 
-        Context.Players.Add(addPlayer);
-        Context.SaveChanges();
+        await Context.Players.AddAsync(addPlayer);
+        await Context.SaveChangesAsync();
         var playerDtoResponse = Mapper.Map<Player>(addPlayer);
 
         return playerDtoResponse;
     }
 
-    public Player Update(Player updatePlayerRequest)
+    public async Task<Player> Update(Player updatePlayerRequest)
     {
-        var playerDto = GetPlayerById(updatePlayerRequest.Id);
+        var playerDto = await GetPlayerById(updatePlayerRequest.Id);
 
         playerDto.Name = updatePlayerRequest.Name;
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
 
         var playerDtoResponse = Mapper.Map<Player>(playerDto);
 
         return playerDtoResponse;
     }
 
-    public void DeleteById(int id)
+    public async Task DeleteById(int id)
     {
-        var playerDto = GetPlayerById(id);
+        var playerDto = await GetPlayerById(id);
         Context.Players.Remove(playerDto);
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
     }
 }

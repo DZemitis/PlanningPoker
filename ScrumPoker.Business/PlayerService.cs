@@ -14,28 +14,28 @@ public class PlayerService : IPlayerService
         _playerRepository = playerRepository;
     }
 
-    public IEnumerable<Player> GetAll()
+    public async Task<IEnumerable<Player>> GetAll()
     {
-        return _playerRepository.GetAll();
+        return await _playerRepository.GetAll();
     }
 
-    public Player GetById(int id)
+    public async Task<Player> GetById(int id)
     {
-        return _playerRepository.GetById(id);
+        return await _playerRepository.GetById(id);
     }
 
-    public Player Create(Player createPlayerRequest)
+    public async Task<Player> Create(Player createPlayerRequest)
     {
-        return _playerRepository.Create(createPlayerRequest);
+        return await _playerRepository.Create(createPlayerRequest);
     }
 
-    public Player Update(Player updatePlayerRequest)
+    public async Task<Player> Update(Player updatePlayerRequest)
     {
-        return _playerRepository.Update(updatePlayerRequest);
+        return await _playerRepository.Update(updatePlayerRequest);
     }
 
-    public void DeleteById(int id)
+    public async Task DeleteById(int id)
     {
-        _playerRepository.DeleteById(id);
+        await _playerRepository.DeleteById(id);
     }
 }
