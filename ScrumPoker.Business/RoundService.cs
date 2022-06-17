@@ -14,26 +14,26 @@ public class RoundService : IRoundService
         _roundRepository = roundRepository;
     }
 
-    public Round GetById(int id)
+    public async Task<Round> GetById(int id)
     {
-        var round = _roundRepository.GetById(id);
+        var round = await _roundRepository.GetById(id);
         return round;
     }
 
-    public Round Create(Round roundRequest)
+    public async Task<Round> Create(Round roundRequest)
     {
-        var round = _roundRepository.Create(roundRequest);
+        var round = await _roundRepository.Create(roundRequest);
 
         return round;
     }
 
-    public void SetState(Round round)
+    public async Task SetState(Round round)
     {
-        _roundRepository.SetState(round);
+        await _roundRepository.SetState(round);
     }
 
-    public void Update(Round roundRequest)
+    public async Task Update(Round roundRequest)
     {
-        _roundRepository.Update(roundRequest);
+        await _roundRepository.Update(roundRequest);
     }
 }

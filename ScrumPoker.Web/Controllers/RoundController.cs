@@ -29,10 +29,10 @@ public class RoundController : ControllerBase
     /// <returns>Round</returns>
     [HttpGet]
     [Route("{id:int}")]
-    public IActionResult GetRoundById(int id)
+    public async Task<IActionResult> GetRoundById(int id)
     {
         _logger.LogInformation("Request to get round with ID {Id}", id);
-        var round = _roundService.GetById(id);
+        var round = await _roundService.GetById(id);
         var roundResponse = _mapper.Map<RoundApiResponse>(round);
 
         return Ok(roundResponse);
@@ -45,11 +45,11 @@ public class RoundController : ControllerBase
     /// <returns>Created round</returns>
     [HttpPost]
     [Route("Create")]
-    public IActionResult CreateRound(CreateRoundApiRequest roundApiRequest)
+    public async Task<IActionResult> CreateRound(CreateRoundApiRequest roundApiRequest)
     {
         _logger.LogInformation("Request to create a new round");
         var roundRequest = _mapper.Map<Round>(roundApiRequest);
-        var roundResponse = _roundService.Create(roundRequest);
+        var roundResponse = await _roundService.Create(roundRequest);
 
         return Created("", roundResponse);
     }
@@ -61,12 +61,12 @@ public class RoundController : ControllerBase
     /// <returns>Updated Round</returns>
     [HttpPut]
     [Route("SetState")]
-    public IActionResult SetState(UpdateRoundApiRequest roundApiRequest)
+    public async Task<IActionResult> SetState(UpdateRoundApiRequest roundApiRequest)
     {
         _logger.LogInformation("Request to change round(ID {id}) state", roundApiRequest.RoundId);
         var roundRequest = _mapper.Map<Round>(roundApiRequest);
-        _roundService.SetState(roundRequest);
-        var round = _roundService.GetById(roundRequest.RoundId);
+        await _roundService.SetState(roundRequest);
+        var round = await _roundService.GetById(roundRequest.RoundId);
         var roundResponse = _mapper.Map<RoundApiResponse>(round);
 
         return Ok(roundResponse);
@@ -79,12 +79,12 @@ public class RoundController : ControllerBase
     /// <returns>Updated Round</returns>
     [HttpPut]
     [Route("Update")]
-    public IActionResult Update(UpdateDescriptionRoundApiRequest roundApiRequest)
+    public async Task<IActionResult> Update(UpdateDescriptionRoundApiRequest roundApiRequest)
     {
         _logger.LogInformation("Request to change description for the round (ID {id})", roundApiRequest.RoundId);
         var roundRequest = _mapper.Map<Round>(roundApiRequest);
-        _roundService.Update(roundRequest);
-        var round = _roundService.GetById(roundRequest.RoundId);
+        await _roundService.Update(roundRequest);
+        var round = await _roundService.GetById(roundRequest.RoundId);
         var roundResponse = _mapper.Map<RoundApiResponse>(round);
 
         return Ok(roundResponse);

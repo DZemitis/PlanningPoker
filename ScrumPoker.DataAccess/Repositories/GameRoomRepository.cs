@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using ScrumPoker.Business.Models.Models;
+using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.Models;
 using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Interfaces;
@@ -18,29 +19,30 @@ public class GameRoomRepository : RepositoryBase, IGameRoomRepository
     {
     }
 
-    public List<GameRoom> GetAll()
+    public async Task<List<GameRoom>> GetAll()
     {
-        var gameRooms = Context.GameRooms
+        var gameRooms = await Context.GameRooms
             .Include(gr => gr.GameRoomPlayers).ThenInclude(p => p.Player)
             .Include(gr => gr.Master)
-            .Include(x => x.CurrentRound);
+            .Include(x => x.CurrentRound).ToListAsync();
 
         var gameRoomListResponse = Mapper.Map<List<GameRoom>>(gameRooms);
 
         return gameRoomListResponse;
     }
 
-    public GameRoom GetById(int id)
+    public async Task<GameRoom> GetById(int id)
     {
-        var gameRoomDto = GetGameRoomById(id);
+        var gameRoomDto = await GetGameRoomById(id);
 
         var gameRoomDtoResponse = Mapper.Map<GameRoom>(gameRoomDto);
+
         return gameRoomDtoResponse;
     }
 
-    public GameRoom Create(GameRoom gameRoomRequest)
+    public async Task<GameRoom> Create(GameRoom gameRoomRequest)
     {
-        var masterPLayer = GetPlayerById(gameRoomRequest.MasterId);
+        var masterPLayer = await GetPlayerById(gameRoomRequest.MasterId);
 
         var addGameRoom = new GameRoomDto
         {
@@ -55,51 +57,51 @@ public class GameRoomRepository : RepositoryBase, IGameRoomRepository
             GameRoom = addGameRoom
         };
 
-        Context.Rounds.Add(initialRound);
-        Context.SaveChanges();
+        await Context.Rounds.AddAsync(initialRound);
+        await Context.SaveChangesAsync();
         addGameRoom.CurrentRound = initialRound;
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
 
         var gameRoomDtoResponse = Mapper.Map<GameRoom>(addGameRoom);
 
         return gameRoomDtoResponse;
     }
 
-    public GameRoom Update(GameRoom gameRoomRequest)
+    public async Task<GameRoom> Update(GameRoom gameRoomRequest)
     {
-        var gameRoomDto = GetGameRoomById(gameRoomRequest.Id);
+        var gameRoomDto = await GetGameRoomById(gameRoomRequest.Id);
 
         gameRoomDto.Name = gameRoomRequest.Name;
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
 
         var gameRoomDtoResponse = Mapper.Map<GameRoom>(gameRoomDto);
 
         return gameRoomDtoResponse;
     }
 
-    public void DeleteAll()
+    public async Task DeleteAll()
     {
         Context.Rounds.RemoveRange(Context.Rounds);
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
 
         Context.GameRooms.RemoveRange(Context.GameRooms);
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
     }
 
-    public void DeleteById(int id)
+    public async Task DeleteById(int id)
     {
         var roundList = Context.Rounds.Where(x => x.GameRoomId == id);
         Context.Rounds.RemoveRange(roundList);
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
 
-        var gameRoomDto = GetGameRoomById(id);
+        var gameRoomDto = await GetGameRoomById(id);
         Context.GameRooms.Remove(gameRoomDto);
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
     }
 
-    public void RemovePlayerById(int gameRoomId, int playerId)
+    public async Task RemovePlayerById(int gameRoomId, int playerId)
     {
-        var gameRoomDto = GetGameRoomById(gameRoomId);
+        var gameRoomDto = await GetGameRoomById(gameRoomId);
 
         var playerToRemove = gameRoomDto.GameRoomPlayers.SingleOrDefault(x => x.PlayerId == playerId);
         if (playerToRemove == null)
@@ -111,18 +113,29 @@ public class GameRoomRepository : RepositoryBase, IGameRoomRepository
                 ($"{typeof(Player)} in game room {gameRoomDto.Id} with player ID {playerId} not found");
         }
 
-        var gameRoomPlayerDto = Context.GameRoomsPlayers.SingleOrDefault(x =>
+        var gameRoomPlayerDto = await Context.GameRoomsPlayers.SingleOrDefaultAsync(x =>
             x.GameRoomId == gameRoomId && x.PlayerId == playerId);
 
         Context.GameRoomsPlayers.RemoveRange(gameRoomPlayerDto!);
-        Context.SaveChanges();
+        await Context.SaveChangesAsync();
     }
 
-    public void AddPlayerToRoom(int gameRoomId, int playerId)
+    public async Task AddPlayerToRoom(int gameRoomId, int playerId)
     {
-        var gameRoomDto = GetGameRoomById(gameRoomId);
+        var gameRoomDto = await GetGameRoomById(gameRoomId);
 
-        var playerDto = GetPlayerById(playerId);
+        var playerDto = await GetPlayerById(playerId);
+        var gameRoomPlayer = await
+            Context.GameRoomsPlayers.SingleOrDefaultAsync(x =>
+                x.GameRoomId == gameRoomId && x.PlayerId == playerId);
+
+        if (gameRoomPlayer != null)
+        {
+            Logger.LogWarning("Player(ID{PlayerId}) in Game Room (ID{GameRoomId}) already exist",
+                playerId, gameRoomId);
+            throw new IdAlreadyExistException(
+                $"{typeof(Player)} in game room {gameRoomId} with player ID {playerId} already exist");
+        }
 
         var gameRoomPlayers = new GameRoomPlayer
         {
@@ -130,7 +143,7 @@ public class GameRoomRepository : RepositoryBase, IGameRoomRepository
             GameRoom = gameRoomDto
         };
 
-        Context.GameRoomsPlayers.Add(gameRoomPlayers);
-        Context.SaveChanges();
+        await Context.GameRoomsPlayers.AddAsync(gameRoomPlayers);
+        await Context.SaveChangesAsync();
     }
 }

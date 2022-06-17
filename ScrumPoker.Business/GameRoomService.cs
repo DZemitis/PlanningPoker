@@ -14,47 +14,47 @@ public class GameRoomService : IGameRoomService
         _gameRoomRepository = gameRoomRepository;
     }
 
-    public List<GameRoom> GetAll()
+    public async Task<List<GameRoom>> GetAll()
     {
-        return _gameRoomRepository.GetAll();
+        return await _gameRoomRepository.GetAll();
     }
 
-    public GameRoom GetById(int id)
+    public async Task<GameRoom> GetById(int id)
     {
-        return _gameRoomRepository.GetById(id);
+        return await _gameRoomRepository.GetById(id);
     }
 
-    public GameRoom Create(GameRoom gameRoomRequest)
+    public async Task<GameRoom> Create(GameRoom gameRoomRequest)
     {
-        var gameRoom = _gameRoomRepository.Create(gameRoomRequest);
-        _gameRoomRepository.AddPlayerToRoom(gameRoom.Id, gameRoom.MasterId);
-        var gameRoomResponse = _gameRoomRepository.GetById(gameRoom.Id);
+        var gameRoom = await _gameRoomRepository.Create(gameRoomRequest);
+        await _gameRoomRepository.AddPlayerToRoom(gameRoom.Id, gameRoom.MasterId);
+        var gameRoomResponse = await _gameRoomRepository.GetById(gameRoom.Id);
 
         return gameRoomResponse;
     }
 
-    public GameRoom Update(GameRoom gameRoomRequest)
+    public async Task<GameRoom> Update(GameRoom gameRoomRequest)
     {
-        return _gameRoomRepository.Update(gameRoomRequest);
+        return await _gameRoomRepository.Update(gameRoomRequest);
     }
 
-    public void DeleteAll()
+    public async Task DeleteAll()
     {
-        _gameRoomRepository.DeleteAll();
+        await _gameRoomRepository.DeleteAll();
     }
 
-    public void DeleteById(int id)
+    public async Task DeleteById(int id)
     {
-        _gameRoomRepository.DeleteById(id);
+        await _gameRoomRepository.DeleteById(id);
     }
 
-    public void AddPlayer(int gameRoomId, int playerId)
+    public async Task AddPlayer(int gameRoomId, int playerId)
     {
-        _gameRoomRepository.AddPlayerToRoom(gameRoomId, playerId);
+        await _gameRoomRepository.AddPlayerToRoom(gameRoomId, playerId);
     }
 
-    public void RemovePlayer(int gameRoomId, int playerId)
+    public async Task RemovePlayer(int gameRoomId, int playerId)
     {
-        _gameRoomRepository.RemovePlayerById(gameRoomId, playerId);
+        await _gameRoomRepository.RemovePlayerById(gameRoomId, playerId);
     }
 }

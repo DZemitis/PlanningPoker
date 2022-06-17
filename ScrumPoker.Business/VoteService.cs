@@ -14,23 +14,18 @@ public class VoteService : IVoteService
         _voteRepository = voteRepository;
     }
 
-    public List<Vote> GetListById(int id)
+    public async Task<Vote> GetById(int id)
     {
-        return _voteRepository.GetListById(id);
+        return await _voteRepository.GetById(id);
     }
 
-    public Vote GetById(int id)
+    public async Task<Vote> CreateOrUpdate(Vote vote)
     {
-        return _voteRepository.GetById(id);
+        return await _voteRepository.CreateOrUpdate(vote);
     }
 
-    public Vote CreateOrUpdate(Vote vote)
+    public async Task ClearRoundVotes(int roundId)
     {
-        return _voteRepository.CreateOrUpdate(vote);
-    }
-
-    public void ClearRoundVotes(int roundId)
-    {
-        _voteRepository.ClearRoundVotes(roundId);
+        await _voteRepository.ClearRoundVotes(roundId);
     }
 }

@@ -29,10 +29,10 @@ public class VoteController : ControllerBase
     /// <returns>Vote by ID</returns>
     [HttpGet]
     [Route("{id:int}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
         _logger.LogInformation("Request to geta a vote with ID {Id}", id);
-        var voteResponse = _voteService.GetById(id);
+        var voteResponse = await _voteService.GetById(id);
 
         return Ok(voteResponse);
     }
@@ -44,12 +44,12 @@ public class VoteController : ControllerBase
     /// <returns>Created/Updated vote with ID</returns>
     [HttpPost]
     [Route("Create/Update")]
-    public IActionResult CreateOrUpdate(VoteApiRequest voteApiRequest)
+    public async Task<IActionResult> CreateOrUpdate(VoteApiRequest voteApiRequest)
     {
         _logger.LogInformation("Request to create a vote for player with ID {playerId} in round with ID {roundId}",
             voteApiRequest.PlayerId, voteApiRequest.RoundId);
         var voteRequest = _mapper.Map<Vote>(voteApiRequest);
-        var voteResponse = _voteService.CreateOrUpdate(voteRequest);
+        var voteResponse = await _voteService.CreateOrUpdate(voteRequest);
 
         return Created("", voteResponse);
     }
@@ -62,10 +62,10 @@ public class VoteController : ControllerBase
     /// <returns>Message, that all votes has been cleared in provided round</returns>
     [HttpDelete]
     [Route("ClearVotes")]
-    public IActionResult ClearRoundVotes(int roundId)
+    public async Task<IActionResult> ClearRoundVotes(int roundId)
     {
         _logger.LogInformation("Request to clear all votes in Round with ID {roundId}", roundId);
-        _voteService.ClearRoundVotes(roundId);
+        await _voteService.ClearRoundVotes(roundId);
 
         return Ok($"All votes from round(ID: {roundId}) has been cleared");
     }
