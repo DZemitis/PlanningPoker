@@ -1,6 +1,7 @@
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.ConflictExceptions;
+using ScrumPoker.Common.ForbiddenExceptions;
 using ScrumPoker.DataAccess.Interfaces;
 
 namespace ScrumPoker.Business;
@@ -27,10 +28,9 @@ public class RoundService : IRoundService
 
     public async Task<Round> Create(Round roundRequest)
     {
-        var roundDto = await GetById(roundRequest.RoundId);
-        var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
-        var masterId = _userManager.GetUserId();
-        if (gameRoomDto.MasterId != masterId)
+        var gameRoomDto = await _gameRoomService.GetById(roundRequest.GameRoomId);
+        var currentUserId = _userManager.GetCurrentUserId();
+        if (gameRoomDto.MasterId != currentUserId)
         {
             throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
         }
@@ -44,8 +44,8 @@ public class RoundService : IRoundService
     {
         var roundDto = await GetById(roundRequest.RoundId);
         var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
-        var masterId = _userManager.GetUserId();
-        if (gameRoomDto.MasterId != masterId)
+        var currentUserId = _userManager.GetCurrentUserId();
+        if (gameRoomDto.MasterId != currentUserId)
         {
             throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
         }
@@ -57,8 +57,8 @@ public class RoundService : IRoundService
     {
         var roundDto = await GetById(roundRequest.RoundId);
         var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
-        var masterId = _userManager.GetUserId();
-        if (gameRoomDto.MasterId != masterId)
+        var currentUserId = _userManager.GetCurrentUserId();
+        if (gameRoomDto.MasterId != currentUserId)
         {
             throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
         }

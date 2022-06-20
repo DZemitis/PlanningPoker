@@ -32,15 +32,13 @@ public class VoteService : IVoteService
     {
         var roundDto = await _roundService.GetById(vote.RoundId);
         var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
-        var playerId = _userManager.GetUserId();
+        var currentUserId = _userManager.GetCurrentUserId();
         var playerList = gameRoomDto.Players;
-        var playerCheck = playerList.SingleOrDefault(x => x.Id == playerId);
+        var playerCheck = playerList.SingleOrDefault(x => x.Id == currentUserId);
         if (playerCheck == null)
-        {
-            throw new IdNotFoundException($"No user with ID {playerId} found in game room ID {gameRoomDto.Id}");
-        }
+            throw new IdNotFoundException($"No user with ID {currentUserId} found in game room ID {gameRoomDto.Id}");
         
-        vote.PlayerId = playerId;
+        vote.PlayerId = currentUserId;
         return await _voteRepository.CreateOrUpdate(vote);
     }
 

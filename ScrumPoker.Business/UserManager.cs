@@ -13,10 +13,10 @@ public class UserManager : IUserManager
             _httpContextAccessor = httpContextAccessor;
         }
         
-        public int GetUserId()
+    public int GetCurrentUserId()
         {
-            var userId = _httpContextAccessor.HttpContext!.User.Claims.Single(x => x.Type == "userId").Value;
+        var currentUserId = _httpContextAccessor.HttpContext!.User.Claims.Single(x => x.Type == "userId").Value;
 
-            return int.Parse(userId);
+        return int.Parse(currentUserId);
         }
 }

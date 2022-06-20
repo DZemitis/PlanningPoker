@@ -53,7 +53,7 @@ public class AuthTestController : ControllerBase
     [Route("CheckToken")]
     public IActionResult CheckAuth()
     {
-        var userId = _manager.GetUserId();
+        var userId = _manager.GetCurrentUserId();
         return Ok(userId);
     }
 }

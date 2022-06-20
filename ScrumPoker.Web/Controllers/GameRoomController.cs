@@ -64,11 +64,10 @@ public class GameRoomController : ControllerBase
     [Route("Create")]
     public async Task<IActionResult> CreateGameRoom(CreateGameRoomApiRequest gameRoomRequest)
     {
-        var id =Int32.Parse(HttpContext.User.Claims.Single(x => x.Type == "userId").Value);
         _logger.LogInformation("Request to create game room with name - {Name}", gameRoomRequest.Name);
         var createGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
 
-        var createGameRoom = await _gameRoomService.Create(createGameRoomRequest, id);
+        var createGameRoom = await _gameRoomService.Create(createGameRoomRequest);
         var gameRoomResponse = _mapper.Map<GameRoomAllApiResponse>(createGameRoom);
         
         return Created("", gameRoomResponse);
@@ -83,7 +82,6 @@ public class GameRoomController : ControllerBase
     [Route("Update")]
     public async Task<IActionResult> UpdateGameRoom(UpdateGameRoomApiRequest gameRoomRequest)
     {
-        var id = Int32.Parse(HttpContext.User.Claims.Single(x => x.Type == "userId").Value);
         _logger.LogInformation("Request to change game rooms(ID {Id}) name to - {Name}", gameRoomRequest.Id,
             gameRoomRequest.Name);
         var updateGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
