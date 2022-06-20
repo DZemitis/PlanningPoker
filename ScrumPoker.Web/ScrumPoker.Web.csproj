@@ -7,23 +7,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="11.0.1" />
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="FluentValidation.AspNetCore" Version="11.0.3" />
+        <PackageReference Include="AutoMapper" Version="11.0.1"/>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0"/>
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.0.3"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.5">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Serilog" Version="2.11.1-dev-01397" />
-        <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
-        <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+        <PackageReference Include="Serilog" Version="2.11.1-dev-01397"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="5.0.0"/>
+        <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ScrumPoker.Business.Interfaces\ScrumPoker.Business.Interfaces.csproj" />
-      <ProjectReference Include="..\ScrumPoker.Infrastructure\ScrumPoker.Infrastructure.csproj" />
-      <ProjectReference Include="..\ScrumPoker.Web.Models\ScrumPoker.Web.Models.csproj" />
+        <ProjectReference Include="..\ScrumPoker.Business.Interfaces\ScrumPoker.Business.Interfaces.csproj"/>
+        <ProjectReference Include="..\ScrumPoker.Infrastructure\ScrumPoker.Infrastructure.csproj"/>
+        <ProjectReference Include="..\ScrumPoker.Web.Models\ScrumPoker.Web.Models.csproj"/>
     </ItemGroup>
 
 </Project>

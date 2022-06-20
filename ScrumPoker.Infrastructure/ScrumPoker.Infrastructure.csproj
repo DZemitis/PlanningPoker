@@ -7,23 +7,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="11.0.1" />
-      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.5" />
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-      <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
-      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+        <PackageReference Include="AutoMapper" Version="11.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.5"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.OpenApi" Version="1.2.3"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ScrumPoker.Business.Interfaces\ScrumPoker.Business.Interfaces.csproj" />
-      <ProjectReference Include="..\ScrumPoker.Business.Models\ScrumPoker.Business.Models.csproj" />
-      <ProjectReference Include="..\ScrumPoker.Business\ScrumPoker.Business.csproj" />
-      <ProjectReference Include="..\ScrumPoker.DataAccess.Interfaces\ScrumPoker.DataAccess.Interfaces.csproj" />
-      <ProjectReference Include="..\ScrumPoker.DataAccess.Models\ScrumPoker.DataAccess.Models.csproj" />
-      <ProjectReference Include="..\ScrumPoker.DataAccess\ScrumPoker.DataAccess.csproj" />
-      <ProjectReference Include="..\ScrumPoker.Web.Models\ScrumPoker.Web.Models.csproj" />
+        <ProjectReference Include="..\ScrumPoker.Business.Interfaces\ScrumPoker.Business.Interfaces.csproj"/>
+        <ProjectReference Include="..\ScrumPoker.Business.Models\ScrumPoker.Business.Models.csproj"/>
+        <ProjectReference Include="..\ScrumPoker.Business\ScrumPoker.Business.csproj"/>
+        <ProjectReference Include="..\ScrumPoker.DataAccess.Interfaces\ScrumPoker.DataAccess.Interfaces.csproj"/>
+        <ProjectReference Include="..\ScrumPoker.DataAccess.Models\ScrumPoker.DataAccess.Models.csproj"/>
+        <ProjectReference Include="..\ScrumPoker.DataAccess\ScrumPoker.DataAccess.csproj"/>
+        <ProjectReference Include="..\ScrumPoker.Web.Models\ScrumPoker.Web.Models.csproj"/>
     </ItemGroup>
 
 </Project>

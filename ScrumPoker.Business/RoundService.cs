@@ -8,8 +8,8 @@ namespace ScrumPoker.Business;
 /// <inheritdoc />
 public class RoundService : IRoundService
 {
-    private readonly IRoundRepository _roundRepository;
     private readonly IGameRoomService _gameRoomService;
+    private readonly IRoundRepository _roundRepository;
     private readonly IUserManager _userManager;
 
     public RoundService(IRoundRepository roundRepository, IGameRoomService gameRoomService, IUserManager userManager)
@@ -27,14 +27,11 @@ public class RoundService : IRoundService
 
     public async Task<Round> Create(Round roundRequest)
     {
-        var roundDto = await GetById(roundRequest.RoundId);
-        var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
+        var gameRoomDto = await _gameRoomService.GetById(roundRequest.GameRoomId);
         var masterId = _userManager.GetUserId();
         if (gameRoomDto.MasterId != masterId)
-        {
             throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
-        }
-        
+
         var round = await _roundRepository.Create(roundRequest);
 
         return round;
@@ -46,10 +43,8 @@ public class RoundService : IRoundService
         var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
         var masterId = _userManager.GetUserId();
         if (gameRoomDto.MasterId != masterId)
-        {
             throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
-        }
-        
+
         await _roundRepository.SetState(roundRequest);
     }
 
@@ -59,10 +54,8 @@ public class RoundService : IRoundService
         var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
         var masterId = _userManager.GetUserId();
         if (gameRoomDto.MasterId != masterId)
-        {
             throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
-        }
-        
+
         await _roundRepository.Update(roundRequest);
     }
 }

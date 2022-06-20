@@ -12,8 +12,8 @@ public static class AuthenticationExtensions
     {
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(
-                authenticationScheme: JwtBearerDefaults.AuthenticationScheme,
-                configureOptions: options =>
+                JwtBearerDefaults.AuthenticationScheme,
+                options =>
                 {
                     options.IncludeErrorDetails = true;
                     options.TokenValidationParameters = new TokenValidationParameters

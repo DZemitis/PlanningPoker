@@ -1,25 +1,25 @@
 ﻿{
   "$schema": "https://json.schemastore.org/launchsettings.json",
-   "profiles": {
-     "ScrumPoker": {
-       "commandName": "Project",
-       "dotnetRunMessages": true,
-       "launchBrowser": true,
-       "launchUrl": "swagger",
-       "applicationUrl": "https://localhost:7197;http://localhost:5197",
-       "environmentVariables": {
-         "ASPNETCORE_ENVIRONMENT": "Development"
-       }
-     },
-     "ScrumPokerProd": {
-       "commandName": "Project",
-       "dotnetRunMessages": true,
-       "launchBrowser": true,
-       "launchUrl": "swagger",
-       "applicationUrl": "https://localhost:7197;http://localhost:5197",
-       "environmentVariables": {
-         "ASPNETCORE_ENVIRONMENT": "Production"
-       }
-     }
-   }
+  "profiles": {
+    "ScrumPoker": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7197;http://localhost:5197",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "ScrumPokerProd": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7197;http://localhost:5197",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
+    }
+  }
 }
