@@ -23,31 +23,58 @@ public class VoteController : ControllerBase
     }
 
     [HttpGet]
+<<<<<<< HEAD
     [Route("GetAllFromRound")]
-    public async Task<IActionResult> GetById(int id)
+    public IActionResult GetAllFromRound(int id)
     {
         return Ok();
+=======
+    [Route("{id:int}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        _logger.LogInformation("Request to geta a vote with ID {Id}", id);
         var voteResponse = await _voteService.GetById(id);
+
+        return Ok(voteResponse);
+>>>>>>> 317457d (Made everything async (#10))
     }
 
     [HttpPost]
+<<<<<<< HEAD
     [Route("Create")]
-    public async Task<IActionResult> CreateOrUpdate(VoteApiRequest voteApiRequest)
+    public IActionResult Create(VoteApiRequest voteApiRequest)
     {
         var voteRequest = _mapper.Map<VoteRegistration>(voteApiRequest);
         var voteResponse = _voteRegistrationService.Create(voteRequest);
+=======
+    [Route("Create/Update")]
+    public async Task<IActionResult> CreateOrUpdate(VoteApiRequest voteApiRequest)
+    {
+        _logger.LogInformation("Request to create a vote for player with ID {playerId} in round with ID {roundId}",
+            voteApiRequest.PlayerId, voteApiRequest.RoundId);
+        var voteRequest = _mapper.Map<Vote>(voteApiRequest);
         var voteResponse = await _voteService.CreateOrUpdate(voteRequest);
+>>>>>>> 317457d (Made everything async (#10))
 
         return Created("", voteResponse);
     }
 
     [HttpDelete]
     [Route("ClearVotes")]
-    public async Task<IActionResult> ClearRoundVotes(int roundId)
+<<<<<<< HEAD
+    public IActionResult ClearRoundVotes(VoteApiRequest voteApiRequest)
     {
         var voteRequest = _mapper.Map<VoteRegistration>(voteApiRequest);
-        await _voteService.ClearRoundVotes(roundId);
+        _voteRegistrationService.ClearRoundVotes(voteRequest);
         
         return Ok($"All votes from round(ID: {voteApiRequest.RoundId}) has been cleared");
+=======
+    public async Task<IActionResult> ClearRoundVotes(int roundId)
+    {
+        _logger.LogInformation("Request to clear all votes in Round with ID {roundId}", roundId);
+        await _voteService.ClearRoundVotes(roundId);
+
+        return Ok($"All votes from round(ID: {roundId}) has been cleared");
+>>>>>>> 317457d (Made everything async (#10))
     }
 }

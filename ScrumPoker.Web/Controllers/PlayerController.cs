@@ -30,10 +30,10 @@ public class PlayerController : ControllerBase
     /// <returns>List of players</returns>
     [HttpGet]
     [Route("List")]
-    public IActionResult GetAllPlayers()
+    public async Task<IActionResult> GetAllPlayers()
     {
         _logger.LogInformation("Request to get all players list");
-        var playerList = _playerService.GetAll();
+        var playerList = await _playerService.GetAll();
         var playerDisplayList = playerList.Select(player => _mapper.Map<PlayerApiResponse>(player)).ToList();
         return Ok(playerDisplayList);
     }
@@ -45,10 +45,10 @@ public class PlayerController : ControllerBase
     /// <returns>Player by ID</returns>
     [HttpGet]
     [Route("{id:int}")]
-    public IActionResult GetPlayerById(int id)
+    public async Task<IActionResult> GetPlayerById(int id)
     {
         _logger.LogInformation("Request to get player by ID {id}", id);
-        var player = _playerService.GetById(id);
+        var player = await _playerService.GetById(id);
         var playerDisplay = _mapper.Map<PlayerApiResponse>(player);
 
         return Ok(playerDisplay);
@@ -61,11 +61,11 @@ public class PlayerController : ControllerBase
     /// <returns>Player name, email and ID</returns>
     [HttpPost]
     [Route("Create")]
-    public IActionResult CreatePlayer(CreatePlayerApiRequest playerRequest)
+    public async Task<IActionResult> CreatePlayer(CreatePlayerApiRequest playerRequest)
     {
         _logger.LogInformation("Request to create player with name {name}, email {email}", playerRequest.Name, playerRequest.Email);
         var createPlayerRequest = _mapper.Map<Player>(playerRequest);
-        var createPlayer = _playerService.Create(createPlayerRequest);
+        var createPlayer = await _playerService.Create(createPlayerRequest);
         var playerResponse = _mapper.Map<PlayerApiResponse>(createPlayer);
 
         return Created("", playerResponse);
@@ -78,11 +78,11 @@ public class PlayerController : ControllerBase
     /// <returns>Updated player</returns>
     [HttpPut]
     [Route("Update")]
-    public IActionResult UpdatePlayer(UpdatePlayerApiRequest playerRequest)
+    public async Task<IActionResult> UpdatePlayer(UpdatePlayerApiRequest playerRequest)
     {
         _logger.LogInformation("Request to change player(ID {ID}) name to {name}",playerRequest.Id ,playerRequest.Name);
         var updatePlayerRequest = _mapper.Map<Player>(playerRequest);
-        var updatePlayer = _playerService.Update(updatePlayerRequest);
+        var updatePlayer = await _playerService.Update(updatePlayerRequest);
         var updatePlayerResponse = _mapper.Map<PlayerApiResponse>(updatePlayer);
         
         return Ok(updatePlayerResponse);
@@ -95,10 +95,10 @@ public class PlayerController : ControllerBase
     /// <returns>Confirmation of deletion</returns>
     [HttpDelete]
     [Route("Delete/{id:int}")]
-    public IActionResult DeletePlayerById(int id)
+    public async Task<IActionResult> DeletePlayerById(int id)
     {
         _logger.LogInformation("Request to delete player(ID {id})", id);
-        _playerService.DeleteById(id);
+        await _playerService.DeleteById(id);
 
         return Ok($"Player with ID : {id} has been deleted");
     }

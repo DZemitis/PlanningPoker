@@ -12,8 +12,8 @@ namespace ScrumPoker.Web.Controllers;
 public class GameRoomController : ControllerBase
 {
     private readonly IGameRoomService _gameRoomService;
-    private readonly ILogger<GameRoomController> _logger;
     private readonly IMapper _mapper;
+    private readonly ILogger<GameRoomController> _logger;
 
     public GameRoomController(IGameRoomService gameRoomService, IMapper mapper, ILogger<GameRoomController> logger)
     {
@@ -23,7 +23,7 @@ public class GameRoomController : ControllerBase
     }
     
     /// <summary>
-    ///     Returns full list of game rooms
+    /// Returns full list of game rooms
     /// </summary>
     /// <returns>List of game rooms</returns>
     [HttpGet]
@@ -31,14 +31,19 @@ public class GameRoomController : ControllerBase
     public async Task<IActionResult> GetFullGameRoomList()
     {
         _logger.LogInformation("Request to get list of all game rooms");
+<<<<<<< HEAD
+        var gameRoomList = _gameRoomService.GetAll();
+        var gameRoomListResponse = _mapper.Map<List<GameRoomApiResponse>>(gameRoomList);
+=======
         var gameRoomList = await _gameRoomService.GetAll();
         var gameRoomListResponse = _mapper.Map<List<GameRoomAllApiResponse>>(gameRoomList);
+>>>>>>> 317457d (Made everything async (#10))
 
         return Ok(gameRoomListResponse);
     }
 
     /// <summary>
-    ///     Returns game room by ID
+    /// Returns game room by ID
     /// </summary>
     /// <param name="id">ID of the game room</param>
     /// <returns>Game room by ID</returns>
@@ -80,8 +85,7 @@ public class GameRoomController : ControllerBase
     [Route("Update")]
     public async Task<IActionResult> UpdateGameRoom(UpdateGameRoomApiRequest gameRoomRequest)
     {
-        _logger.LogInformation("Request to change game rooms(ID {Id}) name to - {Name}", gameRoomRequest.Id,
-            gameRoomRequest.Name);
+        _logger.LogInformation("Request to change game rooms(ID {Id}) name to - {Name}", gameRoomRequest.Id, gameRoomRequest.Name);
         var updateGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
 
         var updateGameRoom = await _gameRoomService.Update(updateGameRoomRequest);
@@ -99,8 +103,13 @@ public class GameRoomController : ControllerBase
     public async Task<IActionResult> DeleteAllGameRooms()
     {
         _logger.LogInformation("Request to delete all game rooms");
-        await _gameRoomService.DeleteAll();
+<<<<<<< HEAD
+        _gameRoomService.DeleteAll();
         
+=======
+        await _gameRoomService.DeleteAll();
+
+>>>>>>> 317457d (Made everything async (#10))
         return Ok("All game rooms has been deleted");
     }
 
@@ -129,12 +138,20 @@ public class GameRoomController : ControllerBase
     [Route("AddPlayer")]
     public async Task<IActionResult> AddPlayerToRoom(int idOfGameRoomToAdd, int idOfPlayerToAdd)
     {
+<<<<<<< HEAD
+        _logger.LogInformation("Request to add player(ID {PlayerId}) to game room(ID {GameRoomId})", idOfPlayerToAdd, idOfGameRoomToAdd);
+        _gameRoomService.AddPlayer(idOfGameRoomToAdd, idOfPlayerToAdd);
+        var getGameRoom = _gameRoomService.GetById(idOfGameRoomToAdd);
+        var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(getGameRoom);
+        
+=======
         _logger.LogInformation("Request to add player(ID {PlayerId}) to game room(ID {GameRoomId})", idOfPlayerToAdd,
             idOfGameRoomToAdd);
         await _gameRoomService.AddPlayer(idOfGameRoomToAdd, idOfPlayerToAdd);
         var getGameRoom = await _gameRoomService.GetById(idOfGameRoomToAdd);
         var gameRoomResponse = _mapper.Map<GameRoomAddPlayerApiResponse>(getGameRoom);
-        
+
+>>>>>>> 317457d (Made everything async (#10))
         return Ok(gameRoomResponse);
     }
 
@@ -148,9 +165,14 @@ public class GameRoomController : ControllerBase
     [Route("RemovePlayer")]
     public async Task<IActionResult> RemovePlayerFromRoom(int gameRoomId, int playerId)
     {
+<<<<<<< HEAD
+        _logger.LogInformation("Request to remove player(ID {PlayerId}) from game room(ID {GameRoomId})", playerId, gameRoomId);
+        _gameRoomService.RemovePlayer(gameRoomId, playerId);
+=======
         _logger.LogInformation("Request to remove player(ID {PlayerId}) from game room(ID {GameRoomId})", playerId,
             gameRoomId);
         await _gameRoomService.RemovePlayer(gameRoomId, playerId);
+>>>>>>> 317457d (Made everything async (#10))
 
         return Ok("Player has been removed from room");
     }

@@ -23,18 +23,25 @@ public class RoundController : ControllerBase
 
     [HttpGet]
     [Route("{id:int}")]
-    public IActionResult GetRoundById(int id)
+    public async Task<IActionResult> GetRoundById(int id)
     {
-        var round = _roundService.GetById(id);
+        var round = await _roundService.GetById(id);
         return Ok(round);
+    public async Task<IActionResult> CreateRound(CreateRoundApiRequest roundApiRequest)
+        var roundResponse = await _roundService.Create(roundRequest);
+    public async Task<IActionResult> SetState(UpdateRoundApiRequest roundApiRequest)
+        await _roundService.SetState(roundRequest);
+        var round = await _roundService.GetById(roundRequest.RoundId);
     }
 
     [HttpPut]
     [Route("Update")]
-    public IActionResult Update(UpdateRoundApiRequest roundApiRequest)
+    public async Task<IActionResult> Update(UpdateDescriptionRoundApiRequest roundApiRequest)
     {
         var round = _mapper.Map<Round>(roundApiRequest);
         _roundService.Update(round);
+        await _roundService.Update(roundRequest);
+        var round = await _roundService.GetById(roundRequest.RoundId);
 
         return Ok(GetRoundById(roundApiRequest.RoundId));
     }
