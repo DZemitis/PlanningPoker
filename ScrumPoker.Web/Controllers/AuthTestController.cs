@@ -13,10 +13,12 @@ namespace ScrumPoker.Web.Controllers;
 public class AuthTestController : ControllerBase
 {
     private readonly IConfiguration _configuration;
+    private readonly IUserManager _manager;
 
-    public AuthTestController(IConfiguration configuration)
+    public AuthTestController(IConfiguration configuration, IUserManager manager)
     {
         _configuration = configuration;
+        _manager = manager;
     }
 
     [HttpGet]
@@ -45,13 +47,13 @@ public class AuthTestController : ControllerBase
         );
         return Ok(new JwtSecurityTokenHandler().WriteToken(token));
     }
-    
+
     [HttpGet]
     [Authorize]
     [Route("CheckToken")]
     public IActionResult CheckAuth()
     {
-        var claim = HttpContext.User.Claims.Single(x => x.Type == "userId");
-        return Ok(claim.Value);
+        var userId = _manager.GetUserId();
+        return Ok(userId);
     }
 }

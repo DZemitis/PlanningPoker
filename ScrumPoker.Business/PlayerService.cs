@@ -1,5 +1,6 @@
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
+using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.DataAccess.Interfaces;
 
 namespace ScrumPoker.Business;
@@ -8,10 +9,12 @@ namespace ScrumPoker.Business;
 public class PlayerService : IPlayerService
 {
     private readonly IPlayerRepository _playerRepository;
+    private readonly IUserManager _userManager;
 
-    public PlayerService(IPlayerRepository playerRepository)
+    public PlayerService(IPlayerRepository playerRepository, IUserManager userManager)
     {
         _playerRepository = playerRepository;
+        _userManager = userManager;
     }
 
     public async Task<IEnumerable<Player>> GetAll()
@@ -31,6 +34,13 @@ public class PlayerService : IPlayerService
 
     public async Task<Player> Update(Player updatePlayerRequest)
     {
+        var PlayerDto = await GetById(updatePlayerRequest.Id);
+        var playerId = _userManager.GetUserId();
+        if (PlayerDto.Id != playerId)
+        {
+            throw new HasNoClaimException($"User has not rights to Update player (ID {PlayerDto.Id})");
+        }
+        
         return await _playerRepository.Update(updatePlayerRequest);
     }
 

@@ -53,7 +53,6 @@ public class MappingProfile : Profile
         CreateMap<Round, RoundIdApiResponse>();
         CreateMap<VoteDto, Vote>();
         CreateMap<VoteApiRequest, Vote>();
-        CreateMap<UpdateVoteApiRequest, Vote>();
         CreateMap<Vote, VoteDto>();
         CreateMap<Vote, VoteInRoundApiResponse>();
     }
