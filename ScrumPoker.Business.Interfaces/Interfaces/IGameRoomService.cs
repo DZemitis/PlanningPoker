@@ -21,8 +21,9 @@ public interface IGameRoomService
     ///     Create a game room
     /// </summary>
     /// <param name="gameRoomRequest">Game room with name</param>
+    /// <param name="requestId">Request ID</param>
     /// <returns>Created game room</returns>
-    Task<GameRoom> Create(GameRoom gameRoomRequest);
+    Task<GameRoom> Create(GameRoom gameRoomRequest, int requestId);
 
     /// <summary>
     ///     Update an game room

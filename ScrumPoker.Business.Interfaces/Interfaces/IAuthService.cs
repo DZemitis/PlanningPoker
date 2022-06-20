@@ -1,6 +1,6 @@
 namespace ScrumPoker.Business.Interfaces.Interfaces;
 
-public class IAuthService
-{
-    
+public interface IAuthService
+{ 
+    string GenerateToken(int id);
 }

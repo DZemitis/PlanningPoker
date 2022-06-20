@@ -62,10 +62,11 @@ public class GameRoomController : ControllerBase
     [Route("Create")]
     public async Task<IActionResult> CreateGameRoom(CreateGameRoomApiRequest gameRoomRequest)
     {
+        var id =Int32.Parse(HttpContext.User.Claims.Single(x => x.Type == "userId").Value);
         _logger.LogInformation("Request to create game room with name - {Name}", gameRoomRequest.Name);
         var createGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
 
-        var createGameRoom = await _gameRoomService.Create(createGameRoomRequest);
+        var createGameRoom = await _gameRoomService.Create(createGameRoomRequest, id);
         var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(createGameRoom);
         
         return Created("", gameRoomResponse);

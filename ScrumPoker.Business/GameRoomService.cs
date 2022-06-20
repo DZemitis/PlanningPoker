@@ -24,11 +24,13 @@ public class GameRoomService : IGameRoomService
         return await _gameRoomRepository.GetById(id);
     }
 
-    public async Task<GameRoom> Create(GameRoom gameRoomRequest)
+    public async Task<GameRoom> Create(GameRoom gameRoomRequest, int requestId)
     {
-        var gameRoom = await _gameRoomRepository.Create(gameRoomRequest);
-        await _gameRoomRepository.AddPlayerToRoom(gameRoom.Id, gameRoom.MasterId);
-        var gameRoomResponse = await _gameRoomRepository.GetById(gameRoom.Id);
+        var gameRoom = gameRoomRequest;
+        gameRoom.MasterId = requestId;
+        var gameRooms = await _gameRoomRepository.Create(gameRoom);
+        await _gameRoomRepository.AddPlayerToRoom(gameRooms.Id, gameRooms.MasterId);
+        var gameRoomResponse = await _gameRoomRepository.GetById(gameRooms.Id);
 
         return gameRoomResponse;
     }
