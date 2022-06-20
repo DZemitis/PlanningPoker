@@ -1,5 +1,7 @@
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
+using ScrumPoker.Common.ConflictExceptions;
+using ScrumPoker.Common.Models;
 using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Interfaces;
 
@@ -30,14 +32,21 @@ public class VoteService : IVoteService
     public async Task<Vote> CreateOrUpdate(Vote vote)
     {
         var roundDto = await _roundService.GetById(vote.RoundId);
+        
+        if (roundDto.RoundState != RoundState.VoteRegistration)
+            throw new InvalidRoundStateException("You are allowed to vote only when round state is - vote registration");
+                
         var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
         var currentUserId = _userManager.GetCurrentUserId();
+        
         var playerList = gameRoomDto.Players;
         var playerCheck = playerList.SingleOrDefault(x => x.Id == currentUserId);
+        
         if (playerCheck == null)
             throw new IdNotFoundException($"No user with ID {currentUserId} found in game room ID {gameRoomDto.Id}");
 
         vote.PlayerId = currentUserId;
+        
         return await _voteRepository.CreateOrUpdate(vote);
     }
 

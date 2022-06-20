@@ -2,6 +2,7 @@ using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.ForbiddenExceptions;
+using ScrumPoker.Common.Models;
 using ScrumPoker.DataAccess.Interfaces;
 
 namespace ScrumPoker.Business;
@@ -23,6 +24,7 @@ public class RoundService : IRoundService
     public async Task<Round> GetById(int id)
     {
         var round = await _roundRepository.GetById(id);
+        
         return round;
     }
 
@@ -30,8 +32,9 @@ public class RoundService : IRoundService
     {
         var gameRoomDto = await _gameRoomService.GetById(roundRequest.GameRoomId);
         var currentUserId = _userManager.GetCurrentUserId();
+        
         if (gameRoomDto.MasterId != currentUserId)
-            throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
+            throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
 
         var round = await _roundRepository.Create(roundRequest);
 
@@ -43,8 +46,12 @@ public class RoundService : IRoundService
         var roundDto = await GetById(roundRequest.RoundId);
         var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
         var currentUserId = _userManager.GetCurrentUserId();
+
+        if (roundDto.RoundState == RoundState.Finished)
+            throw new InvalidRoundStateException("Round is finished, state cannot be changed!");
+        
         if (gameRoomDto.MasterId != currentUserId)
-            throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
+            throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
 
         await _roundRepository.SetState(roundRequest);
     }
@@ -54,8 +61,9 @@ public class RoundService : IRoundService
         var roundDto = await GetById(roundRequest.RoundId);
         var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
         var currentUserId = _userManager.GetCurrentUserId();
+        
         if (gameRoomDto.MasterId != currentUserId)
-            throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
+            throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
 
         await _roundRepository.Update(roundRequest);
     }

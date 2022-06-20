@@ -1,6 +1,5 @@
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
-using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.ForbiddenExceptions;
 using ScrumPoker.DataAccess.Interfaces;
 
@@ -31,9 +30,11 @@ public class GameRoomService : IGameRoomService
     public async Task<GameRoom> Create(GameRoom gameRoomRequest)
     {
         var currentUserId = _userManager.GetCurrentUserId();
+        
         gameRoomRequest.MasterId = currentUserId;
         var gameRooms = await _gameRoomRepository.Create(gameRoomRequest);
         await _gameRoomRepository.AddPlayerToRoom(gameRooms.Id, gameRooms.MasterId);
+        
         var gameRoomResponse = await _gameRoomRepository.GetById(gameRooms.Id);
 
         return gameRoomResponse;
@@ -43,8 +44,9 @@ public class GameRoomService : IGameRoomService
     {
         var gameRoomDto = await GetById(gameRoomRequest.Id);
         var currentUserId = _userManager.GetCurrentUserId();
+        
         if (gameRoomDto.MasterId != currentUserId)
-            throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomRequest.Id})");
+            throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomRequest.Id})");
 
         return await _gameRoomRepository.Update(gameRoomRequest);
     }
@@ -63,8 +65,9 @@ public class GameRoomService : IGameRoomService
     {
         var gameRoomDto = await GetById(gameRoomId);
         var currentUserId = _userManager.GetCurrentUserId();
+        
         if (gameRoomDto.MasterId != currentUserId)
-            throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomId})");
+            throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomId})");
 
         await _gameRoomRepository.AddPlayerToRoom(gameRoomId, playerId);
     }
@@ -73,8 +76,9 @@ public class GameRoomService : IGameRoomService
     {
         var gameRoomDto = await GetById(gameRoomId);
         var currentUserId = _userManager.GetCurrentUserId();
+        
         if (gameRoomDto.MasterId != currentUserId)
-            throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomId})");
+            throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomId})");
 
         await _gameRoomRepository.RemovePlayerById(gameRoomId, playerId);
     }

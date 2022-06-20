@@ -80,7 +80,7 @@ public class PlayerController : ControllerBase
     [Route("Update")]
     public async Task<IActionResult> UpdatePlayer(UpdatePlayerApiRequest playerRequest)
     {
-        _logger.LogInformation("Request to change player(ID {ID}) name to {name}", playerRequest.Id,
+        _logger.LogInformation("Request to change players name to {name}",
             playerRequest.Name);
         var updatePlayerRequest = _mapper.Map<Player>(playerRequest);
         var updatePlayer = await _playerService.Update(updatePlayerRequest);

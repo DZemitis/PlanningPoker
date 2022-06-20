@@ -1,8 +1,8 @@
 namespace ScrumPoker.Common.ForbiddenExceptions;
 
-public class HasNoClaimException : ForbiddenException
+public class ActionNotAllowedException : ForbiddenException
 {
-    public HasNoClaimException(string message)
+    public ActionNotAllowedException(string message)
     {
         Message = message;
     }
