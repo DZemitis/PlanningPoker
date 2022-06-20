@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
@@ -59,6 +60,7 @@ public class GameRoomController : ControllerBase
     /// <param name="gameRoomRequest">Game room with name</param>
     /// <returns>Game room with name and ID</returns>
     [HttpPost]
+    [Authorize]
     [Route("Create")]
     public async Task<IActionResult> CreateGameRoom(CreateGameRoomApiRequest gameRoomRequest)
     {
@@ -67,7 +69,7 @@ public class GameRoomController : ControllerBase
         var createGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
 
         var createGameRoom = await _gameRoomService.Create(createGameRoomRequest, id);
-        var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(createGameRoom);
+        var gameRoomResponse = _mapper.Map<GameRoomAllApiResponse>(createGameRoom);
         
         return Created("", gameRoomResponse);
     }
@@ -81,6 +83,7 @@ public class GameRoomController : ControllerBase
     [Route("Update")]
     public async Task<IActionResult> UpdateGameRoom(UpdateGameRoomApiRequest gameRoomRequest)
     {
+        var id = Int32.Parse(HttpContext.User.Claims.Single(x => x.Type == "userId").Value);
         _logger.LogInformation("Request to change game rooms(ID {Id}) name to - {Name}", gameRoomRequest.Id,
             gameRoomRequest.Name);
         var updateGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);

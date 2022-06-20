@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using ScrumPoker.Business.Interfaces.Interfaces;
 
 namespace ScrumPoker.Web.Controllers;
 
@@ -22,6 +23,7 @@ public class AuthTestController : ControllerBase
     [Route("CreateToken/{id:int}")]
     public IActionResult CreateToken(int id)
     {
+        
         var key = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(_configuration["JWT:PrivateKey"]));
         var credentials = new SigningCredentials(key: key, algorithm: SecurityAlgorithms.HmacSha256);
 
@@ -43,7 +45,7 @@ public class AuthTestController : ControllerBase
         );
         return Ok(new JwtSecurityTokenHandler().WriteToken(token));
     }
-
+    
     [HttpGet]
     [Authorize]
     [Route("CheckToken")]

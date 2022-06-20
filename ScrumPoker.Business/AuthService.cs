@@ -11,7 +11,7 @@ public abstract class AuthService : IAuthService
 {
     private readonly IConfiguration _configuration;
 
-    public AuthService(IConfiguration configuration)
+    protected AuthService(IConfiguration configuration)
     {
         _configuration = configuration;
     }
