@@ -11,17 +11,17 @@ public static class Swagger
         builder.Services.AddSwaggerGen(
             options =>
             {
-                var securityScheme = new OpenApiSecurityScheme()
+                var securityScheme = new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "JSON Web Token based security",
+                    Description = "JSON Web Token based security"
                 };
-        
-                var securityReq = new OpenApiSecurityRequirement()
+
+                var securityReq = new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme
@@ -32,7 +32,7 @@ public static class Swagger
                                 Id = "Bearer"
                             }
                         },
-                        new string[] {}
+                        Array.Empty<string>()
                     }
                 };
 

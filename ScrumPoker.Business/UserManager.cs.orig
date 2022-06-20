@@ -12,10 +12,24 @@ public class UserManager : IUserManager
         _httpContextAccessor = httpContextAccessor;
     }
 
+<<<<<<< HEAD
+        public UserManager(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+        
     public int GetCurrentUserId()
-    {
+        {
         var currentUserId = _httpContextAccessor.HttpContext!.User.Claims.Single(x => x.Type == "userId").Value;
 
         return int.Parse(currentUserId);
+        }
+=======
+    public int GetUserId()
+    {
+        var userId = _httpContextAccessor.HttpContext!.User.Claims.Single(x => x.Type == "userId").Value;
+
+        return int.Parse(userId);
     }
+>>>>>>> d79be179a93dc98fcf55a45ef1f028a11ddee558
 }

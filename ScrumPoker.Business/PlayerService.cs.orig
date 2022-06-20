@@ -36,8 +36,14 @@ public class PlayerService : IPlayerService
     public async Task<Player> Update(Player updatePlayerRequest)
     {
         var PlayerDto = await GetById(updatePlayerRequest.Id);
+<<<<<<< HEAD
         var currentUserId = _userManager.GetCurrentUserId();
         if (PlayerDto.Id != currentUserId)
+        {
+=======
+        var playerId = _userManager.GetUserId();
+        if (PlayerDto.Id != playerId)
+>>>>>>> d79be179a93dc98fcf55a45ef1f028a11ddee558
             throw new HasNoClaimException($"User has not rights to Update player (ID {PlayerDto.Id})");
 
         return await _playerRepository.Update(updatePlayerRequest);

@@ -35,9 +35,15 @@ public class VoteService : IVoteService
         var playerList = gameRoomDto.Players;
         var playerCheck = playerList.SingleOrDefault(x => x.Id == currentUserId);
         if (playerCheck == null)
+<<<<<<< HEAD
             throw new IdNotFoundException($"No user with ID {currentUserId} found in game room ID {gameRoomDto.Id}");
-
+        
         vote.PlayerId = currentUserId;
+=======
+            throw new IdNotFoundException($"No user with ID {playerId} found in game room ID {gameRoomDto.Id}");
+
+        vote.PlayerId = playerId;
+>>>>>>> d79be179a93dc98fcf55a45ef1f028a11ddee558
         return await _voteRepository.CreateOrUpdate(vote);
     }
 

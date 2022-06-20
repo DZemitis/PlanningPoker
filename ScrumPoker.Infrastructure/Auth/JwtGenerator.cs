@@ -18,12 +18,12 @@ public class JwtGenerator
     public string GenerateToken(int userId)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(_configuration["JWT:PrivateKey"]));
-        var credentials = new SigningCredentials(key: key, algorithm: SecurityAlgorithms.HmacSha256);
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var jwtHeader = new JwtHeader(credentials);
         var jwtClaims = new List<Claim>
         {
-            new ("userId", userId.ToString())
+            new("userId", userId.ToString())
         };
 
         var token = new JwtSecurityToken(

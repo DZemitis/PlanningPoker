@@ -7,8 +7,6 @@ namespace ScrumPoker.Infrastructure.Middlewares;
 
 public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
 {
-    public int Order => int.MaxValue - 10;
-
     public void OnActionExecuting(ActionExecutingContext context)
     {
     }
@@ -53,4 +51,6 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
 
         context.ExceptionHandled = true;
     }
+
+    public int Order => int.MaxValue - 10;
 }

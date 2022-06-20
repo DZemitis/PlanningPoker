@@ -25,9 +25,8 @@ public class AuthTestController : ControllerBase
     [Route("CreateToken/{id:int}")]
     public IActionResult CreateToken(int id)
     {
-        
         var key = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(_configuration["JWT:PrivateKey"]));
-        var credentials = new SigningCredentials(key: key, algorithm: SecurityAlgorithms.HmacSha256);
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var jwtHeader = new JwtHeader(credentials);
         var jwtClaims = new List<Claim>

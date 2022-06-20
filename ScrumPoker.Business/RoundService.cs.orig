@@ -29,8 +29,14 @@ public class RoundService : IRoundService
     public async Task<Round> Create(Round roundRequest)
     {
         var gameRoomDto = await _gameRoomService.GetById(roundRequest.GameRoomId);
+<<<<<<< HEAD
         var currentUserId = _userManager.GetCurrentUserId();
         if (gameRoomDto.MasterId != currentUserId)
+        {
+=======
+        var masterId = _userManager.GetUserId();
+        if (gameRoomDto.MasterId != masterId)
+>>>>>>> d79be179a93dc98fcf55a45ef1f028a11ddee558
             throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
 
         var round = await _roundRepository.Create(roundRequest);
@@ -42,8 +48,14 @@ public class RoundService : IRoundService
     {
         var roundDto = await GetById(roundRequest.RoundId);
         var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
+<<<<<<< HEAD
         var currentUserId = _userManager.GetCurrentUserId();
         if (gameRoomDto.MasterId != currentUserId)
+        {
+=======
+        var masterId = _userManager.GetUserId();
+        if (gameRoomDto.MasterId != masterId)
+>>>>>>> d79be179a93dc98fcf55a45ef1f028a11ddee558
             throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
 
         await _roundRepository.SetState(roundRequest);
@@ -53,8 +65,14 @@ public class RoundService : IRoundService
     {
         var roundDto = await GetById(roundRequest.RoundId);
         var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
+<<<<<<< HEAD
         var currentUserId = _userManager.GetCurrentUserId();
         if (gameRoomDto.MasterId != currentUserId)
+        {
+=======
+        var masterId = _userManager.GetUserId();
+        if (gameRoomDto.MasterId != masterId)
+>>>>>>> d79be179a93dc98fcf55a45ef1f028a11ddee558
             throw new HasNoClaimException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
 
         await _roundRepository.Update(roundRequest);
