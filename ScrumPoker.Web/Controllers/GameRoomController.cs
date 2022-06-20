@@ -71,7 +71,7 @@ public class GameRoomController : ControllerBase
         return Created("", gameRoomResponse);
     }
 
-    /// <summary>S
+    /// <summary>
     /// Update game room, change name for now.
     /// </summary>
     /// <param name="gameRoomRequest">Game room with ID</param>

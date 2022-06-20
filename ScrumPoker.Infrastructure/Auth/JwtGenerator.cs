@@ -1,9 +1,10 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ScrumPoker.Web.Controllers;
+namespace ScrumPoker.Infrastructure.Auth;
 
 public class JwtGenerator
 {
@@ -22,7 +23,7 @@ public class JwtGenerator
         var jwtHeader = new JwtHeader(credentials);
         var jwtClaims = new List<Claim>
         {
-            new Claim("userId", userId.ToString())
+            new ("userId", userId.ToString())
         };
 
         var token = new JwtSecurityToken(

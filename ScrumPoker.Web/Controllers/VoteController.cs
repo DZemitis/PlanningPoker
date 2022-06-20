@@ -10,44 +10,63 @@ namespace ScrumPoker.Web.Controllers;
 [Route("[controller]")]
 public class VoteController : ControllerBase
 {
-    private readonly IVoteRegistrationService _voteRegistrationService;
-    private readonly IMapper _mapper;
     private readonly ILogger<VoteController> _logger;
+    private readonly IMapper _mapper;
+    private readonly IVoteService _voteService;
 
-    public VoteController(IVoteRegistrationService voteRegistrationService, IMapper mapper,
+    public VoteController(IVoteService voteService, IMapper mapper,
         ILogger<VoteController> logger)
     {
-        _voteRegistrationService = voteRegistrationService;
+        _voteService = voteService;
         _mapper = mapper;
         _logger = logger;
     }
 
+    /// <summary>
+    ///     Returns a vote with specific ID
+    /// </summary>
+    /// <param name="id">ID of the vote</param>
+    /// <returns>Vote by ID</returns>
     [HttpGet]
-    [Route("GetAllFromRound")]
+    [Route("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
-        return Ok();
+        _logger.LogInformation("Request to geta a vote with ID {Id}", id);
         var voteResponse = await _voteService.GetById(id);
+
+        return Ok(voteResponse);
     }
 
+    /// <summary>
+    ///     Asks user to create/update a vote
+    /// </summary>
+    /// <param name="voteApiRequest">Vote request with player ID, round ID and vote</param>
+    /// <returns>Created/Updated vote with ID</returns>
     [HttpPost]
-    [Route("Create")]
+    [Route("Create/Update")]
     public async Task<IActionResult> CreateOrUpdate(VoteApiRequest voteApiRequest)
     {
-        var voteRequest = _mapper.Map<VoteRegistration>(voteApiRequest);
-        var voteResponse = _voteRegistrationService.Create(voteRequest);
+        _logger.LogInformation("Request to create a vote for player with ID {playerId} in round with ID {roundId}",
+            voteApiRequest.PlayerId, voteApiRequest.RoundId);
+        var voteRequest = _mapper.Map<Vote>(voteApiRequest);
         var voteResponse = await _voteService.CreateOrUpdate(voteRequest);
 
         return Created("", voteResponse);
     }
 
+
+    /// <summary>
+    ///     Clears all vote in specific round
+    /// </summary>
+    /// <param name="roundId">Round ID</param>
+    /// <returns>Message, that all votes has been cleared in provided round</returns>
     [HttpDelete]
     [Route("ClearVotes")]
     public async Task<IActionResult> ClearRoundVotes(int roundId)
     {
-        var voteRequest = _mapper.Map<VoteRegistration>(voteApiRequest);
+        _logger.LogInformation("Request to clear all votes in Round with ID {roundId}", roundId);
         await _voteService.ClearRoundVotes(roundId);
-        
-        return Ok($"All votes from round(ID: {voteApiRequest.RoundId}) has been cleared");
+
+        return Ok($"All votes from round(ID: {roundId}) has been cleared");
     }
 }

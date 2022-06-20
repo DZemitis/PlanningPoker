@@ -8,8 +8,8 @@ public  class ValidationFilter
     public static IActionResult Process(ActionContext context)
     {
         var errorInModelState =context.ModelState
-            .Where(x=>x.Value.Errors.Count > 0)
-            .ToDictionary(kvp=>kvp.Key, kvp =>kvp.Value.Errors
+            .Where(x=>x.Value!.Errors.Count > 0)
+            .ToDictionary(kvp=>kvp.Key, kvp =>kvp.Value!.Errors
                 .Select(x=>x.ErrorMessage)).ToArray();
         
         var errors = errorInModelState.Select(e => new ScrumPokerError
