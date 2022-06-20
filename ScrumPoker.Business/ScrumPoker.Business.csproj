@@ -10,11 +10,8 @@
         <ProjectReference Include="..\ScrumPoker.Business.Interfaces\ScrumPoker.Business.Interfaces.csproj" />
         <ProjectReference Include="..\ScrumPoker.DataAccess.Interfaces\ScrumPoker.DataAccess.Interfaces.csproj" />
     </ItemGroup>
-
+    
     <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
-        <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.6\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-      </Reference>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
-
 </Project>
