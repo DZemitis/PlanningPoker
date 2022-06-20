@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ScrumPoker.Business;
 using ScrumPoker.Business.Interfaces.Interfaces;
+using ScrumPoker.DataAccess.Data;
 using ScrumPoker.DataAccess.Interfaces;
 using ScrumPoker.DataAccess.Models.EFContext;
-using ScrumPoker.DataAccess.Repositories;
 
 namespace ScrumPoker.Infrastructure;
 
@@ -16,9 +16,9 @@ public static class DependencyInjection
         services.AddTransient<IPlayerRepository, PlayerRepository>();
         services.AddTransient<IPlayerService, PlayerService>();
         services.AddTransient<IScrumPokerContext, ScrumPokerContext>();
-        services.AddTransient<IVoteRepository, VoteRepository>();
+        services.AddTransient<IVoteRegistrationRepository, VoteRegistrationRepository>();
         services.AddTransient<IRoundRepository, RoundRepository>();
         services.AddTransient<IRoundService, RoundService>();
-        services.AddTransient<IVoteService, VoteService>();
+        services.AddTransient<IVoteRegistrationService, VoteRegistrationService>();
     }
 }
