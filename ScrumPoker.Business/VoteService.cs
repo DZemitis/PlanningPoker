@@ -1,9 +1,11 @@
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
 using ScrumPoker.Common.ConflictExceptions;
+using ScrumPoker.Common.ForbiddenExceptions;
 using ScrumPoker.Common.Models;
 using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Interfaces;
+using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.Business;
 
@@ -52,6 +54,16 @@ public class VoteService : IVoteService
 
     public async Task ClearRoundVotes(int roundId)
     {
+        var roundDto = await _roundService.GetById(roundId);
+        var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
+        var currentUserId = _userManager.GetCurrentUserId();
+
+        if (gameRoomDto.MasterId != currentUserId)
+            throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
+        
+        if (roundDto.RoundState == RoundState.Finished)
+            throw new InvalidRoundStateException("Round is finished, any updates on votes is unavailable!");
+        
         await _voteRepository.ClearRoundVotes(roundId);
     }
 }
