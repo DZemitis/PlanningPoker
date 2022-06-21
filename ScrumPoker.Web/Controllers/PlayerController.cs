@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
@@ -27,6 +28,7 @@ public class PlayerController : ControllerBase
     /// </summary>
     /// <returns>List of players</returns>
     [HttpGet]
+    [Authorize]
     [Route("List")]
     public async Task<IActionResult> GetAllPlayers()
     {
@@ -42,6 +44,7 @@ public class PlayerController : ControllerBase
     /// <param name="id">ID of the player</param>
     /// <returns>Player by ID</returns>
     [HttpGet]
+    [Authorize]
     [Route("{id:int}")]
     public async Task<IActionResult> GetPlayerById(int id)
     {
@@ -58,6 +61,7 @@ public class PlayerController : ControllerBase
     /// <param name="playerRequest">Player's name and email</param>
     /// <returns>Player name, email and ID</returns>
     [HttpPost]
+    [Authorize]
     [Route("Create")]
     public async Task<IActionResult> CreatePlayer(CreatePlayerApiRequest playerRequest)
     {
@@ -77,6 +81,7 @@ public class PlayerController : ControllerBase
     /// <param name="playerRequest">Player with ID</param>
     /// <returns>Updated player</returns>
     [HttpPut]
+    [Authorize]
     [Route("Update")]
     public async Task<IActionResult> UpdatePlayer(UpdatePlayerApiRequest playerRequest)
     {
@@ -95,6 +100,7 @@ public class PlayerController : ControllerBase
     /// <param name="id">ID of the player</param>
     /// <returns>Confirmation of deletion</returns>
     [HttpDelete]
+    [Authorize]
     [Route("Delete/{id:int}")]
     public async Task<IActionResult> DeletePlayerById(int id)
     {

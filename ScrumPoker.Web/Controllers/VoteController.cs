@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
@@ -28,6 +29,7 @@ public class VoteController : ControllerBase
     /// <param name="id">ID of the vote</param>
     /// <returns>Vote by ID</returns>
     [HttpGet]
+    [Authorize]
     [Route("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
@@ -43,6 +45,7 @@ public class VoteController : ControllerBase
     /// <param name="voteApiRequest">Vote request with player ID, round ID and vote</param>
     /// <returns>Created/Updated vote with ID</returns>
     [HttpPost]
+    [Authorize]
     [Route("Create/Update")]
     public async Task<IActionResult> CreateOrUpdate(VoteApiRequest voteApiRequest)
     {
@@ -61,6 +64,7 @@ public class VoteController : ControllerBase
     /// <param name="roundId">Round ID</param>
     /// <returns>Message, that all votes has been cleared in provided round</returns>
     [HttpDelete]
+    [Authorize]
     [Route("ClearVotes")]
     public async Task<IActionResult> ClearRoundVotes(int roundId)
     {
