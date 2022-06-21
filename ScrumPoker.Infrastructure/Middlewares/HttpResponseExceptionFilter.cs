@@ -20,6 +20,7 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
             {
                 ConflictException => 409,
                 NotFoundException => 404,
+                ForbiddenException => 403,
                 _ => throw new ArgumentOutOfRangeException
                 {
                     HelpLink = null,

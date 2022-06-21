@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
@@ -27,6 +28,7 @@ public class GameRoomController : ControllerBase
     /// </summary>
     /// <returns>List of game rooms</returns>
     [HttpGet]
+    [Authorize]
     [Route("List")]
     public async Task<IActionResult> GetFullGameRoomList()
     {
@@ -43,6 +45,7 @@ public class GameRoomController : ControllerBase
     /// <param name="id">ID of the game room</param>
     /// <returns>Game room by ID</returns>
     [HttpGet]
+    [Authorize]
     [Route("{id:int}")]
     public async Task<IActionResult> GetRoomById(int id)
     {
@@ -59,6 +62,7 @@ public class GameRoomController : ControllerBase
     /// <param name="gameRoomRequest">Game room with name</param>
     /// <returns>Game room with name and ID</returns>
     [HttpPost]
+    [Authorize]
     [Route("Create")]
     public async Task<IActionResult> CreateGameRoom(CreateGameRoomApiRequest gameRoomRequest)
     {
@@ -66,18 +70,18 @@ public class GameRoomController : ControllerBase
         var createGameRoomRequest = _mapper.Map<GameRoom>(gameRoomRequest);
 
         var createGameRoom = await _gameRoomService.Create(createGameRoomRequest);
-        var gameRoomResponse = _mapper.Map<GameRoomApiResponse>(createGameRoom);
+        var gameRoomResponse = _mapper.Map<GameRoomAllApiResponse>(createGameRoom);
 
         return Created("", gameRoomResponse);
     }
 
     /// <summary>
-    ///     S
     ///     Update game room, change name for now.
     /// </summary>
     /// <param name="gameRoomRequest">Game room with ID</param>
     /// <returns>Updated game room</returns>
     [HttpPut]
+    [Authorize]
     [Route("Update")]
     public async Task<IActionResult> UpdateGameRoom(UpdateGameRoomApiRequest gameRoomRequest)
     {
@@ -111,6 +115,7 @@ public class GameRoomController : ControllerBase
     /// <param name="id">ID of the game room</param>
     /// <returns>Confirmation of deletion</returns>
     [HttpDelete]
+    [Authorize]
     [Route("Delete/{id:int}")]
     public async Task<IActionResult> DeleteGameRoomById(int id)
     {
@@ -127,6 +132,7 @@ public class GameRoomController : ControllerBase
     /// <param name="idOfPlayerToAdd">ID of the player</param>
     /// <returns>Updated Game Room</returns>
     [HttpPut]
+    [Authorize]
     [Route("AddPlayer")]
     public async Task<IActionResult> AddPlayerToRoom(int idOfGameRoomToAdd, int idOfPlayerToAdd)
     {
@@ -146,6 +152,7 @@ public class GameRoomController : ControllerBase
     /// <param name="playerId"> ID of the player</param>
     /// <returns>Confirmation of removal</returns>
     [HttpDelete]
+    [Authorize]
     [Route("RemovePlayer")]
     public async Task<IActionResult> RemovePlayerFromRoom(int gameRoomId, int playerId)
     {

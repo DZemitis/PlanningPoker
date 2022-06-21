@@ -8,10 +8,12 @@ namespace ScrumPoker.Business;
 public class PlayerService : IPlayerService
 {
     private readonly IPlayerRepository _playerRepository;
+    private readonly IUserManager _userManager;
 
-    public PlayerService(IPlayerRepository playerRepository)
+    public PlayerService(IPlayerRepository playerRepository, IUserManager userManager)
     {
         _playerRepository = playerRepository;
+        _userManager = userManager;
     }
 
     public async Task<IEnumerable<Player>> GetAll()
@@ -31,6 +33,10 @@ public class PlayerService : IPlayerService
 
     public async Task<Player> Update(Player updatePlayerRequest)
     {
+        var currentUserId = _userManager.GetCurrentUserId();
+        
+        updatePlayerRequest.Id = currentUserId;
+
         return await _playerRepository.Update(updatePlayerRequest);
     }
 

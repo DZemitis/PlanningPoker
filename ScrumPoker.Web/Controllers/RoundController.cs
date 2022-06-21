@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
@@ -28,6 +29,7 @@ public class RoundController : ControllerBase
     /// <param name="id">Round ID</param>
     /// <returns>Round</returns>
     [HttpGet]
+    [Authorize]
     [Route("{id:int}")]
     public async Task<IActionResult> GetRoundById(int id)
     {
@@ -44,6 +46,7 @@ public class RoundController : ControllerBase
     /// <param name="roundApiRequest">Game room ID and round description</param>
     /// <returns>Created round</returns>
     [HttpPost]
+    [Authorize]
     [Route("Create")]
     public async Task<IActionResult> CreateRound(CreateRoundApiRequest roundApiRequest)
     {
@@ -60,6 +63,7 @@ public class RoundController : ControllerBase
     /// <param name="roundApiRequest">Set round request</param>
     /// <returns>Updated Round</returns>
     [HttpPut]
+    [Authorize]
     [Route("SetState")]
     public async Task<IActionResult> SetState(UpdateRoundApiRequest roundApiRequest)
     {
@@ -78,6 +82,7 @@ public class RoundController : ControllerBase
     /// <param name="roundApiRequest">Round update request</param>
     /// <returns>Updated Round</returns>
     [HttpPut]
+    [Authorize]
     [Route("Update")]
     public async Task<IActionResult> Update(UpdateDescriptionRoundApiRequest roundApiRequest)
     {
