@@ -5,7 +5,6 @@ using ScrumPoker.Common.ForbiddenExceptions;
 using ScrumPoker.Common.Models;
 using ScrumPoker.Common.NotFoundExceptions;
 using ScrumPoker.DataAccess.Interfaces;
-using ScrumPoker.DataAccess.Models.Models;
 
 namespace ScrumPoker.Business;
 

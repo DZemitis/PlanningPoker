@@ -14,27 +14,25 @@ public class RoundService : IRoundService
     private readonly IRoundRepository _roundRepository;
     private readonly IUserManager _userManager;
     
-    private static readonly IReadOnlyList<RoundState> Grooming = new List<RoundState>()
+    private static readonly IReadOnlyList<RoundState> Grooming = new List<RoundState>
     {
         RoundState.VoteRegistration
     };
     
-    private static readonly IReadOnlyList<RoundState> VoteRegistration = new List<RoundState>()
+    private static readonly IReadOnlyList<RoundState> VoteRegistration = new List<RoundState>
     {
         RoundState.VoteReview
     };
     
-    private static readonly IReadOnlyList<RoundState> VoteReview = new List<RoundState>()
+    private static readonly IReadOnlyList<RoundState> VoteReview = new List<RoundState>
     {
         RoundState.VoteRegistration,
         RoundState.Finished
     };
-    
-    private static readonly IReadOnlyList<RoundState> Finished = new List<RoundState>()
-    {
-    };
 
-    private IReadOnlyList<RoundState> CheckRoundStates(Round roundRequest)
+    private static readonly IReadOnlyList<RoundState> Finished = new List<RoundState>();
+
+    private static IEnumerable<RoundState> CheckRoundStates(Round roundRequest)
     {
         var result = roundRequest.RoundState switch
         {
