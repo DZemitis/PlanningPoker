@@ -37,26 +37,26 @@ public class RoundService : IRoundService
     private bool ValidateNextState(RoundState requestRoundState, Round round)
     {
         var checkIfAvailable = false;
-        var checkList = new List<RoundState>();
         
         switch (round.RoundState)
         {
             case RoundState.Grooming:
-                checkList = (List<RoundState>) Grooming;
+                if (Grooming.Contains(requestRoundState))
+                    checkIfAvailable = true;
                 break;
             case RoundState.VoteRegistration:
-                checkList = (List<RoundState>) VoteRegistration;
+                if (VoteRegistration.Contains(requestRoundState))
+                    checkIfAvailable = true;
                 break;
             case RoundState.VoteReview:
-                checkList = (List<RoundState>) VoteReview;
+                if (VoteReview.Contains(requestRoundState))
+                    checkIfAvailable = true;
                 break;
             case RoundState.Finished:
-                checkList = (List<RoundState>) Finished;
+                if (Finished.Contains(requestRoundState))
+                    checkIfAvailable = true;
                 break;
         }
-
-        if (checkList.Contains(requestRoundState))
-            checkIfAvailable = true;
         
         return checkIfAvailable;
     }
