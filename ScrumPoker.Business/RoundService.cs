@@ -34,31 +34,20 @@ public class RoundService : IRoundService
     {
     };
 
-    private bool ValidateNextState(RoundState requestRoundState, Round round)
+    private IReadOnlyList<RoundState> CheckRoundStates(Round roundRequest)
     {
-        switch (round.RoundState)
+        var result = roundRequest.RoundState switch
         {
-            case RoundState.Grooming:
-                if (Grooming.Contains(requestRoundState))
-                    return true;
-                break;
-            case RoundState.VoteRegistration:
-                if (VoteRegistration.Contains(requestRoundState))
-                    return true;
-                break;
-            case RoundState.VoteReview:
-                if (VoteReview.Contains(requestRoundState))
-                    return true;
-                break;
-            case RoundState.Finished:
-                if (Finished.Contains(requestRoundState))
-                    return true;
-                break;
-        }
+            RoundState.Grooming => Grooming,
+            RoundState.VoteRegistration => VoteRegistration,
+            RoundState.VoteReview => VoteReview,
+            RoundState.Finished => Finished,
+            _ => throw new ArgumentOutOfRangeException()
+        };
         
-        return false;
+        return result;
     }
-    
+
     public RoundService(IRoundRepository roundRepository, IGameRoomService gameRoomService, IUserManager userManager)
     {
         _roundRepository = roundRepository;
@@ -98,8 +87,8 @@ public class RoundService : IRoundService
         if (gameRoomDto.MasterId != currentUserId)
             throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
 
-        if (!ValidateNextState(roundRequest.RoundState, roundDto))
-            throw new InvalidRoundStateException($"Round state is not allowed after {roundDto.RoundState.ToString()}");
+        if (!CheckRoundStates(roundDto).Contains(roundRequest.RoundState))
+            throw new InvalidRoundStateException($"Round state {roundRequest.RoundState.ToString()} is not allowed after {roundDto.RoundState.ToString()}");
 
         await _roundRepository.SetState(roundRequest);
     }
