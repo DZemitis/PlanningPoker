@@ -20,6 +20,7 @@ public class RoundServiceTests
 
     private readonly Round _round;
     private readonly Round _newRound;
+    private readonly GameRoom _gameRoom;
     
 
     public RoundServiceTests()
@@ -50,6 +51,20 @@ public class RoundServiceTests
             RoundState = RoundState.Grooming,
             GameRoomId = 1,
             Votes = new List<Vote>()
+        };
+
+        _gameRoom = new GameRoom
+        {
+            Id = 1,
+            Name = "Game Room",
+            Players = new List<Player>(),
+            Round = _round,
+            Rounds = new List<Round>
+            {
+                _round
+            },
+            MasterId = 2,
+            CurrentRoundId = 2
         };
     }
 
@@ -89,12 +104,19 @@ public class RoundServiceTests
     public async Task CreateRound_ShouldCreateNewRound_ShouldPass()
     {
         //Arrange
-        _roundRepoMock.Setup(x => x.Create(_round)).ReturnsAsync(_newRound);
+        _gameRoom.Round = _newRound;
+        _gameRoom.Rounds.Add(_newRound);
+        _gameRoomServiceMock.Setup(x => x.GetById(_gameRoom.Id))
+            .ReturnsAsync(_gameRoom);
+        _roundRepoMock.Setup(x => x.Create(_round))
+            .ReturnsAsync(_newRound);
+        _userManagerMock.Setup(x => x.GetCurrentUserId())
+            .Returns(2);
         
         //Act
         var round = await _sut.Create(_round);
 
         //Assert
-        Assert.Equal(round, _round);
+        Assert.Equal(round, _newRound);
     }
 }
