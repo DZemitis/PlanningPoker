@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.IdentityModel.Tokens;
 using Moq;
 using ScrumPoker.Business;
 using ScrumPoker.Business.Interfaces.Interfaces;
@@ -18,10 +17,11 @@ public class RoundServiceTests
     private readonly Mock<IRoundRepository> _roundRepoMock = new();
     private readonly Mock<IUserManager> _userManagerMock = new();
 
-    private readonly Round _round;
+    private Round _round;
     private readonly Round _newRound;
     private readonly GameRoom _gameRoom;
-    
+    private const int CurrentUserId = 2;
+
 
     public RoundServiceTests()
     {
@@ -101,22 +101,66 @@ public class RoundServiceTests
     }
 
     [Fact]
-    public async Task CreateRound_ShouldCreateNewRound_ShouldPass()
+    public async Task CreateRound_ShouldCreateNewRound_ShouldReturnNewRound()
     {
         //Arrange
-        _gameRoom.Round = _newRound;
-        _gameRoom.Rounds.Add(_newRound);
         _gameRoomServiceMock.Setup(x => x.GetById(_gameRoom.Id))
             .ReturnsAsync(_gameRoom);
         _roundRepoMock.Setup(x => x.Create(_round))
             .ReturnsAsync(_newRound);
         _userManagerMock.Setup(x => x.GetCurrentUserId())
-            .Returns(2);
+            .Returns(CurrentUserId);
         
         //Act
         var round = await _sut.Create(_round);
 
         //Assert
         Assert.Equal(round, _newRound);
+    }
+
+    [Fact]
+    public async Task SetState_ShouldSetStateToVoteRegistration_ShouldPass()
+    {
+        //Arrange
+        var roundChangeStateRequest = new Round {RoundId = 1, RoundState = RoundState.VoteRegistration};
+        _userManagerMock.Setup(x => x.GetCurrentUserId())
+            .Returns(CurrentUserId);
+        _roundRepoMock.Setup(x => x.GetById(roundChangeStateRequest.RoundId)).ReturnsAsync(_round);
+        _gameRoomServiceMock.Setup(x => x.GetById(_gameRoom.Id))
+            .ReturnsAsync(_gameRoom);
+        
+        //Act
+        await _sut.SetState(roundChangeStateRequest);
+        var round = new Round
+        {
+            RoundState = RoundState.VoteRegistration
+        };
+
+        //Assert
+        Assert.Equal(round.RoundState, _round.RoundState);
+    }
+
+    [Fact]
+    public async Task Update_ShouldUpdateRoundDescription_ShouldPass()
+    {
+        //Arrange
+        var roundUpdateRequest = new Round
+        {
+            RoundId = 1,
+            Description = "new Description"
+        };
+        _roundRepoMock.Setup(x => x.GetById(roundUpdateRequest.RoundId))
+            .ReturnsAsync(_round);
+        _gameRoomServiceMock.Setup(x => x.GetById(_round.GameRoomId))
+            .ReturnsAsync(_gameRoom);
+        _userManagerMock.Setup(x => x.GetCurrentUserId())
+            .Returns(CurrentUserId);
+        
+        
+        //Act
+        await _sut.Update(roundUpdateRequest);
+
+        //Assert
+        Assert.Equal(_round.Description, roundUpdateRequest.Description);
     }
 }
