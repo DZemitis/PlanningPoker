@@ -9,7 +9,7 @@ public interface IRoundRepository
     /// </summary>
     /// <param name="id">Round ID</param>
     /// <returns>Round</returns>
-    Task<Round> GetById(int id);
+   Task<Round> GetById(int id);
 
     /// <summary>
     ///     Creates a round
