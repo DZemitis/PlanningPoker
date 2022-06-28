@@ -86,7 +86,8 @@ public class RoundService : IRoundService
             throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
 
         if (!CheckRoundStates(roundDto).Contains(roundRequest.RoundState))
-            throw new InvalidRoundStateException($"Round state {roundRequest.RoundState.ToString()} is not allowed after {roundDto.RoundState.ToString()}");
+            throw new InvalidRoundStateException(
+                $"Round state {roundRequest.RoundState.ToString()} is not allowed after {roundDto.RoundState.ToString()}");
 
         await _roundRepository.SetState(roundRequest);
     }
