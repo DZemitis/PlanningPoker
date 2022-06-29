@@ -2,8 +2,10 @@ namespace ScrumPoker.Common.ConflictExceptions;
 
 public class VoteAlreadyExistException : ConflictException
 {
-    public VoteAlreadyExistException(string message)
+    public VoteAlreadyExistException()
     {
-        Message = message;
+    }
+    public VoteAlreadyExistException(string message) : base(message)
+    {
     }
 }

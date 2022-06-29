@@ -2,8 +2,10 @@ namespace ScrumPoker.Common.NotFoundExceptions;
 
 public class IdNotFoundException : NotFoundException
 {
-    public IdNotFoundException(string message)
+    public IdNotFoundException()
     {
-        Message = message;
+    }
+    public IdNotFoundException(string message) : base(message)
+    {
     }
 }

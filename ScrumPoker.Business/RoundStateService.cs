@@ -25,7 +25,7 @@ public class RoundStateService : IRoundStateService
 
     private static readonly IReadOnlyList<RoundState> Finished = new List<RoundState>();
     
-    private static IReadOnlyList<RoundState> CheckRoundStates(Round roundRequest)
+    private static IEnumerable<RoundState> CheckRoundStates(Round roundRequest)
     {
         var result = roundRequest.RoundState switch
         {

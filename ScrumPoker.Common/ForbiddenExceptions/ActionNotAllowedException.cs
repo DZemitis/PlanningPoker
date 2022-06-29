@@ -2,8 +2,10 @@ namespace ScrumPoker.Common.ForbiddenExceptions;
 
 public class ActionNotAllowedException : ForbiddenException
 {
-    public ActionNotAllowedException(string message)
+    public ActionNotAllowedException()
     {
-        Message = message;
+    }
+    public ActionNotAllowedException(string message) : base(message)
+    {
     }
 }

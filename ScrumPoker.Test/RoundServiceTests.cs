@@ -1,11 +1,9 @@
-using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using ScrumPoker.Business;
 using ScrumPoker.Business.Interfaces.Interfaces;
 using ScrumPoker.Business.Models.Models;
-using ScrumPoker.Common;
 using ScrumPoker.Common.ConflictExceptions;
 using ScrumPoker.Common.ForbiddenExceptions;
 using ScrumPoker.Common.Models;
@@ -30,8 +28,9 @@ public class RoundServiceTests
 
     public RoundServiceTests()
     {
-        _sut = new RoundService(_roundRepoMock.Object, _gameRoomServiceMock.Object, _userManagerMock.Object, _roundStateServiceMock.Object);
-        
+        _sut = new RoundService(_roundRepoMock.Object, _gameRoomServiceMock.Object, _userManagerMock.Object,
+            _roundStateServiceMock.Object);
+
         _round = new Round
         {
             Description = "Description",
@@ -54,7 +53,7 @@ public class RoundServiceTests
             MasterId = 2,
             CurrentRoundId = _currentUserId
         };
-        
+
         _userManagerMock.Setup(x => x.GetCurrentUserId())
             .Returns(_currentUserId);
         _roundRepoMock.Setup(x => x.GetById(_round.RoundId))
@@ -78,7 +77,7 @@ public class RoundServiceTests
     public async Task GetById_ShouldReturnNothing_WhenRoundDoesNotExist()
     {
         //Arrange
-        var getId = 2;
+        const int getId = 2;
         _roundRepoMock.Setup(x =>
                 x.GetById(getId))
             .ReturnsAsync(() => null!);
@@ -96,7 +95,7 @@ public class RoundServiceTests
         //Arrange
         _roundRepoMock.Setup(x => x.Create(_round))
             .ReturnsAsync(_newRound);
-       
+
 
         //Act
         var round = await _sut.Create(_round);
@@ -104,10 +103,10 @@ public class RoundServiceTests
         //Assert
         round.Should().Be(_newRound);
     }
-    
-    
+
+
     [Fact]
-    public async Task CreateRound_ShouldThrowException_WhenUserNotMaster()
+    public void CreateRound_ShouldThrowException_WhenUserNotMaster()
     {
         //Arrange
         _currentUserId = 9;
@@ -115,18 +114,12 @@ public class RoundServiceTests
             .Returns(_currentUserId);
         _roundRepoMock.Setup(x => x.Create(_round))
             .ReturnsAsync(_newRound);
-        
-        //Assert
-        // var ex = await Assert.ThrowsAsync<ActionNotAllowedException>(() =>
-        //     _sut.Create(_round));
 
-        await _sut.Invoking(x => x.Create(_round))
-            .Should().ThrowAsync<ActionNotAllowedException>()
+        //Act
+        var action = () => _sut.Create(_round).Result;
+
+        action.Should().Throw<ActionNotAllowedException>()
             .WithMessage($"User has not rights to Update game room (ID {_gameRoom.Id})");
-        
-        // _sut.Create(_round).Should();
-        //
-        // Assert.Equal($"User has not rights to Update game room (ID {_gameRoom.Id})", ex.Message);
     }
 
     [Fact]
@@ -136,7 +129,7 @@ public class RoundServiceTests
         var roundChangeStateRequest = new Round {RoundId = 1, RoundState = RoundState.VoteRegistration};
         _roundRepoMock.Setup(x => x.GetById(roundChangeStateRequest.RoundId))
             .ReturnsAsync(_round);
-        
+
         //Act
         await _sut.SetState(roundChangeStateRequest);
 
@@ -152,15 +145,15 @@ public class RoundServiceTests
         _roundRepoMock.Setup(x => x.GetById(roundChangeStateRequest.RoundId))
             .ReturnsAsync(_round);
         _roundStateServiceMock.Setup(x => x.ValidateRoundState(roundChangeStateRequest, _round))
-            .Throws(new InvalidRoundStateException($"Round state {roundChangeStateRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}"));
-        
+            .Throws(new InvalidRoundStateException(
+                $"Round state {roundChangeStateRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}"));
+
         //Assert
-        var ex = await Assert.ThrowsAsync<InvalidRoundStateException>(() =>
-            _sut.SetState(roundChangeStateRequest));
-        
-        Assert.Equal(
-            $"Round state {roundChangeStateRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}",
-            ex.Message);
+        var action = () => _sut.SetState(roundChangeStateRequest);
+
+        await action.Should().ThrowAsync<InvalidRoundStateException>()
+            .WithMessage(
+                $"Round state {roundChangeStateRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}");
     }
 
     [Fact]
@@ -171,23 +164,12 @@ public class RoundServiceTests
         var roundChangeStateRequest = new Round {RoundId = 1, RoundState = RoundState.VoteRegistration};
         _roundRepoMock.Setup(x => x.GetById(roundChangeStateRequest.RoundId))
             .ReturnsAsync(_round);
-        // _roundStateServiceMock.Setup(x => x.ValidateRoundState(roundChangeStateRequest, _round))
-        //     .Throws<InvalidRoundStateException>();
-        
+
         //Assert
-        // var ex = await Assert.ThrowsAsync<InvalidRoundStateException>(() =>
-        //     _sut.SetState(roundChangeStateRequest));
+        var action = () => _sut.SetState(roundChangeStateRequest);
 
-        _roundStateServiceMock.Setup(x =>
-            x.ValidateRoundState(roundChangeStateRequest, _round));
-        
-        Action act = () => _sut.SetState(roundChangeStateRequest);
-        
-        act.Should().Throw<InvalidRoundStateException>()
+        await action.Should().ThrowAsync<InvalidRoundStateException>()
             .WithMessage("Round is finished, state cannot be changed!");
-
-        //
-        // Assert.Equal("Round is finished, state cannot be changed!", ex.Message);
     }
 
     [Fact]
@@ -200,14 +182,14 @@ public class RoundServiceTests
             .ReturnsAsync(_round);
         _userManagerMock.Setup(x => x.GetCurrentUserId())
             .Returns(_currentUserId);
-        
-        //Assert
-        var ex = await Assert.ThrowsAsync<ActionNotAllowedException>(() =>
-            _sut.SetState(roundChangeStateRequest));
 
-        Assert.Equal($"User has not rights to Update game room (ID {_gameRoom.Id})", ex.Message);
+        //Assert
+        var action = () => _sut.SetState(roundChangeStateRequest);
+
+        await action.Should().ThrowAsync<ActionNotAllowedException>()
+            .WithMessage($"User has not rights to Update game room (ID {_gameRoom.Id})");
     }
-    
+
     [Fact]
     public async Task Update_ShouldUpdateRoundDescription_ShouldPass()
     {
@@ -215,14 +197,14 @@ public class RoundServiceTests
         var roundUpdateRequest = new Round {RoundId = 1, Description = "new Description"};
         _roundRepoMock.Setup(x => x.GetById(roundUpdateRequest.RoundId))!
             .ReturnsAsync(_round);
-        
+
         //Act
         await _sut.Update(roundUpdateRequest);
 
         //Assert
         _roundRepoMock.Verify(x => x.Update(roundUpdateRequest), Times.Once);
     }
-    
+
     [Fact]
     public async Task Update_ShouldThrowException_WhenUserNotMaster()
     {
@@ -233,11 +215,11 @@ public class RoundServiceTests
             .Returns(_currentUserId);
         _roundRepoMock.Setup(x => x.GetById(roundUpdateRequest.RoundId))!
             .ReturnsAsync(_round);
-        
-        //Act
-        var ex = await Assert.ThrowsAsync<ActionNotAllowedException>(() =>
-            _sut.Update(roundUpdateRequest));
 
-        Assert.Equal($"User has not rights to Update game room (ID {_gameRoom.Id})", ex.Message);
+        //Act
+        var action = () => _sut.Update(roundUpdateRequest);
+
+        await action.Should().ThrowAsync<ActionNotAllowedException>()
+            .WithMessage($"User has not rights to Update game room (ID {_gameRoom.Id})");
     }
 }
