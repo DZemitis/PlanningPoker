@@ -106,7 +106,7 @@ public class RoundServiceTests
 
 
     [Fact]
-    public void CreateRound_ShouldThrowException_WhenUserNotMaster()
+    public async Task CreateRound_ShouldThrowException_WhenUserNotMaster()
     {
         //Arrange
         _currentUserId = 9;
@@ -116,9 +116,9 @@ public class RoundServiceTests
             .ReturnsAsync(_newRound);
 
         //Act
-        var action = () => _sut.Create(_round).Result;
+        var action = async () => await _sut.Create(_round);
 
-        action.Should().Throw<ActionNotAllowedException>()
+        await action.Should().ThrowAsync<ActionNotAllowedException>()
             .WithMessage($"User has not rights to Update game room (ID {_gameRoom.Id})");
     }
 
