@@ -1,6 +1,8 @@
+using ScrumPoker.Business.Models.Models;
+
 namespace ScrumPoker.Business.Interfaces.Interfaces;
 
-public class IRoundStateService
+public interface IRoundStateService
 {
-    
+    void ValidateRoundState(Round roundRequest, Round roundDto);
 }
