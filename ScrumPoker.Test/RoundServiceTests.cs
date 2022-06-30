@@ -218,7 +218,8 @@ public class RoundServiceTests
 
         //Act
         var action = () => _sut.Update(roundUpdateRequest);
-
+        
+        //Assert
         await action.Should().ThrowAsync<ActionNotAllowedException>()
             .WithMessage($"User has not rights to Update game room (ID {_gameRoom.Id})");
     }
