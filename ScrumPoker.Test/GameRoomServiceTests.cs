@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -34,7 +33,7 @@ public class GameRoomServiceTests
             CurrentRoundId = _currentUserId,
             Players = new List<Player>()
         };
-        
+
         _gameRoomList.Add(_gameRoom);
         _gameRoomRepoMock.Setup(x => x.GetById(_gameRoom.Id))
             .ReturnsAsync(_gameRoom);
@@ -55,7 +54,7 @@ public class GameRoomServiceTests
         //Assert
         gameRoomList.Should().Contain(_gameRoom);
     }
-    
+
     [Fact]
     public async Task GetById_ShouldReturnGameRoom_WhenExist()
     {
@@ -133,7 +132,7 @@ public class GameRoomServiceTests
     [Fact]
     public async Task DeleteAll_ShouldTriggerDeleteAll_ShouldPass()
     {
-        //Act
+        //Arrange
         _gameRoomRepoMock.Setup(x => x.DeleteAll());
 
         //Act
@@ -146,7 +145,7 @@ public class GameRoomServiceTests
     [Fact]
     public async Task DeleteById_ShouldTriggerDeleteById_ShouldPass()
     {
-        //Act
+        //Arrange
         _gameRoomRepoMock.Setup(x => x.DeleteById(_gameRoom.Id));
 
         //Act
@@ -198,7 +197,7 @@ public class GameRoomServiceTests
         //Assert
         _gameRoomRepoMock.Verify(x => x.RemovePlayerById(_gameRoom.Id, PlayerId), Times.Once);
     }
-    
+
     [Fact]
     public async Task RemovePlayer_ShouldThrowException_WhenUserNotMaster()
     {
