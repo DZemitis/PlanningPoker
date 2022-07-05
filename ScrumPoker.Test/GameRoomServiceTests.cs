@@ -66,20 +66,6 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task GetById_WhenDoesNotExist_ShouldReturnNothing()
-    {
-        //Arrange
-        _gameRoomRepoMock.Setup(x => x.GetById(2))
-            .ReturnsAsync(() => null!);
-
-        //Act
-        var gameRoom = await _sut.GetById(2);
-
-        //Assert
-        gameRoom.Should().BeNull();
-    }
-
-    [Fact]
     public async Task Update_ValidUpdateGameRoomRequest_CallsGameRoomRepository()
     {
         //Arrange
@@ -159,13 +145,13 @@ public class GameRoomServiceTests
     public async Task AddPlayer_ValidAddPlayerRequest_CallsGameRoomRepository()
     {
         //Arrange
-        const int PlayerId = 3;
+        const int playerId = 3;
 
         //Act
-        await _sut.AddPlayer(_gameRoom.Id, PlayerId);
+        await _sut.AddPlayer(_gameRoom.Id, playerId);
 
         //Assert
-        _gameRoomRepoMock.Verify(x => x.AddPlayerToRoom(_gameRoom.Id, PlayerId), Times.Once);
+        _gameRoomRepoMock.Verify(x => x.AddPlayerToRoom(_gameRoom.Id, playerId), Times.Once);
     }
 
     [Fact]

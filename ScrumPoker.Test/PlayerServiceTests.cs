@@ -66,21 +66,6 @@ public class PlayerServiceTests
     }
 
     [Fact]
-    public async Task GetById_WhenDoesNotExist_ShouldReturnNothing()
-    {
-        //Arrange
-        var getId = 9;
-        _playerRepoMock.Setup(x => x.GetById(getId))
-            .ReturnsAsync(() => null!);
-
-        //Act
-        var player = await _sut.GetById(getId);
-
-        //Assert
-        player.Should().BeNull();
-    }
-
-    [Fact]
     public async Task Create_ValidPlayerCreateRequest_ShouldCreatePlayer()
     {
         //Arrange
