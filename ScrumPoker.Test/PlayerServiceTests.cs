@@ -43,7 +43,7 @@ public class PlayerServiceTests
     }
 
     [Fact]
-    public async Task GetAll_ShouldReturnListOfPlayers_ShouldPass()
+    public async Task GetAll_ShouldReturnListOfPlayers()
     {
         //Arrange
         _playerRepoMock.Setup(x => x.GetAll()).ReturnsAsync(_playerList);
@@ -56,7 +56,7 @@ public class PlayerServiceTests
     }
 
     [Fact]
-    public async Task GetById_ShouldReturnPlayer_WhenExist()
+    public async Task GetById_WhenExist_ShouldReturnPlayer()
     {
         //Act
         var player = await _sut.GetById(2);
@@ -66,7 +66,7 @@ public class PlayerServiceTests
     }
 
     [Fact]
-    public async Task GetById_ShouldReturnNothing_WhenDoesNotExist()
+    public async Task GetById_WhenDoesNotExist_ShouldReturnNothing()
     {
         //Arrange
         var getId = 9;
@@ -81,7 +81,7 @@ public class PlayerServiceTests
     }
 
     [Fact]
-    public async Task Create_ShouldCreatePlayer_ShouldPass()
+    public async Task Create_ValidPlayerCreateRequest_ShouldCreatePlayer()
     {
         //Arrange
         var playerCreateRequest = new Player {Name = "Davis", Email = "davis@gmail.com"};
@@ -96,7 +96,7 @@ public class PlayerServiceTests
     }
 
     [Fact]
-    public async Task Update_ShouldTriggerUpdatePlayer_ShouldPass()
+    public async Task Update_ValidPlayerUpdateRequest_CallsPlayerRepository()
     {
         //Arrange
         var playerUpdateRequest = new Player {Name = "Janis", Email = "davis@gmail.com"};
@@ -109,7 +109,7 @@ public class PlayerServiceTests
     }
 
     [Fact]
-    public async Task DeleteById_ShouldTriggerDeleteById_ShouldPass()
+    public async Task DeleteById_ValidPlayerId_CallsPlayerRepository()
     {
         //Arrange
         _playerRepoMock.Setup(x => x.DeleteById(_player.Id));

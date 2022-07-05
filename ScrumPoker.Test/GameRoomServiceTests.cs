@@ -43,7 +43,7 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task GetAll_ShouldReturnListOfGameRooms_ShouldPass()
+    public async Task GetAll_ShouldReturnListOfGameRooms()
     {
         //Arrange
         _gameRoomRepoMock.Setup(x => x.GetAll()).ReturnsAsync(_gameRoomList);
@@ -56,7 +56,7 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task GetById_ShouldReturnGameRoom_WhenExist()
+    public async Task GetById_WhenExist_ShouldReturnGameRoom()
     {
         //Act
         var gameRoom = await _sut.GetById(1);
@@ -66,7 +66,7 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task GetById_ShouldReturnNothing_WhenDoesNotExist()
+    public async Task GetById_WhenDoesNotExist_ShouldReturnNothing()
     {
         //Arrange
         _gameRoomRepoMock.Setup(x => x.GetById(2))
@@ -80,7 +80,7 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task Update_ShouldUpdateRoundName_ShouldPass()
+    public async Task Update_ValidUpdateGameRoomRequest_CallsGameRoomRepository()
     {
         //Arrange
         var gameRoomUpdateRequest = new GameRoom {Id = 1, Name = "new name"};
@@ -95,7 +95,7 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task Update_ShouldThrowException_WhenUserNotMaster()
+    public async Task Update_WhenUserNotMaster_ShouldThrowException()
     {
         //Arrange
         _currentUserId = 9;
@@ -114,7 +114,7 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task Create_ShouldCreateNewRound_ShouldPass()
+    public async Task Create_ValidGameRoomCreateRequest_ShouldCreateGameRoom()
     {
         //Arrange
         var gameRoomCreateRequest = new GameRoom {Name = "Game Room"};
@@ -130,7 +130,7 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task DeleteAll_ShouldTriggerDeleteAll_ShouldPass()
+    public async Task DeleteAll_CallsGameRoomRepository()
     {
         //Arrange
         _gameRoomRepoMock.Setup(x => x.DeleteAll());
@@ -143,7 +143,7 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task DeleteById_ShouldTriggerDeleteById_ShouldPass()
+    public async Task DeleteById_ValidGameRoomId_CallsGameRoomRepository()
     {
         //Arrange
         _gameRoomRepoMock.Setup(x => x.DeleteById(_gameRoom.Id));
@@ -156,7 +156,7 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task AddPlayer_ShouldTriggerAddPlayerToRoom_ShouldPass()
+    public async Task AddPlayer_ValidAddPlayerRequest_CallsGameRoomRepository()
     {
         //Arrange
         const int PlayerId = 3;
@@ -169,7 +169,7 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task AddPlayer_ShouldThrowException_WhenUserNotMaster()
+    public async Task AddPlayer_WhenUserNotMaster_ShouldThrowException()
     {
         //Arrange
         const int PlayerId = 3;
@@ -186,7 +186,7 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task RemovePlayer_ShouldTriggerRemovePlayer_ShouldPass()
+    public async Task RemovePlayer_ValidRemovePlayerRequest_CallsGameRoomRepository()
     {
         //Arrange
         const int PlayerId = 3;
@@ -199,7 +199,7 @@ public class GameRoomServiceTests
     }
 
     [Fact]
-    public async Task RemovePlayer_ShouldThrowException_WhenUserNotMaster()
+    public async Task RemovePlayer_WhenUserNotMaster_ShouldThrowException()
     {
         //Arrange
         const int PlayerId = 3;

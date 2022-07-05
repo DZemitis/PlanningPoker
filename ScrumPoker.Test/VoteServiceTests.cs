@@ -26,14 +26,13 @@ public class VoteServiceTests
     private int _currentUserId = 2;
     private readonly Round _round;
     private readonly GameRoom _gameRoom;
-    private readonly Player _player;
 
     public VoteServiceTests()
     {
         _sut = new VoteService(_voteRepoMock.Object, _userManagerMock.Object, _roundServiceMock.Object,
             _gameRoomServiceMock.Object);
 
-        _player = new Player
+        var player = new Player
         {
             Id = 2
         };
@@ -48,7 +47,7 @@ public class VoteServiceTests
         _vote = new Vote
         {
             Id = 1,
-            PlayerId = _player.Id,
+            PlayerId = player.Id,
             RoundId = _round.RoundId,
             VoteResult = 4
         };
@@ -59,7 +58,7 @@ public class VoteServiceTests
             Id = 1,
             Players = new List<Player>
             {
-                _player
+                player
             },
             Round = _round,
             MasterId = 2
@@ -76,7 +75,7 @@ public class VoteServiceTests
     }
 
     [Fact]
-    public async Task GetById_ShouldReturnVote_WhenExist()
+    public async Task GetById_VoteWhenExist_ShouldReturnVote()
     {
         //Act
         var vote = await _sut.GetById(1);
@@ -86,7 +85,7 @@ public class VoteServiceTests
     }
 
     [Fact]
-    public async Task GetById_ShouldReturnNothing_WhenDoesNotExist()
+    public async Task GetById_VoteDoesNotExist_ShouldReturnNothing()
     {
         //Arrange
         _voteRepoMock.Setup(x => x.GetById(2))
@@ -100,7 +99,7 @@ public class VoteServiceTests
     }
 
     [Fact]
-    public async Task CreateOrUpdate_ShouldCreateVote_ShouldReturnVote()
+    public async Task CreateOrUpdate_ValidCreateOrUpdateRequest_ShouldReturnVote()
     {
         //Arrange
         var createVoteRequest = new Vote {RoundId = 3, VoteResult = 4};
@@ -115,7 +114,7 @@ public class VoteServiceTests
     }
 
     [Fact]
-    public async Task CreateOrUpdate_ShouldThrowExceptionWhenRoundStateIsFinished_ShouldThrowException()
+    public async Task CreateOrUpdate_RoundStateIsFinished_ShouldThrowInvalidRoundStateException()
     {
         //Arrange
         _round.RoundState = RoundState.Finished;
@@ -133,7 +132,7 @@ public class VoteServiceTests
 
 
     [Fact]
-    public async Task CreateOrUpdate_ShouldThrowExceptionWhenPlayerIsNotInRoom_ShouldThrowException()
+    public async Task CreateOrUpdate_PlayerIsNotInRoom_ShouldThrowIdNotFoundException()
     {
         //Arrange
         _currentUserId = 9;
@@ -150,7 +149,7 @@ public class VoteServiceTests
     }
 
     [Fact]
-    public async Task ClearRoundVotes_ShouldTriggerClearVotes_ShouldPass()
+    public async Task ClearRoundVotes_ValidRoundId_CallsVoteRepository()
     {
         //Act
         await _sut.ClearRoundVotes(_round.RoundId);
@@ -160,7 +159,7 @@ public class VoteServiceTests
     }
 
     [Fact]
-    public async Task ClearRoundVotes_ShouldThrownExceptionWhenUserIsNotMaster_ShouldThrowException()
+    public async Task ClearRoundVotes_UserIsNotMaster_ShouldThrowActionNotAllowedException()
     {
         //Arrange
         _currentUserId = 9;
@@ -176,7 +175,7 @@ public class VoteServiceTests
     }
 
     [Fact]
-    public async Task ClearRoundVotes_ShouldThrownExceptionWhenRoundIsFinished_ShouldThrowException()
+    public async Task ClearRoundVotes_RoundIsFinished_ShouldThrowInvalidRoundStateException()
     {
         //Arrange
         _round.RoundState = RoundState.Finished;

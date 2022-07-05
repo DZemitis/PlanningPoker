@@ -1,3 +1,4 @@
+using System;
 using FluentAssertions;
 using ScrumPoker.Business;
 using ScrumPoker.Business.Models.Models;
@@ -30,7 +31,7 @@ public class RoundStateServiceTests
     }
 
     [Fact]
-    public void ValidateRoundState_ShouldNotThrowAnyException_ShouldPass()
+    public void ValidateRoundState_WhenValidRoundStateRequest_ShouldPass()
     {
         //Act
         var action = () => _sut.ValidateRoundState(_roundRequest, _round);
@@ -201,5 +202,21 @@ public class RoundStateServiceTests
         //Arrange
         action.Should().Throw<InvalidRoundStateException>()
             .WithMessage($"Round state {_roundRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}");
+    }
+    
+    
+    [Fact]
+    public void ValidateRoundState_OutOfRange_ShouldThrowException()
+    {
+        //Arrange
+        _round.RoundState = (RoundState)99;
+        _roundRequest.RoundState = RoundState.VoteReview;
+        
+        //Act
+        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        
+        //Arrange
+        action.Should().Throw<ArgumentOutOfRangeException>()
+            .WithMessage("Specified argument was out of the range of valid values.");
     }
 }

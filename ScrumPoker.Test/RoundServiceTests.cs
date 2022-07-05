@@ -63,7 +63,7 @@ public class RoundServiceTests
     }
 
     [Fact]
-    public async Task GetById_ShouldReturnRound_WhenRoundExist()
+    public async Task GetById_WhenRoundExist_ShouldReturnRound()
     {
         //Act
         var round = await _sut.GetById(1);
@@ -74,7 +74,7 @@ public class RoundServiceTests
     }
 
     [Fact]
-    public async Task GetById_ShouldReturnNothing_WhenRoundDoesNotExist()
+    public async Task GetById_WhenRoundDoesNotExist_ShouldReturnNothing()
     {
         //Arrange
         const int getId = 2;
@@ -90,7 +90,7 @@ public class RoundServiceTests
     }
 
     [Fact]
-    public async Task CreateRound_ShouldCreateNewRound_ShouldReturnNewRound()
+    public async Task Create_AuthorisedUser_ShouldReturnNewRound()
     {
         //Arrange
         _roundRepoMock.Setup(x => x.Create(_round))
@@ -106,7 +106,7 @@ public class RoundServiceTests
 
 
     [Fact]
-    public async Task CreateRound_ShouldThrowException_WhenUserNotMaster()
+    public async Task Create_WhenUserNotMaster_ShouldThrowException()
     {
         //Arrange
         _currentUserId = 9;
@@ -123,7 +123,7 @@ public class RoundServiceTests
     }
 
     [Fact]
-    public async Task SetState_ShouldTriggerRoundRepositorySetState_ShouldPass()
+    public async Task SetState_ValidRoundSetStateRequest_CallsRoundRepository()
     {
         //Arrange
         var roundChangeStateRequest = new Round {RoundId = 1, RoundState = RoundState.VoteRegistration};
@@ -138,7 +138,7 @@ public class RoundServiceTests
     }
 
     [Fact]
-    public async Task SetState_ShouldFailWhenItsNotAllowedState_ShouldThrowInvalidRoundStateException()
+    public async Task SetState_InvalidRoundStateRequest_ShouldThrowInvalidRoundStateException()
     {
         //Arrange
         var roundChangeStateRequest = new Round {RoundId = 1, RoundState = RoundState.Finished};
@@ -157,7 +157,7 @@ public class RoundServiceTests
     }
 
     [Fact]
-    public async Task SetState_ShouldFailWhenStateIsFinished_ShouldThrowInvalidRoundStateException()
+    public async Task SetState_RoundStateFinished_ShouldThrowInvalidRoundStateException()
     {
         //Arrange
         _round.RoundState = RoundState.Finished;
@@ -173,7 +173,7 @@ public class RoundServiceTests
     }
 
     [Fact]
-    public async Task SetState_ShouldFailWhenStateCurrentUserIsNotMaster_ShouldThrowActionNotAllowedException()
+    public async Task SetState_InvalidCurrentUser_ShouldThrowActionNotAllowedException()
     {
         //Arrange
         _currentUserId = 9;
@@ -191,7 +191,7 @@ public class RoundServiceTests
     }
 
     [Fact]
-    public async Task Update_ShouldUpdateRoundDescription_ShouldPass()
+    public async Task Update_ValidRoundStateRequest_CallsRoundRepository()
     {
         //Arrange
         var roundUpdateRequest = new Round {RoundId = 1, Description = "new Description"};
@@ -206,7 +206,7 @@ public class RoundServiceTests
     }
 
     [Fact]
-    public async Task Update_ShouldThrowException_WhenUserNotMaster()
+    public async Task Update_UserNotMaster_ShouldThrowActionNotAllowedException()
     {
         //Arrange
         var roundUpdateRequest = new Round {RoundId = 1, Description = "new Description"};
