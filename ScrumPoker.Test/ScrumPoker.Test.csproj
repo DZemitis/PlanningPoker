@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="6.7.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+        <PackageReference Include="Moq" Version="4.18.1" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector" Version="3.1.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ScrumPoker.Business.Interfaces\ScrumPoker.Business.Interfaces.csproj" />
+      <ProjectReference Include="..\ScrumPoker.Business.Models\ScrumPoker.Business.Models.csproj" />
+      <ProjectReference Include="..\ScrumPoker.Business\ScrumPoker.Business.csproj" />
+      <ProjectReference Include="..\ScrumPoker.Common\ScrumPoker.Common.csproj" />
+      <ProjectReference Include="..\ScrumPoker.DataAccess.Interfaces\ScrumPoker.DataAccess.Interfaces.csproj" />
+      <ProjectReference Include="..\ScrumPoker.DataAccess.Models\ScrumPoker.DataAccess.Models.csproj" />
+      <ProjectReference Include="..\ScrumPoker.DataAccess\ScrumPoker.DataAccess.csproj" />
+      <ProjectReference Include="..\ScrumPoker.Infrastructure\ScrumPoker.Infrastructure.csproj" />
+      <ProjectReference Include="..\ScrumPoker.Web.Models\ScrumPoker.Web.Models.csproj" />
+      <ProjectReference Include="..\ScrumPoker.Web\ScrumPoker.Web.csproj" />
+    </ItemGroup>
+
+</Project>

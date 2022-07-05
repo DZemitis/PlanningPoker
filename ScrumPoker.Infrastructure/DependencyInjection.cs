@@ -22,5 +22,7 @@ public static class DependencyInjection
         services.AddTransient<IVoteService, VoteService>();
         services.AddHttpContextAccessor();
         services.AddTransient<IUserManager, UserManager>();
+        services.AddTransient<IRoundStateService, RoundStateService>();
+        services.AddTransient<IJwtService, JwtService>();
     }
 }

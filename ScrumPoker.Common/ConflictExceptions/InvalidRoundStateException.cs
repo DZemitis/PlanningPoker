@@ -2,9 +2,11 @@ namespace ScrumPoker.Common.ConflictExceptions;
 
 public class InvalidRoundStateException : ConflictException
 {
-    public InvalidRoundStateException(string message)
+    public InvalidRoundStateException()
     {
-        Message = message;
+    }
+    public InvalidRoundStateException(string message) : base(message)
+    {
     }
 }
     

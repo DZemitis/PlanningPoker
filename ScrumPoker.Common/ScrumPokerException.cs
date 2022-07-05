@@ -5,6 +5,7 @@ public class ScrumPokerException : Exception
     protected ScrumPokerException()
     {
     }
-
-    public new string? Message { get; protected init; }
+    protected ScrumPokerException(string message) : base(message)
+    {
+    }
 }

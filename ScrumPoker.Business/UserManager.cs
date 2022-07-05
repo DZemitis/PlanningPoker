@@ -11,10 +11,11 @@ public class UserManager : IUserManager
     {
         _httpContextAccessor = httpContextAccessor;
     }
-
+    
     public int GetCurrentUserId()
     {
-        var currentUserId = _httpContextAccessor.HttpContext!.User.Claims.Single(x => x.Type == "userId").Value;
+        var claims = _httpContextAccessor.HttpContext!.User.Claims;
+        var currentUserId = claims.Single(x => x.Type == "userId").Value;
 
         return int.Parse(currentUserId);
     }

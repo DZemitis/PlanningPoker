@@ -2,8 +2,10 @@ namespace ScrumPoker.Common.ConflictExceptions;
 
 public class IdAlreadyExistException : ConflictException
 {
-    public IdAlreadyExistException(string message)
+    public IdAlreadyExistException()
     {
-        Message = message;
+    }
+    public IdAlreadyExistException(string message) : base(message)
+    {
     }
 }
