@@ -25,12 +25,12 @@ public class RoundStateService : IRoundStateService
 
     private static readonly IReadOnlyList<RoundState> Finished = new List<RoundState>();
 
-    public void ValidateRoundState(Round roundRequest, Round roundDto)
+    public void ValidateRoundState(RoundState roundStateRequest, RoundState currentRoundState)
     {
-        if (!GetAvailableTransitionStates(roundDto.RoundState).Contains(roundRequest.RoundState))
+        if (!GetAvailableTransitionStates(currentRoundState).Contains(roundStateRequest))
         {
             throw new InvalidRoundStateException(
-                $"Round state {roundRequest.RoundState.ToString()} is not allowed after {roundDto.RoundState.ToString()}");
+                $"Round state {roundStateRequest.ToString()} is not allowed after {currentRoundState.ToString()}");
         }
     }
 

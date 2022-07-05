@@ -12,29 +12,23 @@ public class RoundStateServiceTests
 {
     private readonly RoundStateService _sut;
 
-    private readonly Round _roundRequest;
-    private readonly Round _round;
+    private RoundState _roundStateRequest;
+    private RoundState _currentRoundState;
 
     public RoundStateServiceTests()
     {
         _sut = new RoundStateService();
 
-        _round = new Round
-        {
-            RoundState = RoundState.Grooming
-        };
-
-        _roundRequest = new Round
-        {
-            RoundState = RoundState.VoteRegistration
-        };
+        _currentRoundState = RoundState.Grooming;
+        
+        _roundStateRequest = RoundState.VoteRegistration;
     }
 
     [Fact]
     public void ValidateRoundState_WhenValidRoundStateRequest_ShouldPass()
     {
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
 
         //Arrange
         action.Should().NotThrow();
@@ -44,30 +38,30 @@ public class RoundStateServiceTests
     public void ValidateRoundState_GroomingToVoteReview_ShouldThrowException()
     {
         //Arrange
-        _round.RoundState = RoundState.Grooming;
-        _roundRequest.RoundState = RoundState.VoteReview;
+        _currentRoundState = RoundState.Grooming;
+        _roundStateRequest = RoundState.VoteReview;
         
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
         
         //Arrange
         action.Should().Throw<InvalidRoundStateException>()
-            .WithMessage($"Round state {_roundRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}");
+            .WithMessage($"Round state {_roundStateRequest.ToString()} is not allowed after {_currentRoundState.ToString()}");
     }
 
     [Fact]
     public void ValidateRoundState_GroomingToFinished_ShouldThrowException()
     {
         //Arrange
-        _round.RoundState = RoundState.Grooming;
-        _roundRequest.RoundState = RoundState.Finished;
+        _currentRoundState = RoundState.Grooming;
+        _roundStateRequest = RoundState.Finished;
         
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
         
         //Arrange
         action.Should().Throw<InvalidRoundStateException>()
-            .WithMessage($"Round state {_roundRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}");
+            .WithMessage($"Round state {_roundStateRequest.ToString()} is not allowed after {_currentRoundState.ToString()}");
     }
     
     
@@ -75,11 +69,11 @@ public class RoundStateServiceTests
     public void ValidateRoundState_VoteRegToVoteReview_ShouldPass()
     {
         //Arrange
-        _round.RoundState = RoundState.VoteRegistration;
-        _roundRequest.RoundState = RoundState.VoteReview;
+        _currentRoundState = RoundState.VoteRegistration;
+        _roundStateRequest = RoundState.VoteReview;
         
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
         
         //Arrange
         action.Should().NotThrow();
@@ -89,56 +83,56 @@ public class RoundStateServiceTests
     public void ValidateRoundState_VoteRegToGrooming_ShouldThrowException()
     {
         //Arrange
-        _round.RoundState = RoundState.VoteRegistration;
-        _roundRequest.RoundState = RoundState.Grooming;
+        _currentRoundState = RoundState.VoteRegistration;
+        _roundStateRequest = RoundState.Grooming;
         
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
         
         //Arrange
         action.Should().Throw<InvalidRoundStateException>()
-            .WithMessage($"Round state {_roundRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}");
+            .WithMessage($"Round state {_roundStateRequest.ToString()} is not allowed after {_currentRoundState.ToString()}");
     }
     
     [Fact]
     public void ValidateRoundState_VoteRegToFinished_ShouldThrowException()
     {
         //Arrange
-        _round.RoundState = RoundState.VoteRegistration;
-        _roundRequest.RoundState = RoundState.Finished;
+        _currentRoundState = RoundState.VoteRegistration;
+        _roundStateRequest = RoundState.Finished;
         
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
         
         //Arrange
         action.Should().Throw<InvalidRoundStateException>()
-            .WithMessage($"Round state {_roundRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}");
+            .WithMessage($"Round state {_roundStateRequest.ToString()} is not allowed after {_currentRoundState.ToString()}");
     }
     
     [Fact]
     public void ValidateRoundState_VoteReviewToGrooming_ShouldThrowException()
     {
         //Arrange
-        _round.RoundState = RoundState.VoteReview;
-        _roundRequest.RoundState = RoundState.Grooming;
+        _currentRoundState = RoundState.VoteReview;
+        _roundStateRequest = RoundState.Grooming;
         
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
         
         //Arrange
         action.Should().Throw<InvalidRoundStateException>()
-            .WithMessage($"Round state {_roundRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}");
+            .WithMessage($"Round state {_roundStateRequest.ToString()} is not allowed after {_currentRoundState.ToString()}");
     }
     
     [Fact]
     public void ValidateRoundState_VoteReviewToGrooming_ShouldPass()
     {
         //Arrange
-        _round.RoundState = RoundState.VoteReview;
-        _roundRequest.RoundState = RoundState.VoteRegistration;
+        _currentRoundState = RoundState.VoteReview;
+        _roundStateRequest = RoundState.VoteRegistration;
         
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
         
         //Arrange
         action.Should().NotThrow();
@@ -148,11 +142,11 @@ public class RoundStateServiceTests
     public void ValidateRoundState_VoteReviewToFinished_ShouldPass()
     {
         //Arrange
-        _round.RoundState = RoundState.VoteReview;
-        _roundRequest.RoundState = RoundState.VoteRegistration;
+        _currentRoundState = RoundState.VoteReview;
+        _roundStateRequest = RoundState.VoteRegistration;
         
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
         
         //Arrange
         action.Should().NotThrow();
@@ -163,45 +157,45 @@ public class RoundStateServiceTests
     public void ValidateRoundState_FinishedToGrooming_ShouldThrowException()
     {
         //Arrange
-        _round.RoundState = RoundState.Finished;
-        _roundRequest.RoundState = RoundState.Grooming;
+        _currentRoundState = RoundState.Finished;
+        _roundStateRequest = RoundState.Grooming;
         
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
         
         //Arrange
         action.Should().Throw<InvalidRoundStateException>()
-            .WithMessage($"Round state {_roundRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}");
+            .WithMessage($"Round state {_roundStateRequest.ToString()} is not allowed after {_currentRoundState.ToString()}");
     }
     
     [Fact]
     public void ValidateRoundState_FinishedToVoteReg_ShouldThrowException()
     {
         //Arrange
-        _round.RoundState = RoundState.Finished;
-        _roundRequest.RoundState = RoundState.VoteRegistration;
+        _currentRoundState = RoundState.Finished;
+        _roundStateRequest = RoundState.VoteRegistration;
         
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
         
         //Arrange
         action.Should().Throw<InvalidRoundStateException>()
-            .WithMessage($"Round state {_roundRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}");
+            .WithMessage($"Round state {_roundStateRequest.ToString()} is not allowed after {_currentRoundState.ToString()}");
     }
     
     [Fact]
     public void ValidateRoundState_FinishedToVoteReview_ShouldThrowException()
     {
         //Arrange
-        _round.RoundState = RoundState.Finished;
-        _roundRequest.RoundState = RoundState.VoteReview;
+        _currentRoundState = RoundState.Finished;
+        _roundStateRequest = RoundState.VoteReview;
         
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
         
         //Arrange
         action.Should().Throw<InvalidRoundStateException>()
-            .WithMessage($"Round state {_roundRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}");
+            .WithMessage($"Round state {_roundStateRequest.ToString()} is not allowed after {_currentRoundState.ToString()}");
     }
     
     
@@ -209,11 +203,11 @@ public class RoundStateServiceTests
     public void ValidateRoundState_OutOfRange_ShouldThrowException()
     {
         //Arrange
-        _round.RoundState = (RoundState)99;
-        _roundRequest.RoundState = RoundState.VoteReview;
+        _currentRoundState = (RoundState)99;
+        _roundStateRequest = RoundState.VoteReview;
         
         //Act
-        var action = () => _sut.ValidateRoundState(_roundRequest, _round);
+        var action = () => _sut.ValidateRoundState(_roundStateRequest, _currentRoundState);
         
         //Arrange
         action.Should().Throw<ArgumentOutOfRangeException>()

@@ -128,7 +128,7 @@ public class RoundServiceTests
         var roundChangeStateRequest = new Round {RoundId = 1, RoundState = RoundState.Finished};
         _roundRepoMock.Setup(x => x.GetById(roundChangeStateRequest.RoundId))
             .ReturnsAsync(_round);
-        _roundStateServiceMock.Setup(x => x.ValidateRoundState(roundChangeStateRequest, _round))
+        _roundStateServiceMock.Setup(x => x.ValidateRoundState(roundChangeStateRequest.RoundState, _round.RoundState))
             .Throws(new InvalidRoundStateException(
                 $"Round state {roundChangeStateRequest.RoundState.ToString()} is not allowed after {_round.RoundState.ToString()}"));
 
