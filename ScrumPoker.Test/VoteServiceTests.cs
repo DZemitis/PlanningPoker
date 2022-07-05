@@ -83,21 +83,7 @@ public class VoteServiceTests
         //Arrange
         vote.Should().Be(_vote);
     }
-
-    [Fact]
-    public async Task GetById_VoteDoesNotExist_ShouldReturnNothing()
-    {
-        //Arrange
-        _voteRepoMock.Setup(x => x.GetById(2))
-            .ReturnsAsync(() => null!);
-
-        //Act
-        var vote = await _sut.GetById(2);
-
-        //Arrange
-        vote.Should().BeNull();
-    }
-
+    
     [Fact]
     public async Task CreateOrUpdate_ValidCreateOrUpdateRequest_ShouldReturnVote()
     {

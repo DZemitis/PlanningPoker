@@ -74,22 +74,6 @@ public class RoundServiceTests
     }
 
     [Fact]
-    public async Task GetById_WhenRoundDoesNotExist_ShouldReturnNothing()
-    {
-        //Arrange
-        const int getId = 2;
-        _roundRepoMock.Setup(x =>
-                x.GetById(getId))
-            .ReturnsAsync(() => null!);
-
-        //Act
-        var round = await _sut.GetById(getId);
-
-        //Assert
-        round.Should().BeNull();
-    }
-
-    [Fact]
     public async Task Create_AuthorisedUser_ShouldReturnNewRound()
     {
         //Arrange
