@@ -11,12 +11,12 @@ public class RoundStateService : IRoundStateService
     {
         RoundState.VoteRegistration
     };
-    
+
     private static readonly IReadOnlyList<RoundState> VoteRegistration = new List<RoundState>
     {
         RoundState.VoteReview
     };
-    
+
     private static readonly IReadOnlyList<RoundState> VoteReview = new List<RoundState>
     {
         RoundState.VoteRegistration,
@@ -24,10 +24,19 @@ public class RoundStateService : IRoundStateService
     };
 
     private static readonly IReadOnlyList<RoundState> Finished = new List<RoundState>();
-    
-    private static IEnumerable<RoundState> CheckRoundStates(Round roundRequest)
+
+    public void ValidateRoundState(Round roundRequest, Round roundDto)
     {
-        var result = roundRequest.RoundState switch
+        if (!GetAvailableTransitionStates(roundDto.RoundState).Contains(roundRequest.RoundState))
+        {
+            throw new InvalidRoundStateException(
+                $"Round state {roundRequest.RoundState.ToString()} is not allowed after {roundDto.RoundState.ToString()}");
+        }
+    }
+
+    private static IEnumerable<RoundState> GetAvailableTransitionStates(RoundState roundRequest)
+    {
+        var result = roundRequest switch
         {
             RoundState.Grooming => Grooming,
             RoundState.VoteRegistration => VoteRegistration,
@@ -37,12 +46,5 @@ public class RoundStateService : IRoundStateService
         };
         
        return result;
-    }
-    
-    public void ValidateRoundState(Round roundRequest, Round roundDto)
-    {
-        if (!CheckRoundStates(roundDto).Contains(roundRequest.RoundState))
-            throw new InvalidRoundStateException(
-                $"Round state {roundRequest.RoundState.ToString()} is not allowed after {roundDto.RoundState.ToString()}");
     }
 }

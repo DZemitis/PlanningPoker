@@ -33,18 +33,22 @@ public class VoteService : IVoteService
     public async Task<Vote> CreateOrUpdate(Vote vote)
     {
         var roundDto = await _roundService.GetById(vote.RoundId);
-        
+
         if (roundDto.RoundState != RoundState.VoteRegistration)
+        {
             throw new InvalidRoundStateException("You are allowed to vote only when round state is - vote registration");
-                
+        }
+        
         var gameRoomDto = await _gameRoomService.GetById(roundDto.GameRoomId);
         var currentUserId = _userManager.GetCurrentUserId();
         
         var playerList = gameRoomDto.Players;
         var playerCheck = playerList.SingleOrDefault(x => x.Id == currentUserId);
-        
+
         if (playerCheck == null)
+        {
             throw new IdNotFoundException($"No user with ID {currentUserId} found in game room ID {gameRoomDto.Id}");
+        }
 
         vote.PlayerId = currentUserId;
         
@@ -58,10 +62,14 @@ public class VoteService : IVoteService
         var currentUserId = _userManager.GetCurrentUserId();
 
         if (gameRoomDto.MasterId != currentUserId)
+        {
             throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
-        
+        }
+
         if (roundDto.RoundState == RoundState.Finished)
+        {
             throw new InvalidRoundStateException("Round is finished, any updates on votes is unavailable!");
+        }
         
         await _voteRepository.ClearRoundVotes(roundId);
     }

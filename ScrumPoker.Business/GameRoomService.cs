@@ -44,9 +44,11 @@ public class GameRoomService : IGameRoomService
     {
         var gameRoomDto = await GetById(gameRoomRequest.Id);
         var currentUserId = _userManager.GetCurrentUserId();
-        
+
         if (gameRoomDto.MasterId != currentUserId)
+        {
             throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomRequest.Id})");
+        }
 
         return await _gameRoomRepository.Update(gameRoomRequest);
     }
@@ -65,9 +67,11 @@ public class GameRoomService : IGameRoomService
     {
         var gameRoomDto = await GetById(gameRoomId);
         var currentUserId = _userManager.GetCurrentUserId();
-        
+
         if (gameRoomDto.MasterId != currentUserId)
+        {
             throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomId})");
+        }
 
         await _gameRoomRepository.AddPlayerToRoom(gameRoomId, playerId);
     }
@@ -76,9 +80,11 @@ public class GameRoomService : IGameRoomService
     {
         var gameRoomDto = await GetById(gameRoomId);
         var currentUserId = _userManager.GetCurrentUserId();
-        
+
         if (gameRoomDto.MasterId != currentUserId)
+        {
             throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomId})");
+        }
 
         await _gameRoomRepository.RemovePlayerById(gameRoomId, playerId);
     }

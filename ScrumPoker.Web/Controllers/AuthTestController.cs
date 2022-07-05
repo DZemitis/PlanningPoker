@@ -9,17 +9,19 @@ namespace ScrumPoker.Web.Controllers;
 public class AuthTestController : ControllerBase
 {
     private readonly IUserManager _manager;
+    private readonly IJwtService _jwtService;
 
-    public AuthTestController(IUserManager manager)
+    public AuthTestController(IUserManager manager, IJwtService jwtService)
     {
         _manager = manager;
+        _jwtService = jwtService;
     }
 
     [HttpGet]
     [Route("CreateToken/{id:int}")]
     public IActionResult CreateToken(int id)
     {
-       var jwt= _manager.CreateToken(id);
+       var jwt= _jwtService.CreateToken(id);
        
        return Ok(jwt);
     }
