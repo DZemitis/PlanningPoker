@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Moq;
@@ -18,9 +20,14 @@ public class UserManagerTests
     public UserManagerTests()
     {
         _sut = new UserManager(_httpContextMock.Object);
-
-        _httpContextMock.Setup(x => x.HttpContext!.User.Claims.Single(x => x.Type == "userId").Value)
-            .Returns($"{_currentUserId}");
+        
+        var _userClaims = new List<Claim>
+        {
+            new("userId", "2")
+        };
+        
+        _httpContextMock.Setup(x => x.HttpContext!.User.Claims)
+            .Returns(_userClaims);
     }
 
     [Fact]
