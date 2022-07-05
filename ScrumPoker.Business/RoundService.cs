@@ -13,6 +13,38 @@ public class RoundService : IRoundService
     private readonly IGameRoomService _gameRoomService;
     private readonly IRoundRepository _roundRepository;
     private readonly IUserManager _userManager;
+    
+    private static readonly IReadOnlyList<RoundState> Grooming = new List<RoundState>
+    {
+        RoundState.VoteRegistration
+    };
+    
+    private static readonly IReadOnlyList<RoundState> VoteRegistration = new List<RoundState>
+    {
+        RoundState.VoteReview
+    };
+    
+    private static readonly IReadOnlyList<RoundState> VoteReview = new List<RoundState>
+    {
+        RoundState.VoteRegistration,
+        RoundState.Finished
+    };
+
+    private static readonly IReadOnlyList<RoundState> Finished = new List<RoundState>();
+
+    private static IEnumerable<RoundState> CheckRoundStates(Round roundRequest)
+    {
+        var result = roundRequest.RoundState switch
+        {
+            RoundState.Grooming => Grooming,
+            RoundState.VoteRegistration => VoteRegistration,
+            RoundState.VoteReview => VoteReview,
+            RoundState.Finished => Finished,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        
+        return result;
+    }
 
     public RoundService(IRoundRepository roundRepository, IGameRoomService gameRoomService, IUserManager userManager)
     {
@@ -52,6 +84,9 @@ public class RoundService : IRoundService
         
         if (gameRoomDto.MasterId != currentUserId)
             throw new ActionNotAllowedException($"User has not rights to Update game room (ID {gameRoomDto.Id})");
+
+        if (!CheckRoundStates(roundDto).Contains(roundRequest.RoundState))
+            throw new InvalidRoundStateException($"Round state {roundRequest.RoundState.ToString()} is not allowed after {roundDto.RoundState.ToString()}");
 
         await _roundRepository.SetState(roundRequest);
     }
